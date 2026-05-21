@@ -72,14 +72,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Grand Coffee Confeitaria — Artesanal em São Luís" },
+      { name: "description", content: "Bolos, doces finos, mini salgados e kits de festa feitos com técnica e ingredientes selecionados." },
+      { name: "author", content: "Grand Coffee" },
+      { property: "og:title", content: "Grand Coffee Confeitaria" },
+      { property: "og:description", content: "Confeitaria artesanal — bolos, brigadeiros gourmet, macarons e kits para festa." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
@@ -108,12 +107,21 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+import { CartProvider } from "@/lib/cart";
+import { SiteLayout } from "@/components/SiteLayout";
+import { Toaster } from "sonner";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <CartProvider>
+        <SiteLayout>
+          <Outlet />
+        </SiteLayout>
+        <Toaster position="bottom-right" richColors />
+      </CartProvider>
     </QueryClientProvider>
   );
 }
