@@ -75,10 +75,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Grand Coffee Confeitaria — Artesanal em São Luís" },
       { name: "description", content: "Bolos, doces finos, mini salgados e kits de festa feitos com técnica e ingredientes selecionados." },
       { name: "author", content: "Grand Coffee" },
-      { property: "og:title", content: "Grand Coffee Confeitaria" },
-      { property: "og:description", content: "Confeitaria artesanal — bolos, brigadeiros gourmet, macarons e kits para festa." },
+      { property: "og:title", content: "Grand Coffee Confeitaria — Artesanal em São Luís" },
+      { property: "og:description", content: "Bolos, doces finos, mini salgados e kits de festa feitos com técnica e ingredientes selecionados." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Grand Coffee Confeitaria — Artesanal em São Luís" },
+      { name: "twitter:description", content: "Bolos, doces finos, mini salgados e kits de festa feitos com técnica e ingredientes selecionados." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f9d361cd-d244-4046-a7e5-89e5bc210e86/id-preview-3c87f902--29a60a8d-5671-462b-bb3e-a7d727bae6bf.lovable.app-1779373336253.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f9d361cd-d244-4046-a7e5-89e5bc210e86/id-preview-3c87f902--29a60a8d-5671-462b-bb3e-a7d727bae6bf.lovable.app-1779373336253.png" },
     ],
     links: [
       {
