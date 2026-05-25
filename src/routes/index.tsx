@@ -39,61 +39,35 @@ function Home() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-cream/60 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-primary">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-              Confeitaria artesanal
-            </span>
-            <h1 className="mt-6 font-display text-5xl leading-[1.05] tracking-tight text-foreground text-balance md:text-6xl lg:text-7xl">
-              O sabor que <em className="text-primary not-italic font-medium italic">adoça</em> seus momentos.
-            </h1>
-            <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              Bolos, doces e kits de festa feitos à mão na Grand Coffee — com técnica, tempo e ingredientes selecionados.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                to="/cardapio"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep hover:gap-3"
-              >
-                Ver cardápio <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/informacoes"
-                className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary transition-colors hover:bg-primary/5"
-              >
-                Informações para clientes
-              </Link>
-            </div>
-            <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2"><Award className="h-4 w-4 text-primary" /> Receitas autorais</div>
-              <div className="flex items-center gap-2"><Leaf className="h-4 w-4 text-primary" /> Ingredientes selecionados</div>
-              <div className="flex items-center gap-2"><Heart className="h-4 w-4 text-primary" /> Feito à mão</div>
-            </div>
+        <div className="mx-auto max-w-3xl px-5 py-20 text-center lg:px-8 lg:py-28">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-cream/60 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-primary">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            Confeitaria artesanal
+          </span>
+          <h1 className="mt-6 font-display text-5xl leading-[1.05] tracking-tight text-foreground text-balance md:text-6xl lg:text-7xl">
+            O sabor que <em className="text-primary not-italic font-medium italic">adoça</em> seus momentos.
+          </h1>
+          <p className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
+            Bolos, doces e kits de festa feitos à mão na Grand Coffee — com técnica, tempo e ingredientes selecionados.
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <Link
+              to="/cardapio"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep hover:gap-3"
+            >
+              Ver cardápio <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/informacoes"
+              className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary transition-colors hover:bg-primary/5"
+            >
+              Informações para clientes
+            </Link>
           </div>
-          <div className="relative">
-            <div className="absolute -right-6 -top-6 h-72 w-72 rounded-full bg-primary/10 blur-3xl" aria-hidden />
-            <div className="relative overflow-hidden rounded-md shadow-2xl shadow-primary/15">
-              <img
-                src={heroImg}
-                alt="Café, brigadeiros, macarons e bolo de chocolate da Grand Coffee"
-                width={1600}
-                height={1100}
-                fetchPriority="high"
-                className="aspect-[4/3] w-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-5 -left-5 hidden rounded-md border border-border bg-background/95 p-5 shadow-xl backdrop-blur sm:block">
-              <div className="flex items-center gap-3">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-gold text-gold" />
-                  ))}
-                </div>
-                <div className="text-sm font-semibold">4,9 / 5</div>
-              </div>
-              <div className="mt-1 text-xs text-muted-foreground">+ 380 avaliações de clientes</div>
-            </div>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2"><Award className="h-4 w-4 text-primary" /> Receitas autorais</div>
+            <div className="flex items-center gap-2"><Leaf className="h-4 w-4 text-primary" /> Ingredientes selecionados</div>
+            <div className="flex items-center gap-2"><Heart className="h-4 w-4 text-primary" /> Feito à mão</div>
           </div>
         </div>
       </section>
