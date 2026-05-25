@@ -45,6 +45,7 @@ function Cart() {
         return [
           head,
           `   - Sabores: ${c.flavors.join(", ")}`,
+          c.format ? `   - Formato: ${c.format}` : "",
           `   - Cor das forminhas: ${c.color}`,
           c.notes ? `   - Obs.: ${c.notes}` : "",
         ].filter(Boolean);
