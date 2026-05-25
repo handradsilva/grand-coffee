@@ -17,12 +17,12 @@ export const Route = createFileRoute("/cardapio")({
 });
 
 function Menu() {
-  const [cat, setCat] = useState<Category | "all">("all");
+  const [cat, setCat] = useState<Category>(categories[0].id);
   const [q, setQ] = useState("");
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
-      if (cat !== "all" && p.category !== cat) return false;
+      if (p.category !== cat) return false;
       if (q && !`${p.name} ${p.description}`.toLowerCase().includes(q.toLowerCase())) return false;
       return true;
     });
@@ -40,7 +40,7 @@ function Menu() {
 
       <div className="mt-12 flex flex-col gap-5 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap gap-2">
-          <Chip active={cat === "all"} onClick={() => setCat("all")}>Tudo</Chip>
+          
           {categories.map((c) => (
             <Chip key={c.id} active={cat === c.id} onClick={() => setCat(c.id)}>{c.label}</Chip>
           ))}
