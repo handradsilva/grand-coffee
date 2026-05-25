@@ -4,7 +4,9 @@ import { useCart } from "@/lib/cart";
 import { formatBRL, type Product } from "@/lib/products";
 import { toast } from "sonner";
 
-const FLAVORS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado", "Casadinho", "Churros"];
+const FLAVORS_TRADICIONAIS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado", "Casadinho", "Churros"];
+const FLAVORS_FINOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Capuccino", "Maracujá"];
+const FORMATS_FINOS = ["Flor", "Quadrado", "Trufa", "Diamante", "Coração"];
 const COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa", label: "Rosa", hex: "#f4a8c0" },
   { id: "azul", label: "Azul", hex: "#7bb3e8" },
@@ -19,6 +21,10 @@ const MIN_QTY = 50;
 
 function isCustomizable(p: Product) {
   return p.category === "doces";
+}
+
+function isFinos(p: Product) {
+  return p.id === "doces-finos";
 }
 
 export function ProductCard({ product }: { product: Product }) {
@@ -98,8 +104,11 @@ function CustomizationPanel({
   onAdded: () => void;
 }) {
   const { add } = useCart();
+  const finos = isFinos(product);
+  const FLAVORS = finos ? FLAVORS_FINOS : FLAVORS_TRADICIONAIS;
   const unitPrice = product.price / 100; // price is per cento (100 un.)
   const [flavors, setFlavors] = useState<string[]>([]);
+  const [format, setFormat] = useState<string>("");
   const [qty, setQty] = useState(MIN_QTY);
   const [color, setColor] = useState<string>("");
   const [notes, setNotes] = useState("");
@@ -123,9 +132,10 @@ function CustomizationPanel({
 
   function handleAdd() {
     if (flavors.length === 0) return toast.error("Escolha pelo menos 1 sabor.");
+    if (finos && !format) return toast.error("Escolha o formato.");
     if (!color) return toast.error("Escolha a cor das forminhas.");
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
-    add(product, qty, { flavors, color, notes, unitPrice });
+    add(product, qty, { flavors, color, notes, unitPrice, ...(finos ? { format } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
     onAdded();
   }
@@ -165,6 +175,33 @@ function CustomizationPanel({
           })}
         </div>
       </div>
+
+      {/* Formats (Doces Finos only) */}
+      {finos && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Formatos</h4>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {FORMATS_FINOS.map((f) => {
+              const active = format === f;
+              return (
+                <button
+                  key={f}
+                  onClick={() => setFormat(f)}
+                  className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
+                    active
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-background hover:border-primary/40"
+                  }`}
+                >
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
 
       {/* Quantity */}
       <div className="mt-5">
