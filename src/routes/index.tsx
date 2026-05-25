@@ -36,7 +36,7 @@ function Home() {
               O sabor que <em className="text-primary not-italic font-medium italic">adoça</em> seus momentos.
             </h1>
             <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground">
-              Bolos, doces finos e kits de festa feitos à mão na Grand Coffee — com técnica, tempo e ingredientes selecionados.
+              Bolos, doces e kits de festa feitos à mão na Grand Coffee — com técnica, tempo e ingredientes selecionados.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link

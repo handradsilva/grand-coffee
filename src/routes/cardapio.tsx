@@ -10,7 +10,7 @@ export const Route = createFileRoute("/cardapio")({
       { title: "Cardápio — Grand Coffee Confeitaria" },
       { name: "description", content: "Conheça nossos bolos, brigadeiros, macarons, mini salgados e kits de festa. Encomende online." },
       { property: "og:title", content: "Cardápio — Grand Coffee" },
-      { property: "og:description", content: "Bolos, doces finos, salgados e kits para festa." },
+      { property: "og:description", content: "Bolos, doces, salgados e kits para festa." },
     ],
   }),
   component: Menu,
