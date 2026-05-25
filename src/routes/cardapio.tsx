@@ -22,7 +22,7 @@ function Menu() {
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
-      if (cat !== "all" && p.category !== cat) return false;
+      if (p.category !== cat) return false;
       if (q && !`${p.name} ${p.description}`.toLowerCase().includes(q.toLowerCase())) return false;
       return true;
     });
