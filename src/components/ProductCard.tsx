@@ -132,9 +132,10 @@ function CustomizationPanel({
 
   function handleAdd() {
     if (flavors.length === 0) return toast.error("Escolha pelo menos 1 sabor.");
+    if (finos && !format) return toast.error("Escolha o formato.");
     if (!color) return toast.error("Escolha a cor das forminhas.");
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
-    add(product, qty, { flavors, color, notes, unitPrice });
+    add(product, qty, { flavors, color, notes, unitPrice, ...(finos ? { format } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
     onAdded();
   }
