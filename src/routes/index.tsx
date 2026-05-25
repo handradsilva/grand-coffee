@@ -23,7 +23,6 @@ export const Route = createFileRoute("/")({
 const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento };
 
 function Home() {
-  const featured = products.filter((p) => p.featured);
   return (
     <>
       {/* HERO */}
