@@ -40,7 +40,7 @@ function Menu() {
 
       <div className="mt-12 flex flex-col gap-5 border-b border-border pb-6 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-wrap gap-2">
-          <Chip active={cat === "all"} onClick={() => setCat("all")}>Tudo</Chip>
+          
           {categories.map((c) => (
             <Chip key={c.id} active={cat === c.id} onClick={() => setCat(c.id)}>{c.label}</Chip>
           ))}
