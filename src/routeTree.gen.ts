@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as SacolaRouteImport } from './routes/sacola'
+import { Route as InformacoesRouteImport } from './routes/informacoes'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as CardapioRouteImport } from './routes/cardapio'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const SobreRoute = SobreRouteImport.update({
 const SacolaRoute = SacolaRouteImport.update({
   id: '/sacola',
   path: '/sacola',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InformacoesRoute = InformacoesRouteImport.update({
+  id: '/informacoes',
+  path: '/informacoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContatoRoute = ContatoRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cardapio': typeof CardapioRoute
   '/contato': typeof ContatoRoute
+  '/informacoes': typeof InformacoesRoute
   '/sacola': typeof SacolaRoute
   '/sobre': typeof SobreRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cardapio': typeof CardapioRoute
   '/contato': typeof ContatoRoute
+  '/informacoes': typeof InformacoesRoute
   '/sacola': typeof SacolaRoute
   '/sobre': typeof SobreRoute
 }
@@ -60,21 +68,36 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/cardapio': typeof CardapioRoute
   '/contato': typeof ContatoRoute
+  '/informacoes': typeof InformacoesRoute
   '/sacola': typeof SacolaRoute
   '/sobre': typeof SobreRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cardapio' | '/contato' | '/sacola' | '/sobre'
+  fullPaths:
+    | '/'
+    | '/cardapio'
+    | '/contato'
+    | '/informacoes'
+    | '/sacola'
+    | '/sobre'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cardapio' | '/contato' | '/sacola' | '/sobre'
-  id: '__root__' | '/' | '/cardapio' | '/contato' | '/sacola' | '/sobre'
+  to: '/' | '/cardapio' | '/contato' | '/informacoes' | '/sacola' | '/sobre'
+  id:
+    | '__root__'
+    | '/'
+    | '/cardapio'
+    | '/contato'
+    | '/informacoes'
+    | '/sacola'
+    | '/sobre'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CardapioRoute: typeof CardapioRoute
   ContatoRoute: typeof ContatoRoute
+  InformacoesRoute: typeof InformacoesRoute
   SacolaRoute: typeof SacolaRoute
   SobreRoute: typeof SobreRoute
 }
@@ -93,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/sacola'
       fullPath: '/sacola'
       preLoaderRoute: typeof SacolaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/informacoes': {
+      id: '/informacoes'
+      path: '/informacoes'
+      fullPath: '/informacoes'
+      preLoaderRoute: typeof InformacoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contato': {
@@ -123,6 +153,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CardapioRoute: CardapioRoute,
   ContatoRoute: ContatoRoute,
+  InformacoesRoute: InformacoesRoute,
   SacolaRoute: SacolaRoute,
   SobreRoute: SobreRoute,
 }

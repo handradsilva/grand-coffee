@@ -47,10 +47,10 @@ function Home() {
                 Ver cardápio <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                to="/sobre"
+                to="/informacoes"
                 className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-primary transition-colors hover:bg-primary/5"
               >
-                Nossa história
+                Informações para clientes
               </Link>
             </div>
             <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 text-sm text-muted-foreground">

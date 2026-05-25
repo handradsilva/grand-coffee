@@ -15,6 +15,7 @@ function Header() {
         <nav className="hidden items-center gap-9 text-sm font-medium md:flex">
           <Link to="/" className="text-foreground/80 transition-colors hover:text-primary [&.active]:text-primary">Início</Link>
           <Link to="/cardapio" className="text-foreground/80 transition-colors hover:text-primary [&.active]:text-primary">Cardápio</Link>
+          <Link to="/informacoes" className="text-foreground/80 transition-colors hover:text-primary [&.active]:text-primary">Informações</Link>
           <Link to="/sobre" className="text-foreground/80 transition-colors hover:text-primary [&.active]:text-primary">Sobre</Link>
           <Link to="/contato" className="text-foreground/80 transition-colors hover:text-primary [&.active]:text-primary">Contato</Link>
         </nav>
