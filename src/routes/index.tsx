@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Star, Heart, Award, Leaf } from "lucide-react";
+
 import heroImg from "@/assets/hero.jpg";
 import doces from "@/assets/cat-doces.jpg";
 import bolos from "@/assets/cat-bolos.jpg";
