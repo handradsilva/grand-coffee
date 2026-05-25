@@ -6,6 +6,7 @@ import bolos from "@/assets/cat-bolos.jpg";
 import cupcakes from "@/assets/cat-cupcakes.jpg";
 import bemCasados from "@/assets/cat-bem-casados.jpg";
 import kits from "@/assets/cat-kits.jpg";
+import comboCasamento from "@/assets/cat-combo-casamento.jpg";
 import { products, categories } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits };
+const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento };
 
 function Home() {
   const featured = products.filter((p) => p.featured);
