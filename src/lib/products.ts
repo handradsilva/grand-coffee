@@ -6,7 +6,7 @@ import coxinha from "@/assets/p-coxinha.jpg";
 import quiche from "@/assets/p-quiche.jpg";
 import kitFesta from "@/assets/p-kit-festa.jpg";
 
-export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits";
+export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento";
 
 export interface Product {
   id: string;
@@ -21,11 +21,12 @@ export interface Product {
 }
 
 export const categories: { id: Category; label: string; blurb: string }[] = [
-  { id: "doces", label: "Doces", blurb: "Brigadeiros, macarons e mais" },
-  { id: "bolos", label: "Bolos", blurb: "Inteiros, fatias e potes" },
-  { id: "cupcakes", label: "Cupcakes", blurb: "Sabores artesanais decorados" },
-  { id: "bem-casados", label: "Bem-Casados", blurb: "O doce do casamento" },
+  { id: "doces", label: "Doces", blurb: "doces tradicionais e finos" },
+  { id: "bolos", label: "Bolos", blurb: "Bolos decorados e naked cake" },
+  { id: "cupcakes", label: "Cupcakes", blurb: "Cupcakes recheados" },
+  { id: "bem-casados", label: "Bem-Casados", blurb: "Lembrancinha ideal para seu evento" },
   { id: "kits", label: "Kit Festas", blurb: "Combos para celebrar" },
+  { id: "combo-casamento", label: "Combo-Casamento", blurb: "Celebre Conosco" },
 ];
 
 export const products: Product[] = [
