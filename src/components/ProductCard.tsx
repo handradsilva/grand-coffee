@@ -108,7 +108,7 @@ function CustomizationPanel({
   const FLAVORS = finos ? FLAVORS_FINOS : FLAVORS_TRADICIONAIS;
   const unitPrice = product.price / 100; // price is per cento (100 un.)
   const [flavors, setFlavors] = useState<string[]>([]);
-  const [format, setFormat] = useState<string>("");
+  const [formats, setFormats] = useState<string[]>([]);
   const [qty, setQty] = useState(MIN_QTY);
   const [color, setColor] = useState<string>("");
   const [notes, setNotes] = useState("");
@@ -126,16 +126,27 @@ function CustomizationPanel({
     });
   }
 
+  function toggleFormat(f: string) {
+    setFormats((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= 4) {
+        toast.error("Máximo de 4 formatos.");
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+
   function handleQty(delta: number) {
     setQty((q) => Math.max(MIN_QTY, q + delta));
   }
 
   function handleAdd() {
     if (flavors.length === 0) return toast.error("Escolha pelo menos 1 sabor.");
-    if (finos && !format) return toast.error("Escolha o formato.");
+    if (finos && formats.length === 0) return toast.error("Escolha pelo menos 1 formato.");
     if (!color) return toast.error("Escolha a cor das forminhas.");
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
-    add(product, qty, { flavors, color, notes, unitPrice, ...(finos ? { format } : {}) });
+    add(product, qty, { flavors, color, notes, unitPrice, ...(finos ? { format: formats.join(", ") } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
     onAdded();
   }
@@ -179,14 +190,17 @@ function CustomizationPanel({
       {/* Formats (Doces Finos only) */}
       {finos && (
         <div className="mt-5">
-          <h4 className="text-sm font-semibold">Formatos</h4>
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Formatos</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até 4 · {formats.length}/4</span>
+          </div>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {FORMATS_FINOS.map((f) => {
-              const active = format === f;
+              const active = formats.includes(f);
               return (
                 <button
                   key={f}
-                  onClick={() => setFormat(f)}
+                  onClick={() => toggleFormat(f)}
                   className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
                     active
                       ? "border-primary bg-primary text-primary-foreground"
