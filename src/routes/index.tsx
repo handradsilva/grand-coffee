@@ -186,6 +186,40 @@ function Home() {
   );
 }
 
+function FeedbacksCarousel() {
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const slides = [depo1, depo2, depo3, depo1, depo2, depo3];
+  return (
+    <div className="mx-auto mt-12 max-w-5xl">
+      <Carousel
+        opts={{ loop: true, align: "center" }}
+        plugins={[autoplay.current]}
+        className="w-full"
+      >
+        <CarouselContent className="-ml-4">
+          {slides.map((src, i) => (
+            <CarouselItem key={i} className="pl-4 basis-[78%] sm:basis-1/2 lg:basis-1/3">
+              <div className="overflow-hidden rounded-md border border-border bg-card shadow-sm transition-transform">
+                <img
+                  src={src}
+                  alt={`Feedback de cliente ${i + 1}`}
+                  loading="lazy"
+                  width={768}
+                  height={1024}
+                  className="aspect-[3/4] w-full object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+      <p className="mt-4 text-center text-xs text-muted-foreground">Arraste ou aguarde — novos feedbacks a cada 5 segundos</p>
+    </div>
+  );
+}
+
 function Stat({ n, l }: { n: string; l: string }) {
   return (
     <div className="rounded-md border border-cream/15 bg-burgundy-deep/40 p-6">
