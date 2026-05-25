@@ -13,7 +13,7 @@ import depo1 from "@/assets/depoimento-1.jpg";
 import depo2 from "@/assets/depoimento-2.jpg";
 import depo3 from "@/assets/depoimento-3.jpg";
 
-import heroImg from "@/assets/hero.jpg";
+
 import doces from "@/assets/cat-doces.jpg";
 import bolos from "@/assets/cat-bolos.jpg";
 import cupcakes from "@/assets/cat-cupcakes.jpg";
