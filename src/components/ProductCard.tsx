@@ -190,14 +190,17 @@ function CustomizationPanel({
       {/* Formats (Doces Finos only) */}
       {finos && (
         <div className="mt-5">
-          <h4 className="text-sm font-semibold">Formatos</h4>
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Formatos</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até 4 · {formats.length}/4</span>
+          </div>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {FORMATS_FINOS.map((f) => {
-              const active = format === f;
+              const active = formats.includes(f);
               return (
                 <button
                   key={f}
-                  onClick={() => setFormat(f)}
+                  onClick={() => toggleFormat(f)}
                   className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
                     active
                       ? "border-primary bg-primary text-primary-foreground"
