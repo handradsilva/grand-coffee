@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Minus, Plus, Trash2, ShoppingBag, MessageCircle } from "lucide-react";
-import { useCart } from "@/lib/cart";
+import { useCart, cartUnitPrice } from "@/lib/cart";
 import { formatBRL } from "@/lib/products";
 import { toast } from "sonner";
 
@@ -37,7 +37,18 @@ function Cart() {
       "*Novo Pedido — Grand Coffee*",
       "",
       "*Itens:*",
-      ...items.map((i) => `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * i.product.price)}`),
+      ...items.flatMap((i) => {
+        const unit = cartUnitPrice(i);
+        const head = `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`;
+        if (!i.customization) return [head];
+        const c = i.customization;
+        return [
+          head,
+          `   - Sabores: ${c.flavors.join(", ")}`,
+          `   - Cor das forminhas: ${c.color}`,
+          c.notes ? `   - Obs.: ${c.notes}` : "",
+        ].filter(Boolean);
+      }),
       "",
       `*Subtotal:* ${formatBRL(subtotal)}`,
       "",
@@ -90,30 +101,47 @@ function Cart() {
             <section className="rounded-lg border border-border bg-card">
               <h2 className="border-b border-border px-6 py-4 font-display text-xl">Itens</h2>
               <ul className="divide-y divide-border">
-                {items.map((i) => (
-                  <li key={i.product.id} className="flex gap-4 p-5">
-                    <img src={i.product.image} alt={i.product.name} className="h-24 w-24 rounded-md object-cover" />
-                    <div className="flex flex-1 flex-col">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h3 className="font-display text-lg">{i.product.name}</h3>
-                          <p className="text-xs text-muted-foreground">{formatBRL(i.product.price)} / {i.product.unit}</p>
+                {items.map((i) => {
+                  const unit = cartUnitPrice(i);
+                  const isCustom = !!i.customization;
+                  const step = isCustom ? 10 : 1;
+                  const minQty = isCustom ? 50 : 1;
+                  return (
+                    <li key={i.lineId} className="flex gap-4 p-5">
+                      <img src={i.product.image} alt={i.product.name} className="h-24 w-24 rounded-md object-cover" />
+                      <div className="flex flex-1 flex-col">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h3 className="font-display text-lg">{i.product.name}</h3>
+                            <p className="text-xs text-muted-foreground">
+                              {formatBRL(unit)} {isCustom ? "/ unidade" : `/ ${i.product.unit}`}
+                            </p>
+                            {i.customization && (
+                              <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+                                <p><span className="font-medium text-foreground">Sabores:</span> {i.customization.flavors.join(", ")}</p>
+                                <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{i.customization.color}</span></p>
+                                {i.customization.notes && (
+                                  <p><span className="font-medium text-foreground">Obs.:</span> {i.customization.notes}</p>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                          <button onClick={() => remove(i.lineId)} aria-label="Remover" className="text-muted-foreground hover:text-destructive">
+                            <Trash2 className="h-4 w-4" />
+                          </button>
                         </div>
-                        <button onClick={() => remove(i.product.id)} aria-label="Remover" className="text-muted-foreground hover:text-destructive">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                      <div className="mt-auto flex items-center justify-between pt-3">
-                        <div className="flex items-center gap-1 rounded-full border border-border">
-                          <button onClick={() => setQty(i.product.id, i.qty - 1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Minus className="h-3.5 w-3.5" /></button>
-                          <span className="w-8 text-center text-sm font-semibold">{i.qty}</span>
-                          <button onClick={() => setQty(i.product.id, i.qty + 1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Plus className="h-3.5 w-3.5" /></button>
+                        <div className="mt-auto flex items-center justify-between pt-3">
+                          <div className="flex items-center gap-1 rounded-full border border-border">
+                            <button onClick={() => setQty(i.lineId, Math.max(minQty, i.qty - step))} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Minus className="h-3.5 w-3.5" /></button>
+                            <span className="w-10 text-center text-sm font-semibold">{i.qty}</span>
+                            <button onClick={() => setQty(i.lineId, i.qty + step)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Plus className="h-3.5 w-3.5" /></button>
+                          </div>
+                          <div className="font-display text-lg font-semibold text-primary">{formatBRL(i.qty * unit)}</div>
                         </div>
-                        <div className="font-display text-lg font-semibold text-primary">{formatBRL(i.qty * i.product.price)}</div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </section>
 
