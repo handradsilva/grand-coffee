@@ -30,8 +30,8 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
 ];
 
 export const products: Product[] = [
-  { id: "brig-belga", name: "Brigadeiro Belga", category: "doces", price: 4.5, unit: "unidade", description: "Ganache de chocolate belga 70% finalizado com granulado artesanal.", image: brigadeiro, tags: ["mais vendido"], featured: true },
-  { id: "macaron-cx6", name: "Macarons — Caixa com 6", category: "doces", price: 48, unit: "caixa", description: "Seleção francesa: pistache, framboesa, baunilha, café, chocolate e limão siciliano.", image: macaron, tags: ["sem glúten"], featured: true },
+  { id: "doces-tradicionais", name: "Doces Tradicionais", category: "doces", price: 150, unit: "cento (100 un.)", description: "", image: brigadeiro, tags: ["mais vendido"], featured: true },
+  { id: "doces-finos", name: "Doces Finos", category: "doces", price: 140, unit: "cento (100 un.)", description: "", image: macaron, featured: true },
   { id: "bolo-choc", name: "Bolo Chocolate Intenso", category: "bolos", price: 165, unit: "1,5kg", description: "Massa úmida de cacau, ganache meio-amargo e framboesas frescas. Serve 12.", image: boloChoc, featured: true },
   { id: "bolo-pote-tira", name: "Bolo de Pote Tiramisu", category: "bolos", price: 18, unit: "300ml", description: "Camadas de bolo de café, creme mascarpone e cacau em pó.", image: boloPote },
   { id: "cupcake-vanilla", name: "Cupcake de Baunilha", category: "cupcakes", price: 8, unit: "unidade", description: "Massa fofa de baunilha com buttercream artesanal e confeitos.", image: boloPote },
