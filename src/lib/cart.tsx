@@ -2,11 +2,19 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import type { Product } from "./products";
 
 export interface CartCustomization {
-  flavors: string[];
-  color: string;
   notes: string;
   unitPrice: number;
+  // Doces
+  flavors?: string[];
+  color?: string;
   format?: string;
+  // Bolo
+  kind?: "doces" | "bolo";
+  weightKg?: number;
+  recheios?: string[];
+  adicionais?: string[];
+  modelImage?: string; // data URL
+  modelImageName?: string;
 }
 
 export interface CartItem {
@@ -27,7 +35,7 @@ interface CartCtx {
 }
 
 const Ctx = createContext<CartCtx | null>(null);
-const KEY = "grandcoffee.cart.v2";
+const KEY = "grandcoffee.cart.v3";
 
 const unitPriceOf = (i: CartItem) => i.customization?.unitPrice ?? i.product.price;
 
@@ -48,7 +56,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const add = (p: Product, qty = 1, customization?: CartCustomization) =>
     setItems((prev) => {
       if (customization) {
-        // Custom items are always a new line
         return [...prev, { lineId: `${p.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, product: p, qty, customization }];
       }
       const i = prev.findIndex((x) => x.product.id === p.id && !x.customization);
