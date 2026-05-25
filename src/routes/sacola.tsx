@@ -276,8 +276,8 @@ function Cart() {
                 </Field>
               </div>
               <div className="border-t border-border bg-secondary/40 px-6 py-5">
-                <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep">
-                  <MessageCircle className="h-4 w-4" /> Enviar pedido pelo WhatsApp
+                <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep disabled:opacity-60">
+                  <MessageCircle className="h-4 w-4" /> {submitting ? "Enviando..." : "Enviar pedido pelo WhatsApp"}
                 </button>
                 <p className="mt-3 text-center text-xs text-muted-foreground">Confirmamos disponibilidade e pagamento pelo WhatsApp em até 30 min.</p>
               </div>
