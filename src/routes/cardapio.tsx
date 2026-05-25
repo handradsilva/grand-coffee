@@ -17,7 +17,7 @@ export const Route = createFileRoute("/cardapio")({
 });
 
 function Menu() {
-  const [cat, setCat] = useState<Category | "all">("all");
+  const [cat, setCat] = useState<Category>(categories[0].id);
   const [q, setQ] = useState("");
 
   const filtered = useMemo(() => {
