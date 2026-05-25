@@ -1,23 +1,34 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Product } from "./products";
 
+export interface CartCustomization {
+  flavors: string[];
+  color: string;
+  notes: string;
+  unitPrice: number;
+}
+
 export interface CartItem {
+  lineId: string;
   product: Product;
   qty: number;
+  customization?: CartCustomization;
 }
 
 interface CartCtx {
   items: CartItem[];
-  add: (p: Product, qty?: number) => void;
-  remove: (id: string) => void;
-  setQty: (id: string, qty: number) => void;
+  add: (p: Product, qty?: number, customization?: CartCustomization) => void;
+  remove: (lineId: string) => void;
+  setQty: (lineId: string, qty: number) => void;
   clear: () => void;
   count: number;
   subtotal: number;
 }
 
 const Ctx = createContext<CartCtx | null>(null);
-const KEY = "grandcoffee.cart.v1";
+const KEY = "grandcoffee.cart.v2";
+
+const unitPriceOf = (i: CartItem) => i.customization?.unitPrice ?? i.product.price;
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -33,24 +44,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try { localStorage.setItem(KEY, JSON.stringify(items)); } catch {}
   }, [items]);
 
-  const add = (p: Product, qty = 1) =>
+  const add = (p: Product, qty = 1, customization?: CartCustomization) =>
     setItems((prev) => {
-      const i = prev.findIndex((x) => x.product.id === p.id);
+      if (customization) {
+        // Custom items are always a new line
+        return [...prev, { lineId: `${p.id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, product: p, qty, customization }];
+      }
+      const i = prev.findIndex((x) => x.product.id === p.id && !x.customization);
       if (i >= 0) {
         const next = [...prev];
         next[i] = { ...next[i], qty: next[i].qty + qty };
         return next;
       }
-      return [...prev, { product: p, qty }];
+      return [...prev, { lineId: p.id, product: p, qty }];
     });
 
-  const remove = (id: string) => setItems((p) => p.filter((x) => x.product.id !== id));
-  const setQty = (id: string, qty: number) =>
-    setItems((p) => p.map((x) => (x.product.id === id ? { ...x, qty: Math.max(1, qty) } : x)));
+  const remove = (lineId: string) => setItems((p) => p.filter((x) => x.lineId !== lineId));
+  const setQty = (lineId: string, qty: number) =>
+    setItems((p) => p.map((x) => (x.lineId === lineId ? { ...x, qty: Math.max(1, qty) } : x)));
   const clear = () => setItems([]);
 
   const count = items.reduce((a, x) => a + x.qty, 0);
-  const subtotal = items.reduce((a, x) => a + x.qty * x.product.price, 0);
+  const subtotal = items.reduce((a, x) => a + x.qty * unitPriceOf(x), 0);
 
   return (
     <Ctx.Provider value={{ items, add, remove, setQty, clear, count, subtotal }}>
@@ -64,3 +79,5 @@ export function useCart() {
   if (!c) throw new Error("useCart must be used within CartProvider");
   return c;
 }
+
+export const cartUnitPrice = unitPriceOf;
