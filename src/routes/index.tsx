@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Star, Heart, Award, Leaf } from "lucide-react";
+
 import heroImg from "@/assets/hero.jpg";
 import doces from "@/assets/cat-doces.jpg";
 import bolos from "@/assets/cat-bolos.jpg";
@@ -7,8 +8,7 @@ import cupcakes from "@/assets/cat-cupcakes.jpg";
 import bemCasados from "@/assets/cat-bem-casados.jpg";
 import kits from "@/assets/cat-kits.jpg";
 import comboCasamento from "@/assets/cat-combo-casamento.jpg";
-import { products, categories } from "@/lib/products";
-import { ProductCard } from "@/components/ProductCard";
+import { categories } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +23,6 @@ export const Route = createFileRoute("/")({
 const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento };
 
 function Home() {
-  const featured = products.filter((p) => p.featured);
   return (
     <>
       {/* HERO */}
@@ -116,24 +115,6 @@ function Home() {
                 </div>
               </Link>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURED */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Destaques</p>
-              <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">Os mais pedidos da casa</h2>
-            </div>
-            <Link to="/cardapio" className="text-sm font-semibold uppercase tracking-wider text-primary underline-offset-4 hover:underline">
-              Cardápio completo →
-            </Link>
-          </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </div>
       </section>
