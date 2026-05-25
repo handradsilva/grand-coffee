@@ -1,5 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Star, Heart, Award, Leaf } from "lucide-react";
+import { ArrowRight, Star, StarHalf, Heart, Award, Leaf } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import depo1 from "@/assets/depoimento-1.jpg";
+import depo2 from "@/assets/depoimento-2.jpg";
+import depo3 from "@/assets/depoimento-3.jpg";
 
 import heroImg from "@/assets/hero.jpg";
 import doces from "@/assets/cat-doces.jpg";
