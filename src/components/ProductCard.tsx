@@ -108,7 +108,7 @@ function CustomizationPanel({
   const FLAVORS = finos ? FLAVORS_FINOS : FLAVORS_TRADICIONAIS;
   const unitPrice = product.price / 100; // price is per cento (100 un.)
   const [flavors, setFlavors] = useState<string[]>([]);
-  const [format, setFormat] = useState<string>("");
+  const [formats, setFormats] = useState<string[]>([]);
   const [qty, setQty] = useState(MIN_QTY);
   const [color, setColor] = useState<string>("");
   const [notes, setNotes] = useState("");
