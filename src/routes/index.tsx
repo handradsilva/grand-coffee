@@ -3,7 +3,8 @@ import { ArrowRight, Star, Heart, Award, Leaf } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
 import doces from "@/assets/cat-doces.jpg";
 import bolos from "@/assets/cat-bolos.jpg";
-import salgados from "@/assets/cat-salgados.jpg";
+import cupcakes from "@/assets/cat-cupcakes.jpg";
+import bemCasados from "@/assets/cat-bem-casados.jpg";
 import kits from "@/assets/cat-kits.jpg";
 import { products, categories } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const catImg: Record<string, string> = { doces, bolos, salgados, kits };
+const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits };
 
 function Home() {
   const featured = products.filter((p) => p.featured);
@@ -97,7 +98,7 @@ function Home() {
               Ver tudo →
             </Link>
           </div>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-5 grid-cols-2">
             {categories.map((c) => (
               <Link
                 key={c.id}
