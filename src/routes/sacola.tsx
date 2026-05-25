@@ -58,7 +58,7 @@ function Cart() {
 
   const empty = items.length === 0;
 
-  const hasModelImage = items.some((i) => i.customization?.modelImage);
+  
 
   const [submitting, setSubmitting] = useState(false);
 
