@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef } from "react";
 import { ArrowRight, Star, StarHalf, Heart, Award, Leaf } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
@@ -134,7 +136,7 @@ function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-cream/80">Sobre a Grand Coffee</p>
-            <h2 className="mt-3 font-display text-4xl text-balance md:text-5xl">Confeitaria feita com tempo, técnica, qualidade</h2>
+            <h2 className="mt-3 font-display text-4xl text-balance md:text-5xl">Confeitaria feita com tempo, técnica e qualidade!</h2>
             <p className="mt-6 text-base leading-relaxed text-cream/85">
               Cada receita é nossa, cada ingrediente é escolhido — e cada pedido é único.
             </p>
@@ -142,17 +144,17 @@ function Home() {
           <div className="grid grid-cols-2 gap-4">
             <Stat n="+4" l="anos de cozinha" />
             <Stat n="+20" l="receitas autorais" />
-            <Stat n="+5k" l="atendimentos" />
-            <Stat n="4,9 ⭐️" l="estrelas em avaliações" />
+            <Stat n="+5k" l="pedidos entregues" />
+            <Stat n="4,9" l="estrelas em avaliações" />
           </div>
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* FEEDBACKS */}
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Depoimentos</p>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Feedbacks</p>
             <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">Quem prova, volta.</h2>
             <div className="mt-4 flex items-center justify-center gap-1 text-gold">
               {[...Array(4)].map((_, i) => <Star key={i} className="h-5 w-5 fill-gold" />)}
@@ -160,30 +162,10 @@ function Home() {
               <span className="ml-2 text-sm font-semibold text-foreground">4,9 / 5</span>
             </div>
           </div>
-          <div className="mx-auto mt-12 max-w-4xl">
-            <Carousel opts={{ loop: true, align: "center" }} className="w-full">
-              <CarouselContent>
-                {[depo1, depo2, depo3].map((src, i) => (
-                  <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/3">
-                    <div className="overflow-hidden rounded-md border border-border bg-card shadow-sm">
-                      <img
-                        src={src}
-                        alt={`Depoimento de cliente ${i + 1}`}
-                        loading="lazy"
-                        width={768}
-                        height={1024}
-                        className="aspect-[3/4] w-full object-cover"
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
+          <FeedbacksCarousel />
         </div>
       </section>
+
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
@@ -201,6 +183,40 @@ function Home() {
         </div>
       </section>
     </>
+  );
+}
+
+function FeedbacksCarousel() {
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }));
+  const slides = [depo1, depo2, depo3, depo1, depo2, depo3];
+  return (
+    <div className="mx-auto mt-12 max-w-5xl">
+      <Carousel
+        opts={{ loop: true, align: "center" }}
+        plugins={[autoplay.current]}
+        className="w-full"
+      >
+        <CarouselContent className="-ml-4">
+          {slides.map((src, i) => (
+            <CarouselItem key={i} className="pl-4 basis-[78%] sm:basis-1/2 lg:basis-1/3">
+              <div className="overflow-hidden rounded-md border border-border bg-card shadow-sm transition-transform">
+                <img
+                  src={src}
+                  alt={`Feedback de cliente ${i + 1}`}
+                  loading="lazy"
+                  width={768}
+                  height={1024}
+                  className="aspect-[3/4] w-full object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+      <p className="mt-4 text-center text-xs text-muted-foreground">Arraste ou aguarde — novos feedbacks a cada 5 segundos</p>
+    </div>
   );
 }
 
