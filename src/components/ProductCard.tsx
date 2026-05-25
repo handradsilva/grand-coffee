@@ -176,6 +176,33 @@ function CustomizationPanel({
         </div>
       </div>
 
+      {/* Formats (Doces Finos only) */}
+      {finos && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Formatos</h4>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {FORMATS_FINOS.map((f) => {
+              const active = format === f;
+              return (
+                <button
+                  key={f}
+                  onClick={() => setFormat(f)}
+                  className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${
+                    active
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-background hover:border-primary/40"
+                  }`}
+                >
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+
       {/* Quantity */}
       <div className="mt-5">
         <div className="flex items-baseline justify-between">
