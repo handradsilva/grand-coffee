@@ -150,11 +150,11 @@ function Home() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* FEEDBACKS */}
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Depoimentos</p>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Feedbacks</p>
             <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">Quem prova, volta.</h2>
             <div className="mt-4 flex items-center justify-center gap-1 text-gold">
               {[...Array(4)].map((_, i) => <Star key={i} className="h-5 w-5 fill-gold" />)}
@@ -162,30 +162,10 @@ function Home() {
               <span className="ml-2 text-sm font-semibold text-foreground">4,9 / 5</span>
             </div>
           </div>
-          <div className="mx-auto mt-12 max-w-4xl">
-            <Carousel opts={{ loop: true, align: "center" }} className="w-full">
-              <CarouselContent>
-                {[depo1, depo2, depo3].map((src, i) => (
-                  <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/3">
-                    <div className="overflow-hidden rounded-md border border-border bg-card shadow-sm">
-                      <img
-                        src={src}
-                        alt={`Depoimento de cliente ${i + 1}`}
-                        loading="lazy"
-                        width={768}
-                        height={1024}
-                        className="aspect-[3/4] w-full object-cover"
-                      />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
+          <FeedbacksCarousel />
         </div>
       </section>
+
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-5 pb-16 lg:px-8">
