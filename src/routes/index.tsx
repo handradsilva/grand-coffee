@@ -119,24 +119,6 @@ function Home() {
         </div>
       </section>
 
-      {/* FEATURED */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Destaques</p>
-              <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">Os mais pedidos da casa</h2>
-            </div>
-            <Link to="/cardapio" className="text-sm font-semibold uppercase tracking-wider text-primary underline-offset-4 hover:underline">
-              Cardápio completo →
-            </Link>
-          </div>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.map((p) => <ProductCard key={p.id} product={p} />)}
-          </div>
-        </div>
-      </section>
-
       {/* ABOUT */}
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:px-8">
