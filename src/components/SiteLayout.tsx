@@ -43,23 +43,27 @@ function Footer() {
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2 max-w-sm">
             <BrandMark />
-            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-              Confeitaria artesanal feita com tempo, técnica e ingredientes selecionados. Encomende com carinho, receba sorrisos.
-            </p>
           </div>
           <div>
             <h4 className="font-display text-base font-semibold text-primary">Contato</h4>
             <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0" />(98) 98236-2983</li>
-              <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0" />São Luís — MA</li>
-              <li className="flex items-start gap-2"><Clock className="mt-0.5 h-4 w-4 shrink-0" />Ter — Dom · 9h às 19h</li>
+              <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0" />(98) 98714-9819</li>
+              <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0" />Rua Frei Hermenegildo, n°43, Bairro Aurora — São Luís — MA</li>
+              <li className="flex items-start gap-2"><Clock className="mt-0.5 h-4 w-4 shrink-0" />Seg — Sáb · 7h30 às 18h</li>
             </ul>
           </div>
           <div>
             <h4 className="font-display text-base font-semibold text-primary">Nos siga</h4>
             <div className="mt-4 flex gap-3">
-              <a href="#" aria-label="Instagram" className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"><Instagram className="h-4 w-4" /></a>
-              <a href="#" aria-label="Facebook" className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"><Facebook className="h-4 w-4" /></a>
+              <a
+                href="https://www.instagram.com/grandcoffee_slz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
             </div>
           </div>
         </div>
