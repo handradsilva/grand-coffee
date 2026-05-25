@@ -136,7 +136,7 @@ function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-cream/80">Sobre a Grand Coffee</p>
-            <h2 className="mt-3 font-display text-4xl text-balance md:text-5xl">Confeitaria feita com tempo, técnica, qualidade</h2>
+            <h2 className="mt-3 font-display text-4xl text-balance md:text-5xl">Confeitaria feita com tempo, técnica e qualidade!</h2>
             <p className="mt-6 text-base leading-relaxed text-cream/85">
               Cada receita é nossa, cada ingrediente é escolhido — e cada pedido é único.
             </p>
@@ -144,8 +144,8 @@ function Home() {
           <div className="grid grid-cols-2 gap-4">
             <Stat n="+4" l="anos de cozinha" />
             <Stat n="+20" l="receitas autorais" />
-            <Stat n="+5k" l="atendimentos" />
-            <Stat n="4,9 ⭐️" l="estrelas em avaliações" />
+            <Stat n="+5k" l="pedidos entregues" />
+            <Stat n="4,9" l="estrelas em avaliações" />
           </div>
         </div>
       </section>
