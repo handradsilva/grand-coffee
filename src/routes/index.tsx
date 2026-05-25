@@ -1,5 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Star, Heart, Award, Leaf } from "lucide-react";
+import { ArrowRight, Star, StarHalf, Heart, Award, Leaf } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import depo1 from "@/assets/depoimento-1.jpg";
+import depo2 from "@/assets/depoimento-2.jpg";
+import depo3 from "@/assets/depoimento-3.jpg";
 
 import heroImg from "@/assets/hero.jpg";
 import doces from "@/assets/cat-doces.jpg";
@@ -87,7 +97,7 @@ function Home() {
       </section>
 
       {/* CATEGORIES */}
-      <section className="border-y border-border/60 bg-secondary/30 py-20">
+      <section id="categorias" className="border-y border-border/60 bg-secondary/30 py-20 scroll-mt-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="flex items-end justify-between gap-6">
             <div>
@@ -124,19 +134,16 @@ function Home() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-cream/80">Sobre a Grand Coffee</p>
-            <h2 className="mt-3 font-display text-4xl text-balance md:text-5xl">Confeitaria feita com tempo, técnica e afeto.</h2>
+            <h2 className="mt-3 font-display text-4xl text-balance md:text-5xl">Confeitaria feita com tempo, técnica, qualidade</h2>
             <p className="mt-6 text-base leading-relaxed text-cream/85">
-              Começamos numa cozinha pequena, com uma obsessão por massa fofa, ganaches no ponto certo e o cheiro de café fresco no balcão. Hoje, a Grand Coffee é encontro: de sabores, de pessoas e de momentos que merecem ser celebrados.
-            </p>
-            <p className="mt-4 text-base leading-relaxed text-cream/85">
-              Cada receita é nossa, cada ingrediente é escolhido — e cada pedido sai daqui com o nome de alguém especial.
+              Cada receita é nossa, cada ingrediente é escolhido — e cada pedido é único.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Stat n="+12" l="anos de cozinha" />
-            <Stat n="80+" l="receitas autorais" />
-            <Stat n="1.2k" l="festas atendidas" />
-            <Stat n="4,9" l="estrelas em avaliações" />
+            <Stat n="+4" l="anos de cozinha" />
+            <Stat n="+20" l="receitas autorais" />
+            <Stat n="+5k" l="atendimentos" />
+            <Stat n="4,9 ⭐️" l="estrelas em avaliações" />
           </div>
         </div>
       </section>
@@ -147,22 +154,33 @@ function Home() {
           <div className="text-center">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Depoimentos</p>
             <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">Quem prova, volta.</h2>
+            <div className="mt-4 flex items-center justify-center gap-1 text-gold">
+              {[...Array(4)].map((_, i) => <Star key={i} className="h-5 w-5 fill-gold" />)}
+              <StarHalf className="h-5 w-5 fill-gold" />
+              <span className="ml-2 text-sm font-semibold text-foreground">4,9 / 5</span>
+            </div>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              { name: "Mariana S.", text: "O bolo de chocolate intenso é simplesmente o melhor que já comi. Encomendei para o aniversário do meu filho e foi sucesso absoluto.", role: "Cliente desde 2022" },
-              { name: "Rafael T.", text: "Pedi o kit festa para 30 pessoas. Apresentação impecável, sabor delicioso e atendimento atencioso do início ao fim.", role: "Aniversário de 30 anos" },
-              { name: "Camila P.", text: "Os macarons são lindos e equilibrados — nem doces demais. Virei cliente fiel.", role: "Encomenda mensal" },
-            ].map((t) => (
-              <figure key={t.name} className="rounded-md border border-border bg-card p-7">
-                <div className="flex gap-0.5">{[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-gold text-gold" />)}</div>
-                <blockquote className="mt-4 font-display text-lg leading-snug text-foreground">"{t.text}"</blockquote>
-                <figcaption className="mt-6 border-t border-border/60 pt-4">
-                  <div className="text-sm font-semibold text-primary">{t.name}</div>
-                  <div className="text-xs text-muted-foreground">{t.role}</div>
-                </figcaption>
-              </figure>
-            ))}
+          <div className="mx-auto mt-12 max-w-4xl">
+            <Carousel opts={{ loop: true, align: "center" }} className="w-full">
+              <CarouselContent>
+                {[depo1, depo2, depo3].map((src, i) => (
+                  <CarouselItem key={i} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="overflow-hidden rounded-md border border-border bg-card shadow-sm">
+                      <img
+                        src={src}
+                        alt={`Depoimento de cliente ${i + 1}`}
+                        loading="lazy"
+                        width={768}
+                        height={1024}
+                        className="aspect-[3/4] w-full object-cover"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
         </div>
       </section>
@@ -173,13 +191,13 @@ function Home() {
           <h2 className="mx-auto max-w-2xl font-display text-4xl text-primary text-balance md:text-5xl">
             Faça do próximo momento algo doce.
           </h2>
-          <p className="mx-auto mt-4 max-w-lg text-muted-foreground">Encomende online em poucos cliques. Retirada na loja ou entrega em São Luís.</p>
-          <Link
-            to="/cardapio"
+          <p className="mx-auto mt-4 max-w-lg text-muted-foreground">Encomende online em poucos cliques. Retirada na loja.</p>
+          <a
+            href="#categorias"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep hover:gap-3"
           >
             Fazer pedido <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
         </div>
       </section>
     </>
