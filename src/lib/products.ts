@@ -32,7 +32,7 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
 export const products: Product[] = [
   { id: "doces-tradicionais", name: "Doces Tradicionais", category: "doces", price: 150, unit: "cento (100 un.)", description: "", image: brigadeiro, tags: ["mais vendido"], featured: true },
   { id: "doces-finos", name: "Doces Finos", category: "doces", price: 140, unit: "cento (100 un.)", description: "", image: macaron, featured: true },
-  { id: "bolo-choc", name: "Bolo Chocolate Intenso", category: "bolos", price: 165, unit: "1,5kg", description: "Massa úmida de cacau, ganache meio-amargo e framboesas frescas. Serve 12.", image: boloChoc, featured: true },
+  { id: "bolo-choc", name: "Bolo Decorado", category: "bolos", price: 110, unit: "1kg", description: "Bolos decorados com cobertura em Chantilly", image: boloChoc, featured: true },
   { id: "bolo-pote-tira", name: "Bolo de Pote Tiramisu", category: "bolos", price: 18, unit: "300ml", description: "Camadas de bolo de café, creme mascarpone e cacau em pó.", image: boloPote },
   { id: "cupcake-vanilla", name: "Cupcake de Baunilha", category: "cupcakes", price: 8, unit: "unidade", description: "Massa fofa de baunilha com buttercream artesanal e confeitos.", image: boloPote },
   { id: "cupcake-choc", name: "Cupcake de Chocolate", category: "cupcakes", price: 9, unit: "unidade", description: "Massa de cacau com cobertura de ganache e raspas de chocolate.", image: boloChoc },
