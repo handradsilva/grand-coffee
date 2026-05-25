@@ -60,7 +60,9 @@ function Cart() {
 
   const hasModelImage = items.some((i) => i.customization?.modelImage);
 
-  function buildMessage() {
+  const [submitting, setSubmitting] = useState(false);
+
+  function buildMessage(photoUrls: Record<string, string>) {
     const lines = [
       "*Novo Pedido — Grand Coffee*",
       "",
@@ -70,12 +72,13 @@ function Cart() {
         const c = i.customization;
         if (!c) return [`• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`];
         if (c.kind === "bolo") {
+          const photoUrl = photoUrls[i.lineId];
           return [
             `• ${i.product.name} (${(c.weightKg ?? 1).toFixed(1)} kg) — ${formatBRL(i.qty * unit)}`,
             "   - Massa: Amanteigada com Margarina · Cobertura: Chantilly",
             `   - Recheios: ${(c.recheios ?? []).join(", ")}`,
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
-            c.modelImage ? `   - 📸 Foto modelo: ${c.modelImageName ?? "anexada"} (enviada em seguida)` : "",
+            photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
         }
@@ -97,24 +100,8 @@ function Cart() {
       `*Data/Hora:* ${form.date} às ${form.time}`,
       `*Pagamento:* ${form.payment.toUpperCase()}`,
       form.notes ? `*Observações:* ${form.notes}` : "",
-      hasModelImage ? "\n_📸 Vou enviar em seguida a(s) foto(s) modelo do bolo._" : "",
     ].filter(Boolean);
     return lines.join("\n");
-  }
-
-  async function downloadModelImages() {
-    for (const i of items) {
-      const img = i.customization?.modelImage;
-      if (!img) continue;
-      try {
-        const a = document.createElement("a");
-        a.href = img;
-        a.download = i.customization?.modelImageName || `modelo-${i.product.name}.jpg`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } catch {}
-    }
   }
 
   async function checkout(e: React.FormEvent) {
@@ -127,15 +114,28 @@ function Cart() {
       toast.error("Informe o endereço de entrega.");
       return;
     }
-    if (hasModelImage) {
-      await downloadModelImages();
-      toast.info("Foto modelo baixada. Anexe-a no WhatsApp após enviar o pedido.");
+    setSubmitting(true);
+    const photoUrls: Record<string, string> = {};
+    const itemsWithPhoto = items.filter((i) => i.customization?.modelImage);
+    if (itemsWithPhoto.length > 0) {
+      toast.info("Enviando foto(s) do bolo...");
+      for (const i of itemsWithPhoto) {
+        const url = await uploadModelImage(i);
+        if (url) photoUrls[i.lineId] = url;
+      }
+      if (Object.keys(photoUrls).length < itemsWithPhoto.length) {
+        toast.error("Falha ao enviar alguma foto. Tente novamente.");
+        setSubmitting(false);
+        return;
+      }
     }
-    const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
+    const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage(photoUrls))}`;
     window.open(url, "_blank");
     toast.success("Pedido enviado! Confirmaremos pelo WhatsApp.");
     clear();
+    setSubmitting(false);
   }
+
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
