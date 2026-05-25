@@ -4,7 +4,9 @@ import { useCart } from "@/lib/cart";
 import { formatBRL, type Product } from "@/lib/products";
 import { toast } from "sonner";
 
-const FLAVORS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado", "Casadinho", "Churros"];
+const FLAVORS_TRADICIONAIS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado", "Casadinho", "Churros"];
+const FLAVORS_FINOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Capuccino", "Maracujá"];
+const FORMATS_FINOS = ["Flor", "Quadrado", "Trufa", "Diamante", "Coração"];
 const COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa", label: "Rosa", hex: "#f4a8c0" },
   { id: "azul", label: "Azul", hex: "#7bb3e8" },
@@ -19,6 +21,10 @@ const MIN_QTY = 50;
 
 function isCustomizable(p: Product) {
   return p.category === "doces";
+}
+
+function isFinos(p: Product) {
+  return p.id === "doces-finos";
 }
 
 export function ProductCard({ product }: { product: Product }) {
