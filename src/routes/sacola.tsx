@@ -32,6 +32,8 @@ function Cart() {
 
   const empty = items.length === 0;
 
+  const hasModelImage = items.some((i) => i.customization?.modelImage);
+
   function buildMessage() {
     const lines = [
       "*Novo Pedido — Grand Coffee*",
@@ -39,14 +41,23 @@ function Cart() {
       "*Itens:*",
       ...items.flatMap((i) => {
         const unit = cartUnitPrice(i);
-        const head = `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`;
-        if (!i.customization) return [head];
         const c = i.customization;
+        if (!c) return [`• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`];
+        if (c.kind === "bolo") {
+          return [
+            `• ${i.product.name} (${(c.weightKg ?? 1).toFixed(1)} kg) — ${formatBRL(i.qty * unit)}`,
+            "   - Massa: Amanteigada com Margarina · Cobertura: Chantilly",
+            `   - Recheios: ${(c.recheios ?? []).join(", ")}`,
+            c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
+            c.modelImage ? `   - 📸 Foto modelo: ${c.modelImageName ?? "anexada"} (enviada em seguida)` : "",
+            c.notes ? `   - Obs.: ${c.notes}` : "",
+          ].filter(Boolean);
+        }
         return [
-          head,
-          `   - Sabores: ${c.flavors.join(", ")}`,
+          `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
+          c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
           c.format ? `   - Formato: ${c.format}` : "",
-          `   - Cor das forminhas: ${c.color}`,
+          c.color ? `   - Cor das forminhas: ${c.color}` : "",
           c.notes ? `   - Obs.: ${c.notes}` : "",
         ].filter(Boolean);
       }),
@@ -60,11 +71,27 @@ function Cart() {
       `*Data/Hora:* ${form.date} às ${form.time}`,
       `*Pagamento:* ${form.payment.toUpperCase()}`,
       form.notes ? `*Observações:* ${form.notes}` : "",
+      hasModelImage ? "\n_📸 Vou enviar em seguida a(s) foto(s) modelo do bolo._" : "",
     ].filter(Boolean);
     return lines.join("\n");
   }
 
-  function checkout(e: React.FormEvent) {
+  async function downloadModelImages() {
+    for (const i of items) {
+      const img = i.customization?.modelImage;
+      if (!img) continue;
+      try {
+        const a = document.createElement("a");
+        a.href = img;
+        a.download = i.customization?.modelImageName || `modelo-${i.product.name}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch {}
+    }
+  }
+
+  async function checkout(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name || !form.phone || !form.date || !form.time) {
       toast.error("Preencha os campos obrigatórios.");
@@ -73,6 +100,10 @@ function Cart() {
     if (form.mode === "entrega" && !form.address) {
       toast.error("Informe o endereço de entrega.");
       return;
+    }
+    if (hasModelImage) {
+      await downloadModelImages();
+      toast.info("Foto modelo baixada. Anexe-a no WhatsApp após enviar o pedido.");
     }
     const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage())}`;
     window.open(url, "_blank");
