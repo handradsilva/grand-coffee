@@ -97,7 +97,7 @@ function Home() {
       </section>
 
       {/* CATEGORIES */}
-      <section className="border-y border-border/60 bg-secondary/30 py-20">
+      <section id="categorias" className="border-y border-border/60 bg-secondary/30 py-20 scroll-mt-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="flex items-end justify-between gap-6">
             <div>
