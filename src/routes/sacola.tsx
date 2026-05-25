@@ -1,9 +1,35 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Minus, Plus, Trash2, ShoppingBag, MessageCircle } from "lucide-react";
-import { useCart, cartUnitPrice } from "@/lib/cart";
+import { useCart, cartUnitPrice, type CartItem } from "@/lib/cart";
 import { formatBRL } from "@/lib/products";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
+async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
+  const res = await fetch(dataUrl);
+  return await res.blob();
+}
+
+async function uploadModelImage(item: CartItem): Promise<string | null> {
+  const c = item.customization;
+  if (!c?.modelImage) return null;
+  try {
+    const blob = await dataUrlToBlob(c.modelImage);
+    const ext = (c.modelImageName?.split(".").pop() || "jpg").toLowerCase();
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error } = await supabase.storage.from("bolo-modelos").upload(path, blob, {
+      contentType: blob.type || "image/jpeg",
+      upsert: false,
+    });
+    if (error) throw error;
+    const { data } = supabase.storage.from("bolo-modelos").getPublicUrl(path);
+    return data.publicUrl;
+  } catch (e) {
+    console.error("upload modelo falhou", e);
+    return null;
+  }
+}
 
 export const Route = createFileRoute("/sacola")({
   head: () => ({
