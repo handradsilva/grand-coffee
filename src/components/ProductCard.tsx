@@ -126,16 +126,27 @@ function CustomizationPanel({
     });
   }
 
+  function toggleFormat(f: string) {
+    setFormats((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= 4) {
+        toast.error("Máximo de 4 formatos.");
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+
   function handleQty(delta: number) {
     setQty((q) => Math.max(MIN_QTY, q + delta));
   }
 
   function handleAdd() {
     if (flavors.length === 0) return toast.error("Escolha pelo menos 1 sabor.");
-    if (finos && !format) return toast.error("Escolha o formato.");
+    if (finos && formats.length === 0) return toast.error("Escolha pelo menos 1 formato.");
     if (!color) return toast.error("Escolha a cor das forminhas.");
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
-    add(product, qty, { flavors, color, notes, unitPrice, ...(finos ? { format } : {}) });
+    add(product, qty, { flavors, color, notes, unitPrice, ...(finos ? { format: formats.join(", ") } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
     onAdded();
   }
