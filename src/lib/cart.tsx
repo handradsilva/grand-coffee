@@ -64,7 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((p) => p.map((x) => (x.lineId === lineId ? { ...x, qty: Math.max(1, qty) } : x)));
   const clear = () => setItems([]);
 
-  const count = items.reduce((a, x) => a + x.qty, 0);
+  const count = items.length;
   const subtotal = items.reduce((a, x) => a + x.qty * unitPriceOf(x), 0);
 
   return (

@@ -246,7 +246,6 @@ function CustomizationPanel({
           value={notes}
           onChange={(e) => setNotes(e.target.value.slice(0, 280))}
           rows={2}
-          placeholder="Ex: sem amendoim, embalar para presente..."
           className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
       </div>
