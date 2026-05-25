@@ -120,6 +120,9 @@ function Cart() {
                             {i.customization && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
                                 <p><span className="font-medium text-foreground">Sabores:</span> {i.customization.flavors.join(", ")}</p>
+                                {i.customization.format && (
+                                  <p><span className="font-medium text-foreground">Formato:</span> {i.customization.format}</p>
+                                )}
                                 <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{i.customization.color}</span></p>
                                 {i.customization.notes && (
                                   <p><span className="font-medium text-foreground">Obs.:</span> {i.customization.notes}</p>
