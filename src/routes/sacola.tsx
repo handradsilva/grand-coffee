@@ -135,28 +135,51 @@ function Cart() {
               <ul className="divide-y divide-border">
                 {items.map((i) => {
                   const unit = cartUnitPrice(i);
-                  const isCustom = !!i.customization;
-                  const step = isCustom ? 10 : 1;
-                  const minQty = isCustom ? 50 : 1;
+                  const c = i.customization;
+                  const isBolo = c?.kind === "bolo";
+                  const isCustom = !!c;
+                  const step = isCustom && !isBolo ? 10 : 1;
+                  const minQty = isCustom && !isBolo ? 50 : 1;
                   return (
                     <li key={i.lineId} className="flex gap-4 p-5">
-                      <img src={i.product.image} alt={i.product.name} className="h-24 w-24 rounded-md object-cover" />
+                      <img src={c?.modelImage || i.product.image} alt={i.product.name} className="h-24 w-24 rounded-md object-cover" />
                       <div className="flex flex-1 flex-col">
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             <h3 className="font-display text-lg">{i.product.name}</h3>
                             <p className="text-xs text-muted-foreground">
-                              {formatBRL(unit)} {isCustom ? "/ unidade" : `/ ${i.product.unit}`}
+                              {isBolo
+                                ? `${(c!.weightKg ?? 1).toFixed(1)} kg · ${formatBRL(unit)}`
+                                : `${formatBRL(unit)} ${isCustom ? "/ unidade" : `/ ${i.product.unit}`}`}
                             </p>
-                            {i.customization && (
+                            {c && isBolo && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
-                                <p><span className="font-medium text-foreground">Sabores:</span> {i.customization.flavors.join(", ")}</p>
-                                {i.customization.format && (
-                                  <p><span className="font-medium text-foreground">Formato:</span> {i.customization.format}</p>
+                                <p><span className="font-medium text-foreground">Massa:</span> Amanteigada · Chantilly</p>
+                                <p><span className="font-medium text-foreground">Recheios:</span> {(c.recheios ?? []).join(", ")}</p>
+                                {c.adicionais && c.adicionais.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Adicionais:</span> {c.adicionais.join(", ")}</p>
                                 )}
-                                <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{i.customization.color}</span></p>
-                                {i.customization.notes && (
-                                  <p><span className="font-medium text-foreground">Obs.:</span> {i.customization.notes}</p>
+                                {c.modelImage && (
+                                  <p className="text-primary">📸 Foto modelo anexada</p>
+                                )}
+                                {c.notes && (
+                                  <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
+                                )}
+                              </div>
+                            )}
+                            {c && !isBolo && (
+                              <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+                                {c.flavors && c.flavors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Sabores:</span> {c.flavors.join(", ")}</p>
+                                )}
+                                {c.format && (
+                                  <p><span className="font-medium text-foreground">Formato:</span> {c.format}</p>
+                                )}
+                                {c.color && (
+                                  <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{c.color}</span></p>
+                                )}
+                                {c.notes && (
+                                  <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
                                 )}
                               </div>
                             )}
@@ -166,11 +189,13 @@ function Cart() {
                           </button>
                         </div>
                         <div className="mt-auto flex items-center justify-between pt-3">
-                          <div className="flex items-center gap-1 rounded-full border border-border">
-                            <button onClick={() => setQty(i.lineId, Math.max(minQty, i.qty - step))} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Minus className="h-3.5 w-3.5" /></button>
-                            <span className="w-10 text-center text-sm font-semibold">{i.qty}</span>
-                            <button onClick={() => setQty(i.lineId, i.qty + step)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Plus className="h-3.5 w-3.5" /></button>
-                          </div>
+                          {isBolo ? <div /> : (
+                            <div className="flex items-center gap-1 rounded-full border border-border">
+                              <button onClick={() => setQty(i.lineId, Math.max(minQty, i.qty - step))} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Minus className="h-3.5 w-3.5" /></button>
+                              <span className="w-10 text-center text-sm font-semibold">{i.qty}</span>
+                              <button onClick={() => setQty(i.lineId, i.qty + step)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Plus className="h-3.5 w-3.5" /></button>
+                            </div>
+                          )}
                           <div className="font-display text-lg font-semibold text-primary">{formatBRL(i.qty * unit)}</div>
                         </div>
                       </div>
