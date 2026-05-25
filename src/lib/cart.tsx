@@ -6,6 +6,7 @@ export interface CartCustomization {
   color: string;
   notes: string;
   unitPrice: number;
+  format?: string;
 }
 
 export interface CartItem {
