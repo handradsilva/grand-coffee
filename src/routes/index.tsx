@@ -215,7 +215,7 @@ function FeedbacksCarousel() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <p className="mt-4 text-center text-xs text-muted-foreground">Arraste ou aguarde — novos feedbacks a cada 5 segundos</p>
+      
     </div>
   );
 }
