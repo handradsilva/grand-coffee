@@ -96,6 +96,15 @@ function Cart() {
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
         }
+        if (c.kind === "cupcake") {
+          return [
+            `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
+            `   - Massa amanteigada com margarina / Cobertura em chantilly`,
+            c.recheios && c.recheios.length ? `   - Recheios: ${c.recheios.join(", ")}` : "",
+            c.fitaColors && c.fitaColors.length ? `   - Cor(es): ${c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
+            c.notes ? `   - Obs.: ${c.notes}` : "",
+          ].filter(Boolean);
+        }
         return [
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
