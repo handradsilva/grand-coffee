@@ -92,9 +92,9 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                className="inline-flex items-center justify-center rounded-full transition-transform hover:scale-105"
               >
-                <MessageCircle className="h-4 w-4" />
+                <img src={whatsappIcon} alt="WhatsApp" className="h-9 w-9" />
               </a>
             </div>
           </div>
