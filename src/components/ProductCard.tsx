@@ -77,9 +77,9 @@ const BOLO_CONFIGS: Record<string, BoloConfig> = {
     massaHeader: "Massa Amanteigada com Margarina e Cobertura em Chantilly",
   },
   "bolo-vintage-floral": {
-    basePrice: 115,
+    basePrice: 120,
     stepKg: 0.5,
-    stepPrice: 57.5,
+    stepPrice: 60,
     recheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Capuccino", "Maracujá", "Palha italiana", "Oreo"],
     maxRecheios: 2,
     showAdicionais: true,
