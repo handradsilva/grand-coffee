@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ShoppingBag, Instagram, MapPin, Phone, Clock } from "lucide-react";
+import { ShoppingBag, Instagram, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
 import { type ReactNode } from "react";
 import { useCart } from "@/lib/cart";
 import { formatBRL } from "@/lib/products";
@@ -85,6 +85,15 @@ function Footer() {
                 className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
               >
                 <Instagram className="h-4 w-4" />
+              </a>
+              <a
+                href="https://wa.me/5598987149819"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+              >
+                <MessageCircle className="h-4 w-4" />
               </a>
             </div>
           </div>
