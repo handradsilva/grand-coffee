@@ -75,14 +75,43 @@ const BOLO_CONFIGS: Record<string, BoloConfig> = {
   },
 };
 
+// Bem-Casado
+const BEM_CASADO_RECHEIOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite"];
+const BEM_CASADO_FITAS: { id: string; label: string; hex: string }[] = [
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "rose", label: "Rosé", hex: "#d4a5a5" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "azul-bebe", label: "Azul bebê", hex: "#bcd9ef" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "verde-oliva", label: "Verde oliva", hex: "#708238" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "dourado", label: "Dourado", hex: "#c9a84c" },
+  { id: "branco", label: "Branco", hex: "#f8f8f8" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "marsala", label: "Marsala", hex: "#8a3a3a" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+  { id: "roxo", label: "Roxo", hex: "#6a3d9a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "bege", label: "Bege", hex: "#d8c4a0" },
+  { id: "preto", label: "Preto", hex: "#1a1a1a" },
+];
+const BEM_CASADO_MIN = 30;
+
 function isDoces(p: Product) {
   return p.category === "doces";
 }
 function isBolo(p: Product) {
   return p.id in BOLO_CONFIGS;
 }
+function isBemCasado(p: Product) {
+  return p.id === "bem-casado";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
