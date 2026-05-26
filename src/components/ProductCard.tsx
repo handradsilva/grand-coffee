@@ -734,14 +734,14 @@ function BemCasadoCustomizationPanel({
         </div>
         <div className="mt-2 flex items-center gap-3">
           <div className="flex items-center gap-1 rounded-full border border-border bg-background">
-            <button onClick={() => handleQty(-1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary disabled:opacity-40" disabled={qty <= BEM_CASADO_MIN} aria-label="Diminuir">
+            <button onClick={() => handleQty(-10)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary disabled:opacity-40" disabled={qty <= BEM_CASADO_MIN} aria-label="Diminuir 10">
               <Minus className="h-3.5 w-3.5" />
             </button>
-            <input type="number" value={qty} min={BEM_CASADO_MIN} step={1} onChange={(e) => {
+            <input type="number" value={qty} min={BEM_CASADO_MIN} step={10} onChange={(e) => {
               const v = parseInt(e.target.value || "0", 10);
               setQty(Number.isNaN(v) ? BEM_CASADO_MIN : Math.max(BEM_CASADO_MIN, v));
             }} className="w-16 bg-transparent text-center text-sm font-semibold outline-none" />
-            <button onClick={() => handleQty(1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary" aria-label="Aumentar">
+            <button onClick={() => handleQty(10)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary" aria-label="Aumentar 10">
               <Plus className="h-3.5 w-3.5" />
             </button>
           </div>
