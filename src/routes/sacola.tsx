@@ -109,7 +109,7 @@ function Cart() {
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
           c.format ? `   - Formato: ${c.format}` : "",
-          c.color ? `   - Cor das forminhas: ${c.color.replace(/-/g, " ")}` : "",
+          c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
           c.notes ? `   - Obs.: ${c.notes}` : "",
         ].filter(Boolean);
       }),
@@ -267,8 +267,8 @@ function Cart() {
                                 {c.format && (
                                   <p><span className="font-medium text-foreground">Formato:</span> {c.format}</p>
                                 )}
-                                {c.color && (
-                                  <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{c.color.replace(/-/g, " ")}</span></p>
+                                {c.colors && c.colors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Cor(es):</span> <span className="capitalize">{c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
                                 )}
                                 {c.notes && (
                                   <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>

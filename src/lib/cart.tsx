@@ -7,6 +7,7 @@ export interface CartCustomization {
   // Doces
   flavors?: string[];
   color?: string;
+  colors?: string[];
   format?: string;
   // Bolo / Bem-Casado
   kind?: "doces" | "bolo" | "bem-casado" | "cupcake";
