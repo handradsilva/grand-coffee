@@ -73,10 +73,14 @@ function Cart() {
         if (!c) return [`• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`];
         if (c.kind === "bolo") {
           const photoUrl = photoUrls[i.lineId];
+          const isDecorado = i.product.id === "bolo-choc";
           return [
             `• ${i.product.name} (${(c.weightKg ?? 1).toFixed(1)} kg) — ${formatBRL(i.qty * unit)}`,
-            "   - Massa: Amanteigada com Margarina · Cobertura: Chantilly",
+            isDecorado ? "   - Massa: Amanteigada com Margarina · Cobertura: Chantilly" : "",
             `   - Recheios: ${(c.recheios ?? []).join(", ")}`,
+            c.cobertura ? `   - Cobertura: ${c.cobertura}` : "",
+            c.fitaColor ? `   - Cor da fita: ${c.fitaColor.replace(/-/g, " ")}` : "",
+            c.embalagem ? `   - Embalagem: sim (+R$ 3,00)` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
