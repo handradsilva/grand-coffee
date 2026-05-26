@@ -109,7 +109,7 @@ function Cart() {
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
           c.format ? `   - Formato: ${c.format}` : "",
-          c.color ? `   - Cor das forminhas: ${c.color.replace(/-/g, " ")}` : "",
+          c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
           c.notes ? `   - Obs.: ${c.notes}` : "",
         ].filter(Boolean);
       }),
