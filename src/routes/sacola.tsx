@@ -140,7 +140,7 @@ function Cart() {
       `*Cliente:* ${form.name}`,
       `*Telefone:* ${form.phone}`,
       `*Modalidade:* Retirar na loja (não fazemos entrega)`,
-      `*Data/Hora de retirada:* ${form.date} às ${form.time}`,
+      `*Data/Hora de retirada:* ${form.date.split("-").reverse().join("/")} às ${form.time}`,
       `*Pagamento:* ${form.payment === "pix" ? "PIX" : form.payment === "cartao" ? "Cartão (com acréscimo da maquininha)" : "Dinheiro (na loja)"}`,
       form.notes ? `*Observações:* ${form.notes}` : "",
     ].filter(Boolean);
