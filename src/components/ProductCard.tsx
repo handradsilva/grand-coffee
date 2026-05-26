@@ -1117,3 +1117,248 @@ function CupcakeCustomizationPanel({
     </div>
   );
 }
+
+function KitFestaCustomizationPanel({
+  product,
+  onClose,
+  onAdded,
+}: {
+  product: Product;
+  onClose: () => void;
+  onAdded: () => void;
+}) {
+  const { add } = useCart();
+  const cfg = KIT_CONFIGS[product.id];
+  const [optionId, setOptionId] = useState<string>("");
+  const [boloRecheios, setBoloRecheios] = useState<string[]>([]);
+  const [cobertura, setCobertura] = useState<string>("");
+  const [finosFormatos, setFinosFormatos] = useState<string[]>([]);
+  const [finosRecheios, setFinosRecheios] = useState<string[]>([]);
+  const [cupcakeRecheio, setCupcakeRecheio] = useState<string>("");
+  const [notes, setNotes] = useState("");
+
+  const selected = cfg.options.find((o) => o.id === optionId);
+  const unitPrice = selected?.price ?? product.price;
+  const total = unitPrice;
+
+  function toggleBoloRecheio(f: string) {
+    setBoloRecheios((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= cfg.maxBoloRecheios) {
+        toast.error(`Máximo de ${cfg.maxBoloRecheios} recheios do bolo.`);
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+  function toggleFinosFormato(f: string) {
+    setFinosFormatos((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 formatos.");
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+  function toggleFinosRecheio(f: string) {
+    setFinosRecheios((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 recheios dos doces finos.");
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+
+  function handleAdd() {
+    if (!selected) return toast.error("Escolha uma opção do kit.");
+    if (boloRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio do bolo.");
+    if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura do bolo.");
+    if (cfg.finos) {
+      if (finosFormatos.length === 0) return toast.error("Escolha pelo menos 1 formato dos doces finos.");
+      if (finosRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio dos doces finos.");
+    }
+    if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
+    add(product, 1, {
+      kind: "kit",
+      notes,
+      unitPrice,
+      kitOptionLabel: selected.label,
+      kitItems: selected.items,
+      recheios: boloRecheios,
+      cobertura: cobertura || undefined,
+      finosFormatos: cfg.finos ? finosFormatos : undefined,
+      finosRecheios: cfg.finos ? finosRecheios : undefined,
+      cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
+    });
+    toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
+    onAdded();
+  }
+
+  return (
+    <div className="mt-4 -mx-1 rounded-lg border border-border bg-secondary/30 p-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Personalize seu {cfg.title}</p>
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Fechar">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
+        <p className="mt-1 text-xs text-foreground">{cfg.note}</p>
+        <p className="mt-1.5 text-[11px] italic text-muted-foreground">Os kits não podem ser alterados.</p>
+      </div>
+
+      {/* Opções do Kit */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Escolha o tamanho</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+        </div>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {cfg.options.map((o) => {
+            const active = optionId === o.id;
+            return (
+              <button
+                key={o.id}
+                onClick={() => setOptionId(o.id)}
+                className={`flex flex-col rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">{o.label}</span>
+                  <span className="font-display text-sm font-semibold text-primary">{formatBRL(o.price)}</span>
+                </div>
+                <ul className="mt-1.5 space-y-0.5 text-[11px] text-muted-foreground">
+                  {o.items.map((it) => <li key={it}>• {it}</li>)}
+                </ul>
+                {active && <Check className="mt-1.5 h-3.5 w-3.5 text-primary" />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Recheios do bolo */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Recheios do bolo</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxBoloRecheios} · {boloRecheios.length}/{cfg.maxBoloRecheios}</span>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {cfg.boloRecheios.map((f) => {
+            const active = boloRecheios.includes(f);
+            return (
+              <button key={f} onClick={() => toggleBoloRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                {active && <Check className="h-3 w-3" />}
+                {f}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Cobertura do bolo (Kit 2 / Naked) */}
+      {cfg.coberturas && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Cobertura do bolo</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.coberturas.map((f) => {
+              const active = cobertura === f;
+              return (
+                <button key={f} onClick={() => setCobertura(active ? "" : f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Doces finos - formatos */}
+      {cfg.finos && (
+        <>
+          <div className="mt-5">
+            <div className="flex items-baseline justify-between">
+              <h4 className="text-sm font-semibold">Formatos dos doces finos</h4>
+              <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosFormatos.length}/2</span>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {FORMATS_FINOS.map((f) => {
+                const active = finosFormatos.includes(f);
+                return (
+                  <button key={f} onClick={() => toggleFinosFormato(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                    {active && <Check className="h-3 w-3" />}
+                    {f}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-5">
+            <div className="flex items-baseline justify-between">
+              <h4 className="text-sm font-semibold">Recheios dos doces finos</h4>
+              <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosRecheios.length}/2</span>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {FLAVORS_FINOS.map((f) => {
+                const active = finosRecheios.includes(f);
+                return (
+                  <button key={f} onClick={() => toggleFinosRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                    {active && <Check className="h-3 w-3" />}
+                    {f}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Cupcakes (Kit 3) */}
+      {cfg.cupcake && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Recheio dos cupcakes</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {CUPCAKE_RECHEIOS.map((f) => {
+              const active = cupcakeRecheio === f;
+              return (
+                <button key={f} onClick={() => setCupcakeRecheio(active ? "" : f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Notes */}
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Observação</h4>
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
+      </div>
+
+      <div className="mt-5 rounded-md border border-border bg-background px-4 py-3 text-xs">
+        <div className="flex items-baseline justify-between">
+          <span className="font-semibold uppercase tracking-wider">Total</span>
+          <span className="font-display text-lg font-semibold text-primary">{formatBRL(total)}</span>
+        </div>
+      </div>
+
+      <button onClick={handleAdd} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
+        Adicionar à sacola · {formatBRL(total)}
+      </button>
+    </div>
+  );
+}
