@@ -223,6 +223,9 @@ function Cart() {
                                 {c.adicionais && c.adicionais.length > 0 && (
                                   <p><span className="font-medium text-foreground">Adicionais:</span> {c.adicionais.join(", ")}</p>
                                 )}
+                                {c.topper && (
+                                  <p><span className="font-medium text-foreground">Topper:</span> {c.topper}</p>
+                                )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
                                 )}
