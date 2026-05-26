@@ -200,6 +200,8 @@ export function ProductCard({ product }: { product: Product }) {
             <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : isBemCasado(product) ? (
             <BemCasadoCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+          ) : isCupcake(product) ? (
+            <CupcakeCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
