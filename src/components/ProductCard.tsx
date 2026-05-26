@@ -133,6 +133,63 @@ const CUPCAKE_COLORS: { id: string; label: string; hex: string }[] = [
 ];
 const CUPCAKE_MIN = 6;
 
+// Kit Festa
+interface KitOption { id: string; label: string; price: number; items: string[] }
+interface KitConfig {
+  title: string;
+  options: KitOption[];
+  note: string;
+  boloRecheios: string[];
+  maxBoloRecheios: number;
+  coberturas?: string[];
+  finos: boolean;
+  cupcake: boolean;
+}
+const KIT_CONFIGS: Record<string, KitConfig> = {
+  "kit-festa-1": {
+    title: "Kit Festa 1",
+    options: [
+      { id: "10p", label: "10 pessoas", price: 200, items: ["Bolo 1kg", "Topo Impresso", "30 doces", "50 salgados"] },
+      { id: "15p", label: "15 pessoas", price: 260, items: ["Bolo 1,5kg", "Topo Impresso", "40 doces", "50 salgados"] },
+      { id: "20p", label: "20 pessoas", price: 360, items: ["Bolo 2kg", "Topo Impresso", "50 doces", "100 salgados"] },
+      { id: "30p", label: "30 pessoas", price: 520, items: ["Bolo 3kg", "Topo Impresso", "100 doces", "100 salgados"] },
+    ],
+    note: "Acompanha bolo decorado em chantininho e topo impresso. Não incluso: bolo de 2 andares, vintage e floral cake, cores prata e dourado para bolo e forminhas.",
+    boloRecheios: BOLO_CONFIGS["bolo-choc"].recheios,
+    maxBoloRecheios: 2,
+    finos: true,
+    cupcake: false,
+  },
+  "kit-festa-2": {
+    title: "Kit Festa 2",
+    options: [
+      { id: "10p", label: "10 pessoas", price: 160, items: ["Naked 1kg", "20 doces", "50 salgados"] },
+      { id: "15p", label: "15 pessoas", price: 205, items: ["Naked 1,5kg", "25 doces", "50 salgados"] },
+      { id: "20p", label: "20 pessoas", price: 255, items: ["Naked 2kg", "30 doces", "50 salgados"] },
+      { id: "30p", label: "30 pessoas", price: 410, items: ["Naked 3kg", "50 doces", "100 salgados"] },
+    ],
+    note: "Acompanha Naked Cake no acetato. Modelo padrão. Não incluso topo personalizado.",
+    boloRecheios: BOLO_CONFIGS["bolo-pote-tira"].recheios,
+    maxBoloRecheios: 2,
+    coberturas: BOLO_CONFIGS["bolo-pote-tira"].coberturas,
+    finos: true,
+    cupcake: false,
+  },
+  "kit-festa-3": {
+    title: "Kit Festa 3",
+    options: [
+      { id: "10p", label: "10 pessoas", price: 170, items: ["Bolo 1kg", "Topo Impresso", "20 doces", "5 cupcakes com tag"] },
+      { id: "20p", label: "20 pessoas", price: 320, items: ["Bolo 2kg", "Topo Impresso", "50 doces", "10 cupcakes com tag"] },
+      { id: "30p", label: "30 pessoas", price: 520, items: ["Bolo 3kg", "Topo Impresso", "100 doces", "15 cupcakes com tag"] },
+    ],
+    note: "Acompanha bolo decorado em chantininho e topper impresso. Não incluso: bolo de 2 andares, vintage e floral cake, cor prata e dourado para bolo e forminhas.",
+    boloRecheios: BOLO_CONFIGS["bolo-choc"].recheios,
+    maxBoloRecheios: 2,
+    finos: true,
+    cupcake: true,
+  },
+};
+
 function isDoces(p: Product) {
   return p.category === "doces";
 }
@@ -145,8 +202,11 @@ function isBemCasado(p: Product) {
 function isCupcake(p: Product) {
   return p.category === "cupcakes";
 }
+function isKit(p: Product) {
+  return p.id in KIT_CONFIGS;
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
