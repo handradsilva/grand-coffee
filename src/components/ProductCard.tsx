@@ -8,14 +8,19 @@ const FLAVORS_TRADICIONAIS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado"
 const FLAVORS_FINOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Capuccino", "Maracujá"];
 const FORMATS_FINOS = ["Flor", "Quadrado", "Trufa", "Diamante", "Coração"];
 const COLORS: { id: string; label: string; hex: string }[] = [
-  { id: "rosa", label: "Rosa", hex: "#f4a8c0" },
-  { id: "azul", label: "Azul", hex: "#7bb3e8" },
-  { id: "verde", label: "Verde", hex: "#8cc28c" },
-  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
-  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
-  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
   { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
   { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "branco", label: "Branco", hex: "#f8f8f8" },
+  { id: "preto", label: "Preto", hex: "#1a1a1a" },
 ];
 const MIN_QTY = 50;
 
