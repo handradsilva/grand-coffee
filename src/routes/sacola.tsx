@@ -111,8 +111,8 @@ function Cart() {
           return [
             `• ${i.product.name} — ${c.kitOptionLabel ?? ""} — ${formatBRL(i.qty * unit)}`,
             c.kitItems && c.kitItems.length ? `   - Itens: ${c.kitItems.join(", ")}` : "",
-            c.recheios && c.recheios.length ? `   - Recheios do bolo: ${c.recheios.join(", ")}` : "",
-            c.cobertura ? `   - Cobertura do bolo: ${c.cobertura}` : "",
+            c.recheios && c.recheios.length ? `   - ${c.cobertura ? "Recheios do Naked" : "Recheios do bolo"}: ${c.recheios.join(", ")}` : "",
+            c.cobertura ? `   - Cobertura do Naked: ${c.cobertura}` : "",
             c.finosFormatos && c.finosFormatos.length ? `   - Formatos doces finos: ${c.finosFormatos.join(", ")}` : "",
             c.finosRecheios && c.finosRecheios.length ? `   - Recheios doces finos: ${c.finosRecheios.join(", ")}` : "",
             c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
