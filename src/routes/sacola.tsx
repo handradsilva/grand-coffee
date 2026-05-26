@@ -106,6 +106,18 @@ function Cart() {
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
         }
+        if (c.kind === "kit") {
+          return [
+            `• ${i.product.name} — ${c.kitOptionLabel ?? ""} — ${formatBRL(i.qty * unit)}`,
+            c.kitItems && c.kitItems.length ? `   - Itens: ${c.kitItems.join(", ")}` : "",
+            c.recheios && c.recheios.length ? `   - Recheios do bolo: ${c.recheios.join(", ")}` : "",
+            c.cobertura ? `   - Cobertura do bolo: ${c.cobertura}` : "",
+            c.finosFormatos && c.finosFormatos.length ? `   - Formatos doces finos: ${c.finosFormatos.join(", ")}` : "",
+            c.finosRecheios && c.finosRecheios.length ? `   - Recheios doces finos: ${c.finosRecheios.join(", ")}` : "",
+            c.cupcakeRecheios && c.cupcakeRecheios.length ? `   - Recheio cupcake: ${c.cupcakeRecheios.join(", ")}` : "",
+            c.notes ? `   - Obs.: ${c.notes}` : "",
+          ].filter(Boolean);
+        }
         return [
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
@@ -190,6 +202,7 @@ function Cart() {
                   const isBemCasado = c?.kind === "bem-casado";
                   const isDoces = c?.kind === "doces";
                   const isCupcake = c?.kind === "cupcake";
+                  const isKit = c?.kind === "kit";
                   const isCustom = !!c;
                   const step = isDoces ? 10 : 1;
                   const minQty = isBemCasado ? 30 : isDoces ? 50 : isCupcake ? 6 : 1;
@@ -199,11 +212,11 @@ function Cart() {
                       <div className="flex flex-1 flex-col">
                         <div className="flex items-start justify-between gap-4">
                           <div>
-                            <h3 className="font-display text-lg">{i.product.name}</h3>
+                            <h3 className="font-display text-lg">{i.product.name}{isKit && c?.kitOptionLabel ? ` · ${c.kitOptionLabel}` : ""}</h3>
                             <p className="text-xs text-muted-foreground">
                               {isBolo
                                 ? `${(c!.weightKg ?? 1).toFixed(1)} kg · ${formatBRL(unit)}`
-                                : `${formatBRL(unit)} ${isCustom ? "/ unidade" : `/ ${i.product.unit}`}`}
+                                : `${formatBRL(unit)} ${isCustom ? (isKit ? "/ kit" : "/ unidade") : `/ ${i.product.unit}`}`}
                             </p>
                             {c && isBolo && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
@@ -228,6 +241,31 @@ function Cart() {
                                 )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
+                                )}
+                                {c.notes && (
+                                  <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
+                                )}
+                              </div>
+                            )}
+                            {c && isKit && (
+                              <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+                                {c.kitItems && c.kitItems.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Itens:</span> {c.kitItems.join(", ")}</p>
+                                )}
+                                {c.recheios && c.recheios.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Recheios do bolo:</span> {c.recheios.join(", ")}</p>
+                                )}
+                                {c.cobertura && (
+                                  <p><span className="font-medium text-foreground">Cobertura do bolo:</span> {c.cobertura}</p>
+                                )}
+                                {c.finosFormatos && c.finosFormatos.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Formatos doces finos:</span> {c.finosFormatos.join(", ")}</p>
+                                )}
+                                {c.finosRecheios && c.finosRecheios.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Recheios doces finos:</span> {c.finosRecheios.join(", ")}</p>
+                                )}
+                                {c.cupcakeRecheios && c.cupcakeRecheios.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Recheio cupcake:</span> {c.cupcakeRecheios.join(", ")}</p>
                                 )}
                                 {c.notes && (
                                   <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
@@ -285,7 +323,7 @@ function Cart() {
                           </button>
                         </div>
                         <div className="mt-auto flex items-center justify-between pt-3">
-                          {isBolo ? <div /> : (
+                          {isBolo || isKit ? <div /> : (
                             <div className="flex items-center gap-1 rounded-full border border-border">
                               <button onClick={() => setQty(i.lineId, Math.max(minQty, i.qty - step))} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Minus className="h-3.5 w-3.5" /></button>
                               <span className="w-10 text-center text-sm font-semibold">{i.qty}</span>
