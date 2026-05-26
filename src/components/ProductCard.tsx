@@ -1312,7 +1312,7 @@ function KitFestaCustomizationPanel({
       {/* Recheios do bolo */}
       <div className="mt-5">
         <div className="flex items-baseline justify-between">
-          <h4 className="text-sm font-semibold">Recheios do bolo</h4>
+          <h4 className="text-sm font-semibold">{cfg.coberturas ? "Recheios do Naked" : "Recheios do bolo"}</h4>
           <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxBoloRecheios} · {boloRecheios.length}/{cfg.maxBoloRecheios}</span>
         </div>
         <div className="mt-2 flex flex-wrap gap-1.5">
