@@ -111,8 +111,8 @@ function Cart() {
           return [
             `• ${i.product.name} — ${c.kitOptionLabel ?? ""} — ${formatBRL(i.qty * unit)}`,
             c.kitItems && c.kitItems.length ? `   - Itens: ${c.kitItems.join(", ")}` : "",
-            c.recheios && c.recheios.length ? `   - Recheios do bolo: ${c.recheios.join(", ")}` : "",
-            c.cobertura ? `   - Cobertura do bolo: ${c.cobertura}` : "",
+            c.recheios && c.recheios.length ? `   - ${c.cobertura ? "Recheios do Naked" : "Recheios do bolo"}: ${c.recheios.join(", ")}` : "",
+            c.cobertura ? `   - Cobertura do Naked: ${c.cobertura}` : "",
             c.finosFormatos && c.finosFormatos.length ? `   - Formatos doces finos: ${c.finosFormatos.join(", ")}` : "",
             c.finosRecheios && c.finosRecheios.length ? `   - Recheios doces finos: ${c.finosRecheios.join(", ")}` : "",
             c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
@@ -257,10 +257,10 @@ function Cart() {
                                   <p><span className="font-medium text-foreground">Itens:</span> {c.kitItems.join(", ")}</p>
                                 )}
                                 {c.recheios && c.recheios.length > 0 && (
-                                  <p><span className="font-medium text-foreground">Recheios do bolo:</span> {c.recheios.join(", ")}</p>
+                                  <p><span className="font-medium text-foreground">{c.cobertura ? "Recheios do Naked" : "Recheios do bolo"}:</span> {c.recheios.join(", ")}</p>
                                 )}
                                 {c.cobertura && (
-                                  <p><span className="font-medium text-foreground">Cobertura do bolo:</span> {c.cobertura}</p>
+                                  <p><span className="font-medium text-foreground">Cobertura do Naked:</span> {c.cobertura}</p>
                                 )}
                                 {c.finosFormatos && c.finosFormatos.length > 0 && (
                                   <p><span className="font-medium text-foreground">Formatos doces finos:</span> {c.finosFormatos.join(", ")}</p>
