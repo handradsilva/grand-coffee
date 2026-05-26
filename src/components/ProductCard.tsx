@@ -283,15 +283,22 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="mt-auto flex items-end justify-between pt-2">
           <div>
-            <div className="font-display text-xl font-semibold text-primary">{formatBRL(product.price)}</div>
-            <div className="text-xs text-muted-foreground">por {product.unit}</div>
+            {product.price > 0 ? (
+              <>
+                <div className="font-display text-xl font-semibold text-primary">{formatBRL(product.price)}</div>
+                <div className="text-xs text-muted-foreground">por {product.unit}</div>
+              </>
+            ) : (
+              <div className="text-xs font-medium text-muted-foreground">Valor sob consulta</div>
+            )}
           </div>
           <button
             onClick={handleClick}
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-95"
+            disabled={product.price === 0}
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {open ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-            {open ? "Fechar" : "Fazer Encomenda"}
+            {product.price === 0 ? "Em breve" : open ? "Fechar" : "Fazer Encomenda"}
           </button>
         </div>
 
