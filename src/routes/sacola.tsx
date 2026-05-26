@@ -41,7 +41,7 @@ export const Route = createFileRoute("/sacola")({
   component: Cart,
 });
 
-const WHATSAPP = "5598982362983";
+const WHATSAPP = "5598987149819";
 
 function Cart() {
   const { items, setQty, remove, subtotal, clear } = useCart();
