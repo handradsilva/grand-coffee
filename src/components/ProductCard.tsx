@@ -1,8 +1,91 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Plus, Minus, X, Check, Upload, Image as ImageIcon } from "lucide-react";
 import { useCart } from "@/lib/cart";
 import { formatBRL, type Product } from "@/lib/products";
 import { toast } from "sonner";
+import vintage1 from "@/assets/vintage-floral-1.jpeg";
+import vintage2 from "@/assets/vintage-floral-2.jpeg";
+import vintage3 from "@/assets/vintage-floral-3.jpeg";
+import vintage4 from "@/assets/vintage-floral-4.jpeg";
+import vintage5 from "@/assets/vintage-floral-5.jpeg";
+import vintage6 from "@/assets/vintage-floral-6.jpeg";
+import vintage7 from "@/assets/vintage-floral-7.jpeg";
+import vintage8 from "@/assets/vintage-floral-8.jpeg";
+import vintage9 from "@/assets/vintage-floral-9.jpeg";
+import vintage10 from "@/assets/vintage-floral-10.jpeg";
+
+const VINTAGE_FLORAL_IMAGES = [
+  vintage1, vintage2, vintage3, vintage4, vintage5,
+  vintage6, vintage7, vintage8, vintage9, vintage10,
+];
+
+function VintageFloralCarousel({ alt }: { alt: string }) {
+  const [index, setIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const pausedRef = useRef(false);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!pausedRef.current) {
+        setIndex((i) => (i + 1) % VINTAGE_FLORAL_IMAGES.length);
+      }
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    pausedRef.current = true;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 40) {
+      setIndex((i) =>
+        dx < 0
+          ? (i + 1) % VINTAGE_FLORAL_IMAGES.length
+          : (i - 1 + VINTAGE_FLORAL_IMAGES.length) % VINTAGE_FLORAL_IMAGES.length,
+      );
+    }
+    touchStartX.current = null;
+    setTimeout(() => { pausedRef.current = false; }, 1500);
+  };
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      <div
+        className="flex h-full w-full transition-transform duration-500 ease-out"
+        style={{ transform: `translateX(-${index * 100}%)` }}
+      >
+        {VINTAGE_FLORAL_IMAGES.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt={`${alt} ${i + 1}`}
+            loading="lazy"
+            draggable={false}
+            className="h-full w-full shrink-0 object-cover"
+          />
+        ))}
+      </div>
+      <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">
+        {VINTAGE_FLORAL_IMAGES.map((_, i) => (
+          <span
+            key={i}
+            className={`h-1.5 rounded-full transition-all ${
+              i === index ? "w-4 bg-white" : "w-1.5 bg-white/60"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 
 const FLAVORS_TRADICIONAIS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado", "Casadinho", "Churros"];
 const FLAVORS_FINOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Capuccino", "Maracujá"];
@@ -270,12 +353,16 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        {product.id === "bolo-vintage-floral" ? (
+          <VintageFloralCarousel alt={product.name} />
+        ) : (
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
         {product.tags && product.tags.length > 0 && (
           <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
             {product.tags.map((t) => (
