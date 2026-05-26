@@ -188,9 +188,10 @@ function Cart() {
                   const isBolo = c?.kind === "bolo";
                   const isBemCasado = c?.kind === "bem-casado";
                   const isDoces = c?.kind === "doces";
+                  const isCupcake = c?.kind === "cupcake";
                   const isCustom = !!c;
-                  const step = isBemCasado ? 1 : (isDoces ? 10 : 1);
-                  const minQty = isBemCasado ? 30 : (isDoces ? 50 : 1);
+                  const step = isDoces ? 10 : 1;
+                  const minQty = isBemCasado ? 30 : isDoces ? 50 : isCupcake ? 6 : 1;
                   return (
                     <li key={i.lineId} className="flex gap-4 p-5">
                       <img src={c?.modelImage || i.product.image} alt={i.product.name} className="h-24 w-24 rounded-md object-cover" />
