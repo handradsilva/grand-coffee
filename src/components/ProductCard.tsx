@@ -101,6 +101,26 @@ const BEM_CASADO_FITAS: { id: string; label: string; hex: string }[] = [
 ];
 const BEM_CASADO_MIN = 30;
 
+// Cupcake
+const CUPCAKE_RECHEIOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite"];
+const CUPCAKE_COLORS: { id: string; label: string; hex: string }[] = [
+  { id: "branco", label: "Branco", hex: "#f8f8f8" },
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "preto", label: "Preto", hex: "#1a1a1a" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+  { id: "roxo", label: "Roxo", hex: "#6a3d9a" },
+];
+const CUPCAKE_MIN = 6;
+
 function isDoces(p: Product) {
   return p.category === "doces";
 }
@@ -110,8 +130,11 @@ function isBolo(p: Product) {
 function isBemCasado(p: Product) {
   return p.id === "bem-casado";
 }
+function isCupcake(p: Product) {
+  return p.category === "cupcakes";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p) || isBemCasado(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
@@ -177,6 +200,8 @@ export function ProductCard({ product }: { product: Product }) {
             <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : isBemCasado(product) ? (
             <BemCasadoCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+          ) : isCupcake(product) ? (
+            <CupcakeCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
@@ -790,6 +815,160 @@ function BemCasadoCustomizationPanel({
         {fitaColors.length > 0 && (
           <p className="mt-1.5 text-[11px] text-muted-foreground">
             Selecionadas: <span className="font-medium">{fitaColors.map((id) => BEM_CASADO_FITAS.find((c) => c.id === id)?.label).join(", ")}</span>
+          </p>
+        )}
+      </div>
+
+      {/* Notes */}
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Observação</h4>
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
+      </div>
+
+      <button onClick={handleAdd} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
+        Adicionar à sacola · {formatBRL(total)}
+      </button>
+    </div>
+  );
+}
+
+function CupcakeCustomizationPanel({
+  product,
+  onClose,
+  onAdded,
+}: {
+  product: Product;
+  onClose: () => void;
+  onAdded: () => void;
+}) {
+  const { add } = useCart();
+  const [qty, setQty] = useState(CUPCAKE_MIN);
+  const [recheios, setRecheios] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
+  const [notes, setNotes] = useState("");
+
+  const unitPrice = product.price;
+  const total = qty * unitPrice;
+
+  function toggleRecheio(f: string) {
+    setRecheios((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 recheios.");
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+
+  function toggleColor(id: string) {
+    setColors((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 cores.");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  }
+
+  function handleQty(delta: number) {
+    setQty((q) => Math.max(CUPCAKE_MIN, q + delta));
+  }
+
+  function handleAdd() {
+    if (recheios.length === 0) return toast.error("Escolha pelo menos 1 recheio.");
+    if (colors.length === 0) return toast.error("Escolha pelo menos 1 cor.");
+    if (qty < CUPCAKE_MIN) return toast.error(`Pedido mínimo de ${CUPCAKE_MIN} unidades.`);
+    add(product, qty, {
+      kind: "cupcake",
+      notes,
+      unitPrice,
+      recheios,
+      fitaColors: colors,
+    });
+    toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    onAdded();
+  }
+
+  return (
+    <div className="mt-4 -mx-1 rounded-lg border border-border bg-secondary/30 p-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Personalize seu Cupcake</p>
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Fechar">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
+        <p className="mt-1 text-sm font-medium text-foreground">Massa amanteigada com margarina / Cobertura em chantilly</p>
+      </div>
+
+      {/* Quantidade */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Quantidade</h4>
+          <span className="text-[11px] text-muted-foreground">Mín. {CUPCAKE_MIN} un. · {formatBRL(unitPrice)} cada</span>
+        </div>
+        <div className="mt-2 flex items-center gap-3">
+          <div className="flex items-center gap-1 rounded-full border border-border bg-background">
+            <button onClick={() => handleQty(-1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary disabled:opacity-40" disabled={qty <= CUPCAKE_MIN} aria-label="Diminuir 1">
+              <Minus className="h-3.5 w-3.5" />
+            </button>
+            <input type="number" value={qty} min={CUPCAKE_MIN} step={1} onChange={(e) => {
+              const v = parseInt(e.target.value || "0", 10);
+              setQty(Number.isNaN(v) ? CUPCAKE_MIN : Math.max(CUPCAKE_MIN, v));
+            }} className="w-16 bg-transparent text-center text-sm font-semibold outline-none" />
+            <button onClick={() => handleQty(1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary" aria-label="Aumentar 1">
+              <Plus className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <div className="ml-auto text-right">
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Total</div>
+            <div className="font-display text-lg font-semibold text-primary">{formatBRL(total)}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recheios */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Recheios</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha até 2 · {recheios.length}/2</span>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {CUPCAKE_RECHEIOS.map((f) => {
+            const active = recheios.includes(f);
+            return (
+              <button key={f} onClick={() => toggleRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                {active && <Check className="h-3 w-3" />}
+                {f}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Cores forminhas e chantilly */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Cor das forminhas e chantilly</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha até 2 · {colors.length}/2</span>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {CUPCAKE_COLORS.map((c) => {
+            const active = colors.includes(c.id);
+            return (
+              <button key={c.id} onClick={() => toggleColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
+                {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+              </button>
+            );
+          })}
+        </div>
+        {colors.length > 0 && (
+          <p className="mt-1.5 text-[11px] text-muted-foreground">
+            Selecionadas: <span className="font-medium">{colors.map((id) => CUPCAKE_COLORS.find((c) => c.id === id)?.label).join(", ")}</span>
           </p>
         )}
       </div>

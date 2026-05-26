@@ -9,7 +9,7 @@ export interface CartCustomization {
   color?: string;
   format?: string;
   // Bolo / Bem-Casado
-  kind?: "doces" | "bolo" | "bem-casado";
+  kind?: "doces" | "bolo" | "bem-casado" | "cupcake";
   weightKg?: number;
   recheios?: string[];
   adicionais?: string[];
