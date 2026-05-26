@@ -881,6 +881,7 @@ function BemCasadoCustomizationPanel({
       tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
