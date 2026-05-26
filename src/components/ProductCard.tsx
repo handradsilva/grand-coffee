@@ -61,6 +61,7 @@ interface BoloConfig {
   showAdicionais?: boolean;
   showModelImage?: boolean;
   showEmbalagem?: boolean;
+  showToppers?: boolean;
   massaHeader?: string;
 }
 
@@ -83,6 +84,7 @@ const BOLO_CONFIGS: Record<string, BoloConfig> = {
     maxRecheios: 2,
     showAdicionais: true,
     showModelImage: true,
+    showToppers: false,
     massaHeader: "Massa Amanteigada com Margarina e Cobertura em Chantilly",
   },
   "bolo-pote-tira": {
@@ -760,7 +762,7 @@ function BoloCustomizationPanel({
       )}
 
       {/* Toppers (Bolo Decorado) */}
-      {cfg.showModelImage && (
+      {cfg.showModelImage && cfg.showToppers !== false && (
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
             <h4 className="text-sm font-semibold">Toppers</h4>
@@ -792,7 +794,19 @@ function BoloCustomizationPanel({
       {/* Notes */}
       <div className="mt-5">
         <h4 className="text-sm font-semibold">Observação</h4>
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} placeholder={product.id === "bolo-choc" || product.id === "bolo-vintage-floral" ? "Ex: nome e idade pra colocar no topper do seu bolo" : ""} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value.slice(0, 280))}
+          rows={2}
+          placeholder={
+            product.id === "bolo-choc"
+              ? "Ex: nome e idade pra colocar no topper do seu bolo"
+              : product.id === "bolo-vintage-floral"
+              ? "Ex: nome e idade ou frase para escrever no bolo, cor do laço ....."
+              : ""
+          }
+          className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+        />
       </div>
 
       {/* Total summary */}
