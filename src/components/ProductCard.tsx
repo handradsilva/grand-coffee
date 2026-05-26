@@ -17,6 +17,13 @@ import doces1 from "@/assets/doces-tradicionais-1.jpeg";
 import doces2 from "@/assets/doces-tradicionais-2.jpeg";
 import doces3 from "@/assets/doces-tradicionais-3.jpeg";
 import doces4 from "@/assets/doces-tradicionais-4.jpeg";
+import kit3a from "@/assets/kit-festa-3-1.jpeg";
+import kit3b from "@/assets/kit-festa-3-2.jpeg";
+import kit3c from "@/assets/kit-festa-3-3.jpeg";
+import kit3d from "@/assets/kit-festa-3-4.jpeg";
+import kit3e from "@/assets/kit-festa-3-5.jpeg";
+import kit3f from "@/assets/kit-festa-3-6.jpeg";
+import kit3g from "@/assets/kit-festa-3-7.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -24,6 +31,8 @@ const VINTAGE_FLORAL_IMAGES = [
 ];
 
 const DOCES_TRADICIONAIS_IMAGES = [doces1, doces2, doces3, doces4];
+
+const KIT_FESTA_3_IMAGES = [kit3a, kit3b, kit3c, kit3d, kit3e, kit3f, kit3g];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -364,6 +373,8 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={VINTAGE_FLORAL_IMAGES} alt={product.name} />
         ) : product.id === "doces-tradicionais" ? (
           <ImageCarousel images={DOCES_TRADICIONAIS_IMAGES} alt={product.name} />
+        ) : product.id === "kit-festa-3" ? (
+          <ImageCarousel images={KIT_FESTA_3_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
