@@ -139,10 +139,9 @@ function Cart() {
       "",
       `*Cliente:* ${form.name}`,
       `*Telefone:* ${form.phone}`,
-      `*Modalidade:* ${form.mode === "retirada" ? "Retirada na loja" : "Entrega"}`,
-      form.mode === "entrega" ? `*Endereço:* ${form.address}` : "",
-      `*Data/Hora:* ${form.date} às ${form.time}`,
-      `*Pagamento:* ${form.payment.toUpperCase()}`,
+      `*Modalidade:* Retirar na loja (não fazemos entrega)`,
+      `*Data/Hora de retirada:* ${form.date} às ${form.time}`,
+      `*Pagamento:* ${form.payment === "pix" ? "PIX" : form.payment === "cartao" ? "Cartão (com acréscimo da maquininha)" : "Dinheiro (na loja)"}`,
       form.notes ? `*Observações:* ${form.notes}` : "",
     ].filter(Boolean);
     return lines.join("\n");
