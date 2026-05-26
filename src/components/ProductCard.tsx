@@ -385,6 +385,7 @@ function CustomizationPanel({
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
     add(product, qty, { kind: "doces", flavors, colors, notes, unitPrice, ...(finos ? { format: formats.join(", ") } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
@@ -580,6 +581,7 @@ function BoloCustomizationPanel({
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} adicionado à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
@@ -879,6 +881,7 @@ function BemCasadoCustomizationPanel({
       tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
@@ -1055,6 +1058,7 @@ function CupcakeCustomizationPanel({
       fitaColors: colors,
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
@@ -1265,6 +1269,7 @@ function KitFestaCustomizationPanel({
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
