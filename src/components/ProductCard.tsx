@@ -644,7 +644,7 @@ function BemCasadoCustomizationPanel({
   const [fitaColors, setFitaColors] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
 
-  const unitPrice = tag === "com" ? 4.5 : tag === "sem" ? 4 : product.price;
+  const unitPrice = tag === "com" ? 4.3 : tag === "sem" ? 4 : product.price;
   const total = qty * unitPrice;
 
   function toggleRecheio(f: string) {
@@ -701,7 +701,7 @@ function BemCasadoCustomizationPanel({
 
       <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
-        <p className="mt-1 text-sm font-medium text-foreground">Medida: 5cm / quadrado</p>
+        <p className="mt-1 text-sm font-medium text-foreground">BEM-VIVIDO, BEM-NASCIDO, BEM-COMEMORADO, BEM-BATIZADO</p>
       </div>
 
       {/* Tag */}
@@ -709,7 +709,7 @@ function BemCasadoCustomizationPanel({
         <h4 className="text-sm font-semibold">Tag</h4>
         <div className="mt-2 grid grid-cols-2 gap-2">
           {([
-            { id: "com", label: "Com tag", price: 4.5 },
+            { id: "com", label: "Com tag", price: 4.3 },
             { id: "sem", label: "Sem tag", price: 4 },
           ] as const).map((opt) => {
             const active = tag === opt.id;

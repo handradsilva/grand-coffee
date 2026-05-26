@@ -90,7 +90,7 @@ function Cart() {
           return [
             `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
             `   - Medida: 5cm / quadrado`,
-            `   - Tag: ${c.tag === "com" ? "Com tag (R$ 4,50/un.)" : "Sem tag (R$ 4,00/un.)"}`,
+            `   - Tag: ${c.tag === "com" ? "Com tag (R$ 4,30/un.)" : "Sem tag (R$ 4,00/un.)"}`,
             c.recheios && c.recheios.length ? `   - Recheios: ${c.recheios.join(", ")}` : "",
             c.fitaColors && c.fitaColors.length ? `   - Cor(es) da fita: ${c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
