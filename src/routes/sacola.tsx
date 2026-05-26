@@ -432,27 +432,22 @@ function Cart() {
                   <span className="mt-1 block text-[11px] text-muted-foreground">Reservas até 60 dias. <span className="text-destructive font-medium">Domingos indisponíveis.</span></span>
                 </Field>
                 <Field label="Horário de RETIRADA *">
-                  <input
+                  <select
                     required
-                    type="time"
-                    min="07:30"
-                    max="18:00"
                     value={form.time}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      if (v) {
-                        const [hh, mi] = v.split(":").map(Number);
-                        const mins = (hh ?? 0) * 60 + (mi ?? 0);
-                        if (mins < 7 * 60 + 30 || mins > 18 * 60) {
-                          toast.error("Horário de retirada: entre 07h30 e 18h.");
-                          return;
-                        }
-                      }
-                      setForm({ ...form, time: v });
-                    }}
+                    onChange={(e) => setForm({ ...form, time: e.target.value })}
                     className={inputCls}
-                  />
-                  <span className="mt-1 block text-[11px] text-muted-foreground">Funcionamento: 07h30 às 18h. Este é o horário da <strong>RETIRADA</strong>.</span>
+                  >
+                    <option value="">Selecione um horário</option>
+                    {Array.from({ length: 22 }, (_, i) => {
+                      const totalMin = 7 * 60 + 30 + i * 30;
+                      const hh = String(Math.floor(totalMin / 60)).padStart(2, "0");
+                      const mm = String(totalMin % 60).padStart(2, "0");
+                      const v = `${hh}:${mm}`;
+                      return <option key={v} value={v}>{`${hh}h${mm}`}</option>;
+                    })}
+                  </select>
+                  <span className="mt-1 block text-[11px] text-muted-foreground">Funcionamento: 07h30 às 18h (Seg–Sáb). Este é o horário da <strong>RETIRADA</strong>.</span>
                 </Field>
 
                 <Field label="Observações" className="md:col-span-2">

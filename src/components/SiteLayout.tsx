@@ -1,8 +1,30 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { ShoppingBag, Instagram, MapPin, Phone, Clock } from "lucide-react";
 import { type ReactNode } from "react";
 import { useCart } from "@/lib/cart";
+import { formatBRL } from "@/lib/products";
 import { BrandMark } from "./Brand";
+
+function FloatingCartCTA() {
+  const { count, subtotal } = useCart();
+  const path = useRouterState({ select: (s) => s.location.pathname });
+  if (count === 0 || path === "/sacola") return null;
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-50 px-4 pb-[max(env(safe-area-inset-bottom),1rem)] pt-3 pointer-events-none">
+      <Link
+        to="/sacola"
+        className="pointer-events-auto mx-auto flex max-w-md items-center justify-between gap-3 rounded-full bg-primary px-5 py-3.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/30 transition-all hover:bg-burgundy-deep active:scale-[0.98]"
+      >
+        <span className="flex items-center gap-2">
+          <ShoppingBag className="h-4 w-4" />
+          Ir para a sacola
+          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cream px-1.5 text-xs font-bold text-primary">{count}</span>
+        </span>
+        <span className="font-display">{formatBRL(subtotal)}</span>
+      </Link>
+    </div>
+  );
+}
 
 function Header() {
   const { count } = useCart();
@@ -77,10 +99,11 @@ function Footer() {
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-24 md:pb-0">{children}</main>
       <Footer />
+      <FloatingCartCTA />
     </div>
   );
 }

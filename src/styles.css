@@ -82,7 +82,12 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  html, body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+    max-width: 100vw;
+  }
+  html { scroll-behavior: smooth; touch-action: pan-y; -webkit-text-size-adjust: 100%; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -91,6 +96,7 @@
     font-feature-settings: "ss01", "cv11";
   }
   h1, h2, h3, h4, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+  button, a, input, select, textarea { touch-action: manipulation; }
 }
 
 @layer utilities {

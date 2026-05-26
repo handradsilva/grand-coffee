@@ -71,7 +71,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" },
       { title: "Grand Coffee Confeitaria — Artesanal em São Luís" },
       { name: "description", content: "Bolos, doces, cupcakes, bem-casados, kits e combos de casamento feitos com técnica e ingredientes selecionados." },
       { name: "author", content: "Grand Coffee" },
