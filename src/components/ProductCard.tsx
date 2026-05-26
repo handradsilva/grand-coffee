@@ -1494,7 +1494,7 @@ function KitFestaCustomizationPanel({
       {/* Notes */}
       <div className="mt-5">
         <h4 className="text-sm font-semibold">Observação</h4>
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} placeholder={product.id === "kit-festa-1" || product.id === "kit-festa-3" ? "Ex: nome e idade pra colocar no topper do seu bolo" : ""} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
       </div>
 
       <div className="mt-5 rounded-md border border-border bg-background px-4 py-3 text-xs">
