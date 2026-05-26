@@ -353,12 +353,16 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        <img
-          src={product.image}
-          alt={product.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
+        {product.id === "bolo-vintage-floral" ? (
+          <VintageFloralCarousel alt={product.name} />
+        ) : (
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
         {product.tags && product.tags.length > 0 && (
           <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
             {product.tags.map((t) => (
