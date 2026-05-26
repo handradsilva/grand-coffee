@@ -1163,6 +1163,11 @@ function KitFestaCustomizationPanel({
   const [finosFormatos, setFinosFormatos] = useState<string[]>([]);
   const [finosRecheios, setFinosRecheios] = useState<string[]>([]);
   const [cupcakeRecheio, setCupcakeRecheio] = useState<string>("");
+  const [finosColors, setFinosColors] = useState<string[]>([]);
+  const [sharedColor, setSharedColor] = useState<string>("");
+  const [modelImage, setModelImage] = useState<string>("");
+  const [modelImageName, setModelImageName] = useState<string>("");
+  const fileRef = useRef<HTMLInputElement>(null);
   const [notes, setNotes] = useState("");
 
   const selected = cfg.options.find((o) => o.id === optionId);
@@ -1199,6 +1204,30 @@ function KitFestaCustomizationPanel({
       return [...prev, f];
     });
   }
+  function toggleFinosColor(id: string) {
+    setFinosColors((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 cores das forminhas.");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  }
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Imagem muito grande. Máx. 5MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setModelImage(reader.result as string);
+      setModelImageName(file.name);
+    };
+    reader.readAsDataURL(file);
+  }
 
   function handleAdd() {
     if (!selected) return toast.error("Escolha uma opção do kit.");
@@ -1208,6 +1237,9 @@ function KitFestaCustomizationPanel({
       if (finosFormatos.length === 0) return toast.error("Escolha pelo menos 1 formato dos doces finos.");
       if (finosRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio dos doces finos.");
     }
+    if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
+    if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
+    if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
       kind: "kit",
@@ -1220,6 +1252,10 @@ function KitFestaCustomizationPanel({
       finosFormatos: cfg.finos ? finosFormatos : undefined,
       finosRecheios: cfg.finos ? finosRecheios : undefined,
       cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
+      colors: cfg.showFinosColors ? finosColors : undefined,
+      fitaColor: cfg.showSharedColor ? sharedColor : undefined,
+      modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
+      modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
     onAdded();
@@ -1237,8 +1273,12 @@ function KitFestaCustomizationPanel({
       <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
         <p className="mt-1 text-xs text-foreground">{cfg.note}</p>
+        {cfg.salgadosNote && (
+          <p className="mt-1.5 text-xs font-medium text-foreground">{cfg.salgadosNote}</p>
+        )}
         <p className="mt-1.5 text-[11px] italic text-muted-foreground">Os kits não podem ser alterados.</p>
       </div>
+
 
       {/* Opções do Kit */}
       <div className="mt-5">
