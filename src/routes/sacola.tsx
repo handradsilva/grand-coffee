@@ -378,7 +378,7 @@ function Cart() {
             <form onSubmit={checkout} className="rounded-lg border border-border bg-card">
               <h2 className="border-b border-border px-6 py-4 font-display text-xl">Dados do pedido</h2>
               <div className="grid gap-5 p-6 md:grid-cols-2">
-                <Field label="Nome completo *">
+                <Field label="Nome e Sobrenome *">
                   <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inputCls} />
                 </Field>
                 <Field label="Telefone (WhatsApp) *">
@@ -386,37 +386,77 @@ function Cart() {
                 </Field>
 
                 <Field label="Modalidade *">
-                  <div className="flex gap-2">
-                    {(["retirada", "entrega"] as const).map((m) => (
-                      <button type="button" key={m} onClick={() => setForm({ ...form, mode: m })} className={`flex-1 rounded-full border px-4 py-2.5 text-sm font-medium capitalize transition-all ${form.mode === m ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
-                        {m === "retirada" ? "Retirar na loja" : "Entrega"}
-                      </button>
-                    ))}
+                  <div className="flex flex-col gap-1.5">
+                    <div className="inline-flex items-center justify-center rounded-full border border-primary bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground">
+                      Retirar na loja
+                    </div>
+                    <span className="text-[11px] text-muted-foreground">Não fazemos entrega — somente retirada na loja.</span>
                   </div>
                 </Field>
                 <Field label="Pagamento *">
                   <select value={form.payment} onChange={(e) => setForm({ ...form, payment: e.target.value as any })} className={inputCls}>
                     <option value="pix">PIX</option>
-                    <option value="cartao">Cartão (na entrega)</option>
-                    <option value="presencial">Dinheiro (na retirada)</option>
+                    <option value="cartao">Cartão (com acréscimo da maquininha)</option>
+                    <option value="dinheiro">Dinheiro (levando na loja)</option>
                   </select>
                 </Field>
 
-                {form.mode === "entrega" && (
-                  <Field label="Endereço de entrega *" className="md:col-span-2">
-                    <input required value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} placeholder="Rua, número, bairro, complemento" className={inputCls} />
-                  </Field>
-                )}
-
-                <Field label="Data *">
-                  <input required type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} className={inputCls} />
+                <Field label="Data de retirada *">
+                  <input
+                    required
+                    type="date"
+                    min={todayStr}
+                    max={maxDate}
+                    value={form.date}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v) {
+                        const [yy, mm, dd] = v.split("-").map(Number);
+                        const d = new Date(yy, (mm ?? 1) - 1, dd ?? 1);
+                        if (d.getDay() === 0) {
+                          toast.error("Aos domingos não há retirada. Escolha outro dia.");
+                          return;
+                        }
+                        const limit = new Date();
+                        limit.setHours(0, 0, 0, 0);
+                        limit.setDate(limit.getDate() + 60);
+                        if (d > limit) {
+                          toast.error("Só é possível reservar para os próximos 60 dias.");
+                          return;
+                        }
+                      }
+                      setForm({ ...form, date: v });
+                    }}
+                    className={inputCls}
+                  />
+                  <span className="mt-1 block text-[11px] text-muted-foreground">Reservas até 60 dias. <span className="text-destructive font-medium">Domingos indisponíveis.</span></span>
                 </Field>
-                <Field label="Horário *">
-                  <input required type="time" value={form.time} onChange={(e) => setForm({ ...form, time: e.target.value })} className={inputCls} />
+                <Field label="Horário de RETIRADA *">
+                  <input
+                    required
+                    type="time"
+                    min="07:30"
+                    max="18:00"
+                    value={form.time}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v) {
+                        const [hh, mi] = v.split(":").map(Number);
+                        const mins = (hh ?? 0) * 60 + (mi ?? 0);
+                        if (mins < 7 * 60 + 30 || mins > 18 * 60) {
+                          toast.error("Horário de retirada: entre 07h30 e 18h.");
+                          return;
+                        }
+                      }
+                      setForm({ ...form, time: v });
+                    }}
+                    className={inputCls}
+                  />
+                  <span className="mt-1 block text-[11px] text-muted-foreground">Funcionamento: 07h30 às 18h. Este é o horário da <strong>RETIRADA</strong>.</span>
                 </Field>
 
                 <Field label="Observações" className="md:col-span-2">
-                  <textarea rows={3} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="Ex: sem amendoim, embalar para presente, mensagem no bolo..." className={`${inputCls} h-auto resize-none py-3`} />
+                  <textarea rows={3} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className={`${inputCls} h-auto resize-none py-3`} />
                 </Field>
               </div>
               <div className="border-t border-border bg-secondary/40 px-6 py-5">
