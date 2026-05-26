@@ -75,6 +75,16 @@ const BOLO_CONFIGS: Record<string, BoloConfig> = {
     showModelImage: true,
     massaHeader: "Massa Amanteigada com Margarina e Cobertura em Chantilly",
   },
+  "bolo-vintage-floral": {
+    basePrice: 115,
+    stepKg: 0.5,
+    stepPrice: 57.5,
+    recheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Capuccino", "Maracujá", "Palha italiana", "Oreo"],
+    maxRecheios: 2,
+    showAdicionais: true,
+    showModelImage: true,
+    massaHeader: "Massa Amanteigada com Margarina e Cobertura em Chantilly",
+  },
   "bolo-pote-tira": {
     basePrice: 95,
     stepKg: 0.5,
@@ -782,7 +792,7 @@ function BoloCustomizationPanel({
       {/* Notes */}
       <div className="mt-5">
         <h4 className="text-sm font-semibold">Observação</h4>
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} placeholder={product.id === "bolo-choc" ? "Ex: nome e idade pra colocar no topper do seu bolo" : ""} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} placeholder={product.id === "bolo-choc" || product.id === "bolo-vintage-floral" ? "Ex: nome e idade pra colocar no topper do seu bolo" : ""} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
       </div>
 
       {/* Total summary */}
