@@ -107,6 +107,7 @@ function Cart() {
           ].filter(Boolean);
         }
         if (c.kind === "kit") {
+          const photoUrl = photoUrls[i.lineId];
           return [
             `• ${i.product.name} — ${c.kitOptionLabel ?? ""} — ${formatBRL(i.qty * unit)}`,
             c.kitItems && c.kitItems.length ? `   - Itens: ${c.kitItems.join(", ")}` : "",
@@ -114,7 +115,10 @@ function Cart() {
             c.cobertura ? `   - Cobertura do bolo: ${c.cobertura}` : "",
             c.finosFormatos && c.finosFormatos.length ? `   - Formatos doces finos: ${c.finosFormatos.join(", ")}` : "",
             c.finosRecheios && c.finosRecheios.length ? `   - Recheios doces finos: ${c.finosRecheios.join(", ")}` : "",
+            c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
+            c.fitaColor ? `   - Cor (forminhas + fita do naked): ${c.fitaColor.replace(/-/g, " ")}` : "",
             c.cupcakeRecheios && c.cupcakeRecheios.length ? `   - Recheio cupcake: ${c.cupcakeRecheios.join(", ")}` : "",
+            photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
         }
