@@ -34,6 +34,14 @@ import bc7 from "@/assets/bem-casado-7.jpeg";
 import bc8 from "@/assets/bem-casado-8.jpeg";
 import bc9 from "@/assets/bem-casado-9.jpeg";
 import bc10 from "@/assets/bem-casado-10.jpeg";
+import df1 from "@/assets/doces-finos-1.jpeg";
+import df2 from "@/assets/doces-finos-2.jpeg";
+import df3 from "@/assets/doces-finos-3.jpeg";
+import df4 from "@/assets/doces-finos-4.jpeg";
+import df5 from "@/assets/doces-finos-5.jpeg";
+import df6 from "@/assets/doces-finos-6.jpeg";
+import df7 from "@/assets/doces-finos-7.jpeg";
+import df8 from "@/assets/doces-finos-8.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -45,6 +53,8 @@ const DOCES_TRADICIONAIS_IMAGES = [doces1, doces2, doces3, doces4];
 const KIT_FESTA_3_IMAGES = [kit3a, kit3b, kit3c, kit3d, kit3e, kit3f, kit3g];
 
 const BEM_CASADO_IMAGES = [bc1, bc2, bc3, bc4, bc5, bc6, bc7, bc8, bc9, bc10];
+
+const DOCES_FINOS_IMAGES = [df1, df2, df3, df4, df5, df6, df7, df8];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -389,6 +399,8 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={KIT_FESTA_3_IMAGES} alt={product.name} />
         ) : product.id === "bem-casado" ? (
           <ImageCarousel images={BEM_CASADO_IMAGES} alt={product.name} />
+        ) : product.id === "doces-finos" ? (
+          <ImageCarousel images={DOCES_FINOS_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
