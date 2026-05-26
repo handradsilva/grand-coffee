@@ -385,6 +385,7 @@ function CustomizationPanel({
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
     add(product, qty, { kind: "doces", flavors, colors, notes, unitPrice, ...(finos ? { format: formats.join(", ") } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
