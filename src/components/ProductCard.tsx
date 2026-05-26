@@ -101,6 +101,26 @@ const BEM_CASADO_FITAS: { id: string; label: string; hex: string }[] = [
 ];
 const BEM_CASADO_MIN = 30;
 
+// Cupcake
+const CUPCAKE_RECHEIOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite"];
+const CUPCAKE_COLORS: { id: string; label: string; hex: string }[] = [
+  { id: "branco", label: "Branco", hex: "#f8f8f8" },
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "preto", label: "Preto", hex: "#1a1a1a" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+  { id: "roxo", label: "Roxo", hex: "#6a3d9a" },
+];
+const CUPCAKE_MIN = 6;
+
 function isDoces(p: Product) {
   return p.category === "doces";
 }
@@ -110,8 +130,11 @@ function isBolo(p: Product) {
 function isBemCasado(p: Product) {
   return p.id === "bem-casado";
 }
+function isCupcake(p: Product) {
+  return p.category === "cupcakes";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p) || isBemCasado(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
