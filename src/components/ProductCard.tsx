@@ -29,6 +29,13 @@ const BOLO_ADICIONAIS = ["Morango", "Castanha", "Ameixa", "Nutella", "Geleia de 
 const BOLO_ADICIONAL_PRICE = 20;
 const NAKED_EMBALAGEM_PRICE = 3;
 
+const BOLO_TOPPERS: { id: string; label: string; price: number }[] = [
+  { id: "sem", label: "Sem topper", price: 0 },
+  { id: "tematico", label: "Topper Temático", price: 20 },
+  { id: "simples", label: "Topper Simples (Nome + Idade ou Happy Birthday)", price: 15 },
+  { id: "flores", label: "Topper (Nome + Idade + Flores de papel)", price: 25 },
+];
+
 const FITA_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
   { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
