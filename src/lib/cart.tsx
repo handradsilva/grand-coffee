@@ -9,8 +9,8 @@ export interface CartCustomization {
   color?: string;
   colors?: string[];
   format?: string;
-  // Bolo / Bem-Casado
-  kind?: "doces" | "bolo" | "bem-casado" | "cupcake";
+  // Bolo / Bem-Casado / Cupcake / Kit
+  kind?: "doces" | "bolo" | "bem-casado" | "cupcake" | "kit";
   weightKg?: number;
   recheios?: string[];
   adicionais?: string[];
@@ -23,6 +23,12 @@ export interface CartCustomization {
   topperPrice?: number;
   modelImage?: string; // data URL
   modelImageName?: string;
+  // Kit Festa
+  kitOptionLabel?: string;
+  kitItems?: string[];
+  finosRecheios?: string[];
+  finosFormatos?: string[];
+  cupcakeRecheios?: string[];
 }
 
 export interface CartItem {
