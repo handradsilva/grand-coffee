@@ -1332,7 +1332,7 @@ function KitFestaCustomizationPanel({
       {cfg.coberturas && (
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
-            <h4 className="text-sm font-semibold">Cobertura do bolo</h4>
+            <h4 className="text-sm font-semibold">Cobertura do Naked</h4>
             <span className="text-[11px] text-muted-foreground">Escolha 1</span>
           </div>
           <div className="mt-2 flex flex-wrap gap-1.5">
