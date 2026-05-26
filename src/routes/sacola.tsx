@@ -271,6 +271,15 @@ function Cart() {
                                 {c.cupcakeRecheios && c.cupcakeRecheios.length > 0 && (
                                   <p><span className="font-medium text-foreground">Recheio cupcake:</span> {c.cupcakeRecheios.join(", ")}</p>
                                 )}
+                                {c.colors && c.colors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Cor(es) das forminhas:</span> <span className="capitalize">{c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                )}
+                                {c.fitaColor && (
+                                  <p><span className="font-medium text-foreground">Cor (forminhas + fita):</span> <span className="capitalize">{c.fitaColor.replace(/-/g, " ")}</span></p>
+                                )}
+                                {c.modelImage && (
+                                  <p className="text-primary">📸 Foto modelo anexada</p>
+                                )}
                                 {c.notes && (
                                   <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
                                 )}
