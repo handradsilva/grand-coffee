@@ -260,7 +260,7 @@ function Cart() {
                                   <p><span className="font-medium text-foreground">{c.cobertura ? "Recheios do Naked" : "Recheios do bolo"}:</span> {c.recheios.join(", ")}</p>
                                 )}
                                 {c.cobertura && (
-                                  <p><span className="font-medium text-foreground">Cobertura do bolo:</span> {c.cobertura}</p>
+                                  <p><span className="font-medium text-foreground">Cobertura do Naked:</span> {c.cobertura}</p>
                                 )}
                                 {c.finosFormatos && c.finosFormatos.length > 0 && (
                                   <p><span className="font-medium text-foreground">Formatos doces finos:</span> {c.finosFormatos.join(", ")}</p>
