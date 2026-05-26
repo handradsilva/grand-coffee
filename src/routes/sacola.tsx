@@ -109,7 +109,7 @@ function Cart() {
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
           c.format ? `   - Formato: ${c.format}` : "",
-          c.color ? `   - Cor das forminhas: ${c.color}` : "",
+          c.color ? `   - Cor das forminhas: ${c.color.replace(/-/g, " ")}` : "",
           c.notes ? `   - Obs.: ${c.notes}` : "",
         ].filter(Boolean);
       }),
@@ -268,7 +268,7 @@ function Cart() {
                                   <p><span className="font-medium text-foreground">Formato:</span> {c.format}</p>
                                 )}
                                 {c.color && (
-                                  <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{c.color}</span></p>
+                                  <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{c.color.replace(/-/g, " ")}</span></p>
                                 )}
                                 {c.notes && (
                                   <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>

@@ -359,7 +359,7 @@ function CustomizationPanel({
         </div>
         {color && (
           <p className="mt-1.5 text-[11px] text-muted-foreground">
-            Selecionada: <span className="font-medium capitalize">{color}</span>
+            Selecionada: <span className="font-medium capitalize">{color.replace(/-/g, " ")}</span>
           </p>
         )}
       </div>
