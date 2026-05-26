@@ -36,8 +36,7 @@ export const products: Product[] = [
   { id: "bolo-pote-tira", name: "Naked Cake", category: "bolos", price: 95, unit: "1kg", description: "Bolo no acetato", image: boloPote },
   { id: "cupcake-vanilla", name: "Cupcake de Baunilha", category: "cupcakes", price: 8, unit: "unidade", description: "Massa fofa de baunilha com buttercream artesanal e confeitos.", image: boloPote },
   { id: "cupcake-choc", name: "Cupcake de Chocolate", category: "cupcakes", price: 9, unit: "unidade", description: "Massa de cacau com cobertura de ganache e raspas de chocolate.", image: boloChoc },
-  { id: "bem-casado-trad", name: "Bem-Casado Tradicional", category: "bem-casados", price: 5, unit: "unidade", description: "Dois mini bolos de massa aerada com recheio de doce de leite. Embalagem individual.", image: macaron },
-  { id: "bem-casado-premium", name: "Bem-Casado Premium", category: "bem-casados", price: 7.5, unit: "unidade", description: "Massa de nozes com recheio de brigadeiro branco e damasco. Acabamento em renda com fita de cetim.", image: brigadeiro },
+  { id: "bem-casado", name: "Bem-Casado", category: "bem-casados", price: 4, unit: "unidade", description: "Medida: 5cm / quadrado. Dois mini bolos de massa aerada com recheio. Embalagem individual.", image: macaron },
   { id: "kit-100", name: "Kit Festa — 100 docinhos", category: "kits", price: 320, unit: "kit", description: "Seleção variada de brigadeiros gourmet. Combine 4 sabores.", image: kitFesta, featured: true },
   { id: "kit-mix", name: "Kit Mix Doce & Salgado", category: "kits", price: 480, unit: "kit", description: "60 docinhos + 60 mini salgados. Ideal para 25 pessoas.", image: kitFesta },
 ];
