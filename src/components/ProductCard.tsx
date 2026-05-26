@@ -20,20 +20,69 @@ const COLORS: { id: string; label: string; hex: string }[] = [
 const MIN_QTY = 50;
 
 // Bolo
-const BOLO_RECHEIOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Capuccino", "Maracujá", "Palha italiana", "Oreo"];
 const BOLO_ADICIONAIS = ["Morango", "Castanha", "Ameixa", "Nutella", "Geleia de morango"];
-const BOLO_STEP_KG = 0.5;
-const BOLO_STEP_PRICE = 55;
 const BOLO_ADICIONAL_PRICE = 20;
+const NAKED_EMBALAGEM_PRICE = 3;
+
+const FITA_COLORS: { id: string; label: string; hex: string }[] = [
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+];
+
+interface BoloConfig {
+  basePrice: number;
+  stepKg: number;
+  stepPrice: number;
+  recheios: string[];
+  maxRecheios: number;
+  coberturas?: string[];
+  showFita?: boolean;
+  showAdicionais?: boolean;
+  showModelImage?: boolean;
+  showEmbalagem?: boolean;
+  massaHeader?: string;
+}
+
+const BOLO_CONFIGS: Record<string, BoloConfig> = {
+  "bolo-choc": {
+    basePrice: 110,
+    stepKg: 0.5,
+    stepPrice: 55,
+    recheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Capuccino", "Maracujá", "Palha italiana", "Oreo"],
+    maxRecheios: 2,
+    showAdicionais: true,
+    showModelImage: true,
+    massaHeader: "Massa Amanteigada com Margarina e Cobertura em Chantilly",
+  },
+  "bolo-pote-tira": {
+    basePrice: 95,
+    stepKg: 0.5,
+    stepPrice: 47.5,
+    recheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Maracujá"],
+    maxRecheios: 2,
+    coberturas: ["Brigadeiro", "Ninho", "Doce de leite"],
+    showFita: true,
+    showEmbalagem: true,
+  },
+};
 
 function isDoces(p: Product) {
   return p.category === "doces";
 }
-function isBoloDecorado(p: Product) {
-  return p.id === "bolo-choc";
+function isBolo(p: Product) {
+  return p.id in BOLO_CONFIGS;
 }
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBoloDecorado(p);
+  return isDoces(p) || isBolo(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
