@@ -1058,6 +1058,7 @@ function CupcakeCustomizationPanel({
       fitaColors: colors,
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
