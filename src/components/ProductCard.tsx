@@ -144,7 +144,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         {customizable && open && (
-          isBoloDecorado(product) ? (
+          isBolo(product) ? (
             <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
