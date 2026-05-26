@@ -473,7 +473,7 @@ function Cart() {
               <h2 className="border-b border-border px-6 py-4 font-display text-xl">Resumo</h2>
               <dl className="space-y-3 px-6 py-5 text-sm">
                 <div className="flex justify-between"><dt className="text-muted-foreground">Subtotal</dt><dd>{formatBRL(subtotal)}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Entrega</dt><dd className="text-muted-foreground">a combinar</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">Retirada</dt><dd className="text-muted-foreground">na loja</dd></div>
               </dl>
               <div className="flex items-baseline justify-between border-t border-border px-6 py-5">
                 <span className="text-sm font-medium uppercase tracking-wider">Total</span>
