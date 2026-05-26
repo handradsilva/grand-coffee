@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ShoppingBag, Instagram, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
+import { ShoppingBag, Instagram, MapPin, Phone, Clock } from "lucide-react";
+import whatsappIcon from "@/assets/whatsapp.png";
 import { type ReactNode } from "react";
 import { useCart } from "@/lib/cart";
 import { formatBRL } from "@/lib/products";
@@ -91,9 +92,9 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
-                className="rounded-full border border-border p-2.5 text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                className="inline-flex items-center justify-center rounded-full transition-transform hover:scale-105"
               >
-                <MessageCircle className="h-4 w-4" />
+                <img src={whatsappIcon} alt="WhatsApp" className="h-9 w-9" />
               </a>
             </div>
           </div>
