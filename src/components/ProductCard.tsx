@@ -581,6 +581,7 @@ function BoloCustomizationPanel({
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} adicionado à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
