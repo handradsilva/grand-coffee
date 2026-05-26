@@ -106,6 +106,18 @@ function Cart() {
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
         }
+        if (c.kind === "kit") {
+          return [
+            `• ${i.product.name} — ${c.kitOptionLabel ?? ""} — ${formatBRL(i.qty * unit)}`,
+            c.kitItems && c.kitItems.length ? `   - Itens: ${c.kitItems.join(", ")}` : "",
+            c.recheios && c.recheios.length ? `   - Recheios do bolo: ${c.recheios.join(", ")}` : "",
+            c.cobertura ? `   - Cobertura do bolo: ${c.cobertura}` : "",
+            c.finosFormatos && c.finosFormatos.length ? `   - Formatos doces finos: ${c.finosFormatos.join(", ")}` : "",
+            c.finosRecheios && c.finosRecheios.length ? `   - Recheios doces finos: ${c.finosRecheios.join(", ")}` : "",
+            c.cupcakeRecheios && c.cupcakeRecheios.length ? `   - Recheio cupcake: ${c.cupcakeRecheios.join(", ")}` : "",
+            c.notes ? `   - Obs.: ${c.notes}` : "",
+          ].filter(Boolean);
+        }
         return [
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
