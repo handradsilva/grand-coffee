@@ -73,10 +73,14 @@ function Cart() {
         if (!c) return [`• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`];
         if (c.kind === "bolo") {
           const photoUrl = photoUrls[i.lineId];
+          const isDecorado = i.product.id === "bolo-choc";
           return [
             `• ${i.product.name} (${(c.weightKg ?? 1).toFixed(1)} kg) — ${formatBRL(i.qty * unit)}`,
-            "   - Massa: Amanteigada com Margarina · Cobertura: Chantilly",
+            isDecorado ? "   - Massa: Amanteigada com Margarina · Cobertura: Chantilly" : "",
             `   - Recheios: ${(c.recheios ?? []).join(", ")}`,
+            c.cobertura ? `   - Cobertura: ${c.cobertura}` : "",
+            c.fitaColor ? `   - Cor da fita: ${c.fitaColor.replace(/-/g, " ")}` : "",
+            c.embalagem ? `   - Embalagem: sim (+R$ 3,00)` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
@@ -180,8 +184,19 @@ function Cart() {
                             </p>
                             {c && isBolo && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
-                                <p><span className="font-medium text-foreground">Massa:</span> Amanteigada · Chantilly</p>
+                                {i.product.id === "bolo-choc" && (
+                                  <p><span className="font-medium text-foreground">Massa:</span> Amanteigada · Chantilly</p>
+                                )}
                                 <p><span className="font-medium text-foreground">Recheios:</span> {(c.recheios ?? []).join(", ")}</p>
+                                {c.cobertura && (
+                                  <p><span className="font-medium text-foreground">Cobertura:</span> {c.cobertura}</p>
+                                )}
+                                {c.fitaColor && (
+                                  <p><span className="font-medium text-foreground">Fita:</span> <span className="capitalize">{c.fitaColor.replace(/-/g, " ")}</span></p>
+                                )}
+                                {c.embalagem && (
+                                  <p><span className="font-medium text-foreground">Embalagem:</span> sim</p>
+                                )}
                                 {c.adicionais && c.adicionais.length > 0 && (
                                   <p><span className="font-medium text-foreground">Adicionais:</span> {c.adicionais.join(", ")}</p>
                                 )}

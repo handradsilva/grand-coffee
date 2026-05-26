@@ -13,6 +13,9 @@ export interface CartCustomization {
   weightKg?: number;
   recheios?: string[];
   adicionais?: string[];
+  cobertura?: string;
+  fitaColor?: string;
+  embalagem?: boolean;
   modelImage?: string; // data URL
   modelImageName?: string;
 }
