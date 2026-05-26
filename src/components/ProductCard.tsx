@@ -175,6 +175,8 @@ export function ProductCard({ product }: { product: Product }) {
         {customizable && open && (
           isBolo(product) ? (
             <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+          ) : isBemCasado(product) ? (
+            <BemCasadoCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
