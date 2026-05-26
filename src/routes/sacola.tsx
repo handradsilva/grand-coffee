@@ -257,7 +257,7 @@ function Cart() {
                                   <p><span className="font-medium text-foreground">Itens:</span> {c.kitItems.join(", ")}</p>
                                 )}
                                 {c.recheios && c.recheios.length > 0 && (
-                                  <p><span className="font-medium text-foreground">Recheios do bolo:</span> {c.recheios.join(", ")}</p>
+                                  <p><span className="font-medium text-foreground">{c.cobertura ? "Recheios do Naked" : "Recheios do bolo"}:</span> {c.recheios.join(", ")}</p>
                                 )}
                                 {c.cobertura && (
                                   <p><span className="font-medium text-foreground">Cobertura do bolo:</span> {c.cobertura}</p>
