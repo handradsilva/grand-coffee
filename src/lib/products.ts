@@ -26,7 +26,7 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
   { id: "cupcakes", label: "Cupcakes", blurb: "Cupcakes recheados" },
   { id: "bem-casados", label: "Bem-Casados", blurb: "Lembrancinha ideal para seu evento" },
   { id: "kits", label: "Kit Festas", blurb: "Combos para celebrar" },
-  { id: "combo-casamento", label: "Combo-Casamento", blurb: "Celebre Conosco" },
+  { id: "combo-casamento", label: "Combo Casamento", blurb: "Celebre Conosco" },
 ];
 
 export const products: Product[] = [
