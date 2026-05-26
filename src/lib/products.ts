@@ -37,9 +37,9 @@ export const products: Product[] = [
   { id: "bolo-vintage-floral", name: "Vintage e Floral", category: "bolos", price: 115, unit: "1kg", description: "Modelos vintage ou floral com acabamento manual em Chantilly", image: boloChoc },
   { id: "cupcake", name: "Cupcake", category: "cupcakes", price: 6, unit: "unidade", description: "", image: boloPote },
   { id: "bem-casado", name: "Bem-Casado", category: "bem-casados", price: 4, unit: "unidade", description: "BEM-VIVIDO, BEM-NASCIDO, BEM-COMEMORADO, BEM-BATIZADO", image: macaron },
-  { id: "kit-festa-1", name: "Kit Festa 1", category: "kits", price: 200, unit: "a partir de 10 pessoas", description: "", image: kitFesta, featured: true },
-  { id: "kit-festa-2", name: "Kit Festa 2", category: "kits", price: 160, unit: "a partir de 10 pessoas", description: "", image: kitFesta },
-  { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "", image: kitFesta },
+  { id: "kit-festa-1", name: "Kit Festa 1", category: "kits", price: 200, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Salgados", image: kitFesta, featured: true },
+  { id: "kit-festa-2", name: "Kit Festa 2", category: "kits", price: 160, unit: "a partir de 10 pessoas", description: "Naked Cake, Doces e Salgados", image: kitFesta },
+  { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Cupcakes", image: kitFesta },
 ];
 
 export const formatBRL = (n: number) =>
