@@ -82,6 +82,7 @@ function Cart() {
             c.fitaColor ? `   - Cor da fita: ${c.fitaColor.replace(/-/g, " ")}` : "",
             c.embalagem ? `   - Embalagem: sim (+R$ 3,00)` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
+            c.topper ? `   - Topper: ${c.topper}${c.topperPrice ? ` (+${formatBRL(c.topperPrice)})` : ""}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
@@ -221,6 +222,9 @@ function Cart() {
                                 )}
                                 {c.adicionais && c.adicionais.length > 0 && (
                                   <p><span className="font-medium text-foreground">Adicionais:</span> {c.adicionais.join(", ")}</p>
+                                )}
+                                {c.topper && (
+                                  <p><span className="font-medium text-foreground">Topper:</span> {c.topper}</p>
                                 )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>

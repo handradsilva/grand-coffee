@@ -29,6 +29,13 @@ const BOLO_ADICIONAIS = ["Morango", "Castanha", "Ameixa", "Nutella", "Geleia de 
 const BOLO_ADICIONAL_PRICE = 20;
 const NAKED_EMBALAGEM_PRICE = 3;
 
+const BOLO_TOPPERS: { id: string; label: string; price: number }[] = [
+  { id: "sem", label: "Sem topper", price: 0 },
+  { id: "tematico", label: "Topper Temático", price: 20 },
+  { id: "simples", label: "Topper Simples (Nome + Idade ou Happy Birthday)", price: 15 },
+  { id: "flores", label: "Topper (Nome + Idade + Flores de papel)", price: 25 },
+];
+
 const FITA_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
   { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
@@ -410,12 +417,15 @@ function BoloCustomizationPanel({
   const [notes, setNotes] = useState("");
   const [modelImage, setModelImage] = useState<string>("");
   const [modelImageName, setModelImageName] = useState<string>("");
+  const [topper, setTopper] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   const weightPrice = cfg.basePrice + ((weightKg - 1) / cfg.stepKg) * cfg.stepPrice;
   const adicionaisPrice = adicionais.length * BOLO_ADICIONAL_PRICE;
   const embalagemPrice = embalagem ? NAKED_EMBALAGEM_PRICE : 0;
-  const total = weightPrice + adicionaisPrice + embalagemPrice;
+  const topperObj = BOLO_TOPPERS.find((t) => t.id === topper);
+  const topperPrice = topperObj?.price ?? 0;
+  const total = weightPrice + adicionaisPrice + embalagemPrice + topperPrice;
 
   function toggleRecheio(f: string) {
     setRecheios((prev) => {
@@ -455,6 +465,8 @@ function BoloCustomizationPanel({
     if (recheios.length === 0) return toast.error("Escolha pelo menos 1 recheio.");
     if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura.");
     if (cfg.showFita && !fitaColor) return toast.error("Escolha a cor da fita.");
+    if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
+    if (cfg.showModelImage && !topper) return toast.error("Escolha uma opção de topper.");
     add(product, 1, {
       kind: "bolo",
       notes,
@@ -465,6 +477,8 @@ function BoloCustomizationPanel({
       cobertura: cobertura || undefined,
       fitaColor: fitaColor || undefined,
       embalagem: cfg.showEmbalagem ? embalagem : undefined,
+      topper: cfg.showModelImage && topperObj ? topperObj.label : undefined,
+      topperPrice: cfg.showModelImage && topperObj ? topperObj.price : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
@@ -485,6 +499,7 @@ function BoloCustomizationPanel({
         <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações da massa</p>
           <p className="mt-1 text-sm font-medium text-foreground">{cfg.massaHeader}</p>
+          <p className="mt-2 border-t border-primary/20 pt-2 text-sm font-medium text-foreground">Bolos de 2 ou mais andares, orçamento no whatsapp!</p>
         </div>
       )}
 
@@ -611,7 +626,7 @@ function BoloCustomizationPanel({
       {/* Modelo do bolo (Bolo Decorado) */}
       {cfg.showModelImage && (
         <div className="mt-5">
-          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
           <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
           <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
           {modelImage ? (
@@ -632,6 +647,36 @@ function BoloCustomizationPanel({
               <ImageIcon className="h-4 w-4 opacity-60" />
             </button>
           )}
+        </div>
+      )}
+
+      {/* Toppers (Bolo Decorado) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Toppers</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+          </div>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {BOLO_TOPPERS.map((t) => {
+              const active = topper === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTopper(t.id)}
+                  className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {active && <Check className="h-3 w-3" />}
+                    {t.label}
+                  </span>
+                  <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
+                    {t.price === 0 ? "Sem custo" : `+${formatBRL(t.price)}`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -657,6 +702,12 @@ function BoloCustomizationPanel({
           <div className="mt-1 flex justify-between text-muted-foreground">
             <span>Embalagem</span>
             <span>+{formatBRL(NAKED_EMBALAGEM_PRICE)}</span>
+          </div>
+        )}
+        {topperObj && topperObj.price > 0 && (
+          <div className="mt-1 flex justify-between text-muted-foreground">
+            <span>Topper</span>
+            <span>+{formatBRL(topperObj.price)}</span>
           </div>
         )}
         <div className="mt-2 flex items-baseline justify-between border-t border-border pt-2">
