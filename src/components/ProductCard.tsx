@@ -13,13 +13,19 @@ import vintage7 from "@/assets/vintage-floral-7.jpeg";
 import vintage8 from "@/assets/vintage-floral-8.jpeg";
 import vintage9 from "@/assets/vintage-floral-9.jpeg";
 import vintage10 from "@/assets/vintage-floral-10.jpeg";
+import doces1 from "@/assets/doces-tradicionais-1.jpeg";
+import doces2 from "@/assets/doces-tradicionais-2.jpeg";
+import doces3 from "@/assets/doces-tradicionais-3.jpeg";
+import doces4 from "@/assets/doces-tradicionais-4.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
   vintage6, vintage7, vintage8, vintage9, vintage10,
 ];
 
-function VintageFloralCarousel({ alt }: { alt: string }) {
+const DOCES_TRADICIONAIS_IMAGES = [doces1, doces2, doces3, doces4];
+
+function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const pausedRef = useRef(false);
@@ -27,11 +33,11 @@ function VintageFloralCarousel({ alt }: { alt: string }) {
   useEffect(() => {
     const id = setInterval(() => {
       if (!pausedRef.current) {
-        setIndex((i) => (i + 1) % VINTAGE_FLORAL_IMAGES.length);
+        setIndex((i) => (i + 1) % images.length);
       }
     }, 4000);
     return () => clearInterval(id);
-  }, []);
+  }, [images.length]);
 
   const onTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
@@ -43,8 +49,8 @@ function VintageFloralCarousel({ alt }: { alt: string }) {
     if (Math.abs(dx) > 40) {
       setIndex((i) =>
         dx < 0
-          ? (i + 1) % VINTAGE_FLORAL_IMAGES.length
-          : (i - 1 + VINTAGE_FLORAL_IMAGES.length) % VINTAGE_FLORAL_IMAGES.length,
+          ? (i + 1) % images.length
+          : (i - 1 + images.length) % images.length,
       );
     }
     touchStartX.current = null;
@@ -61,7 +67,7 @@ function VintageFloralCarousel({ alt }: { alt: string }) {
         className="flex h-full w-full transition-transform duration-500 ease-out"
         style={{ transform: `translateX(-${index * 100}%)` }}
       >
-        {VINTAGE_FLORAL_IMAGES.map((src, i) => (
+        {images.map((src, i) => (
           <img
             key={i}
             src={src}
@@ -73,7 +79,7 @@ function VintageFloralCarousel({ alt }: { alt: string }) {
         ))}
       </div>
       <div className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">
-        {VINTAGE_FLORAL_IMAGES.map((_, i) => (
+        {images.map((_, i) => (
           <span
             key={i}
             className={`h-1.5 rounded-full transition-all ${
@@ -85,6 +91,7 @@ function VintageFloralCarousel({ alt }: { alt: string }) {
     </div>
   );
 }
+
 
 
 const FLAVORS_TRADICIONAIS = ["Brigadeiro", "Ninho", "Beijinho", "Coco queimado", "Casadinho", "Churros"];
