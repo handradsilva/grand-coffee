@@ -34,6 +34,7 @@ export const products: Product[] = [
   { id: "doces-finos", name: "Doces Finos", category: "doces", price: 140, unit: "cento (100 un.)", description: "", image: macaron, featured: true },
   { id: "bolo-choc", name: "Bolo Decorado", category: "bolos", price: 110, unit: "1kg", description: "Bolos decorados com cobertura em Chantilly", image: boloChoc, featured: true },
   { id: "bolo-pote-tira", name: "Naked Cake", category: "bolos", price: 95, unit: "1kg", description: "Bolo no acetato", image: boloPote },
+  { id: "bolo-vintage-floral", name: "Vintage e Floral", category: "bolos", price: 0, unit: "a definir", description: "", image: boloChoc },
   { id: "cupcake", name: "Cupcake", category: "cupcakes", price: 6, unit: "unidade", description: "", image: boloPote },
   { id: "bem-casado", name: "Bem-Casado", category: "bem-casados", price: 4, unit: "unidade", description: "BEM-VIVIDO, BEM-NASCIDO, BEM-COMEMORADO, BEM-BATIZADO", image: macaron },
   { id: "kit-festa-1", name: "Kit Festa 1", category: "kits", price: 200, unit: "a partir de 10 pessoas", description: "", image: kitFesta, featured: true },
