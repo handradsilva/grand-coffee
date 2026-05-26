@@ -499,6 +499,7 @@ function BoloCustomizationPanel({
         <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações da massa</p>
           <p className="mt-1 text-sm font-medium text-foreground">{cfg.massaHeader}</p>
+          <p className="mt-2 border-t border-primary/20 pt-2 text-sm font-medium text-foreground">Bolos de 2 ou mais andares, orçamento no whatsapp!</p>
         </div>
       )}
 
