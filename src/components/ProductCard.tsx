@@ -1269,6 +1269,7 @@ function KitFestaCustomizationPanel({
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
 
