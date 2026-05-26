@@ -408,7 +408,13 @@ function Cart() {
                     min={todayStr}
                     max={maxDate}
                     value={form.date}
+                    onInvalid={(e) => {
+                      const el = e.currentTarget;
+                      const [y, m, d] = todayStr.split("-");
+                      el.setCustomValidity(`A data do pedido deve ser igual ou maior à ${d}/${m}/${y}`);
+                    }}
                     onChange={(e) => {
+                      e.currentTarget.setCustomValidity("");
                       const v = e.target.value;
                       if (v) {
                         const [yy, mm, dd] = v.split("-").map(Number);
@@ -429,6 +435,7 @@ function Cart() {
                     }}
                     className={inputCls}
                   />
+
                   <span className="mt-1 block text-[11px] text-muted-foreground">Reservas até 60 dias. <span className="text-destructive font-medium">Domingos indisponíveis.</span></span>
                 </Field>
                 <Field label="Horário de RETIRADA *">
