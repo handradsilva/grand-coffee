@@ -245,6 +245,20 @@ function Cart() {
                                 )}
                               </div>
                             )}
+                            {c && isCupcake && (
+                              <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+                                <p>Massa amanteigada · Chantilly</p>
+                                {c.recheios && c.recheios.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Recheios:</span> {c.recheios.join(", ")}</p>
+                                )}
+                                {c.fitaColors && c.fitaColors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                )}
+                                {c.notes && (
+                                  <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
+                                )}
+                              </div>
+                            )}
                             {c && isDoces && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
                                 {c.flavors && c.flavors.length > 0 && (
