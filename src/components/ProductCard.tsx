@@ -400,7 +400,7 @@ function BoloCustomizationPanel({
   return (
     <div className="mt-4 -mx-1 rounded-lg border border-border bg-secondary/30 p-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Personalize seu bolo</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">{product.id === "bolo-pote-tira" ? "Personalize seu naked" : "Personalize seu bolo"}</p>
         <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Fechar">
           <X className="h-4 w-4" />
         </button>
