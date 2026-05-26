@@ -1411,6 +1411,86 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
+
+      {/* Cor das forminhas dos doces (Kit 1 / Kit 3) — até 2 cores */}
+      {cfg.showFinosColors && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Cor das forminhas dos doces</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosColors.length}/2</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {KIT_COLORS.map((c) => {
+              const active = finosColors.includes(c.id);
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => toggleFinosColor(c.id)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                  {c.label}
+                  {active && <Check className="h-3 w-3 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Cor compartilhada — forminhas + fita do naked (Kit 2) — 1 cor */}
+      {cfg.showSharedColor && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Cor das forminhas e da fita do naked</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1 cor (vale para os dois)</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {KIT_COLORS.map((c) => {
+              const active = sharedColor === c.id;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setSharedColor(active ? "" : c.id)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                  {c.label}
+                  {active && <Check className="h-3 w-3 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Modelo do bolo (Kit 1 / Kit 3) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
+          <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
+          <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+          {modelImage ? (
+            <div className="mt-2 flex items-center gap-3 rounded-md border border-border bg-background p-2">
+              <img src={modelImage} alt="Modelo" className="h-16 w-16 rounded object-cover" />
+              <div className="flex-1 truncate text-xs">
+                <p className="truncate font-medium">{modelImageName}</p>
+                <button type="button" onClick={() => fileRef.current?.click()} className="mt-1 text-primary hover:underline">Trocar foto</button>
+              </div>
+              <button type="button" onClick={() => { setModelImage(""); setModelImageName(""); }} className="text-muted-foreground hover:text-destructive" aria-label="Remover">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => fileRef.current?.click()} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-4 py-3 text-xs font-medium text-foreground transition-colors hover:border-primary/50 hover:bg-secondary">
+              <Upload className="h-4 w-4" />
+              Enviar foto da galeria
+              <ImageIcon className="h-4 w-4 opacity-60" />
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Notes */}
       <div className="mt-5">
         <h4 className="text-sm font-semibold">Observação</h4>
