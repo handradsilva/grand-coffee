@@ -19,6 +19,8 @@ export interface CartCustomization {
   fitaColors?: string[];
   embalagem?: boolean;
   tag?: "com" | "sem";
+  topper?: string;
+  topperPrice?: number;
   modelImage?: string; // data URL
   modelImageName?: string;
 }
