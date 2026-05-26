@@ -704,6 +704,12 @@ function BoloCustomizationPanel({
             <span>+{formatBRL(NAKED_EMBALAGEM_PRICE)}</span>
           </div>
         )}
+        {topperObj && topperObj.price > 0 && (
+          <div className="mt-1 flex justify-between text-muted-foreground">
+            <span>Topper</span>
+            <span>+{formatBRL(topperObj.price)}</span>
+          </div>
+        )}
         <div className="mt-2 flex items-baseline justify-between border-t border-border pt-2">
           <span className="font-semibold uppercase tracking-wider">Total</span>
           <span className="font-display text-lg font-semibold text-primary">{formatBRL(total)}</span>
