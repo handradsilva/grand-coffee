@@ -48,13 +48,17 @@ function Cart() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    mode: "retirada" as "retirada" | "entrega",
+    mode: "retirada" as "retirada",
     address: "",
     date: "",
     time: "",
     notes: "",
-    payment: "pix" as "pix" | "cartao" | "presencial",
+    payment: "pix" as "pix" | "cartao" | "dinheiro",
   });
+
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10);
+  const maxDate = new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
   const empty = items.length === 0;
 
