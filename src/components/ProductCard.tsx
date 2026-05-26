@@ -139,12 +139,33 @@ interface KitConfig {
   title: string;
   options: KitOption[];
   note: string;
+  salgadosNote?: string;
   boloRecheios: string[];
   maxBoloRecheios: number;
   coberturas?: string[];
   finos: boolean;
   cupcake: boolean;
+  showFinosColors?: boolean; // até 2 cores das forminhas
+  showSharedColor?: boolean; // 1 cor compartilhada (forminhas + fita naked)
+  showModelImage?: boolean;  // upload de foto modelo do bolo
 }
+
+const KIT_COLORS: { id: string; label: string; hex: string }[] = [
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+];
+
+const SALGADOS_NOTE = "Salgados nos sabores: Bolinha de queijo, coxinha de frango e risole de carne.";
+
 const KIT_CONFIGS: Record<string, KitConfig> = {
   "kit-festa-1": {
     title: "Kit Festa 1",
@@ -155,10 +176,13 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
       { id: "30p", label: "30 pessoas", price: 520, items: ["Bolo 3kg", "Topo Impresso", "100 doces", "100 salgados"] },
     ],
     note: "Acompanha bolo decorado em chantininho e topo impresso. Não incluso: bolo de 2 andares, vintage e floral cake, cores prata e dourado para bolo e forminhas.",
+    salgadosNote: SALGADOS_NOTE,
     boloRecheios: BOLO_CONFIGS["bolo-choc"].recheios,
     maxBoloRecheios: 2,
     finos: true,
     cupcake: false,
+    showFinosColors: true,
+    showModelImage: true,
   },
   "kit-festa-2": {
     title: "Kit Festa 2",
@@ -169,11 +193,13 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
       { id: "30p", label: "30 pessoas", price: 410, items: ["Naked 3kg", "50 doces", "100 salgados"] },
     ],
     note: "Acompanha Naked Cake no acetato. Modelo padrão. Não incluso topo personalizado.",
+    salgadosNote: SALGADOS_NOTE,
     boloRecheios: BOLO_CONFIGS["bolo-pote-tira"].recheios,
     maxBoloRecheios: 2,
     coberturas: BOLO_CONFIGS["bolo-pote-tira"].coberturas,
     finos: true,
     cupcake: false,
+    showSharedColor: true,
   },
   "kit-festa-3": {
     title: "Kit Festa 3",
@@ -187,6 +213,8 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     maxBoloRecheios: 2,
     finos: true,
     cupcake: true,
+    showFinosColors: true,
+    showModelImage: true,
   },
 };
 
