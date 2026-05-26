@@ -357,20 +357,23 @@ function CustomizationPanel({
       </div>
 
       <div className="mt-5">
-        <h4 className="text-sm font-semibold">Cor das forminhas</h4>
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Cor das forminhas</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha até 2 · {colors.length}/2</span>
+        </div>
         <div className="mt-2 flex flex-wrap gap-2">
           {COLORS.map((c) => {
-            const active = color === c.id;
+            const active = colors.includes(c.id);
             return (
-              <button key={c.id} onClick={() => setColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
+              <button key={c.id} onClick={() => toggleColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
                 {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
               </button>
             );
           })}
         </div>
-        {color && (
+        {colors.length > 0 && (
           <p className="mt-1.5 text-[11px] text-muted-foreground">
-            Selecionada: <span className="font-medium capitalize">{color.replace(/-/g, " ")}</span>
+            Selecionadas: <span className="font-medium">{colors.map((id) => COLORS.find((c) => c.id === id)?.label).join(", ")}</span>
           </p>
         )}
       </div>
