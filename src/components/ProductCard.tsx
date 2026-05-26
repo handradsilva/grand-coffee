@@ -75,14 +75,43 @@ const BOLO_CONFIGS: Record<string, BoloConfig> = {
   },
 };
 
+// Bem-Casado
+const BEM_CASADO_RECHEIOS = ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite"];
+const BEM_CASADO_FITAS: { id: string; label: string; hex: string }[] = [
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "rose", label: "Rosé", hex: "#d4a5a5" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "azul-bebe", label: "Azul bebê", hex: "#bcd9ef" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "verde-oliva", label: "Verde oliva", hex: "#708238" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "dourado", label: "Dourado", hex: "#c9a84c" },
+  { id: "branco", label: "Branco", hex: "#f8f8f8" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "marsala", label: "Marsala", hex: "#8a3a3a" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+  { id: "roxo", label: "Roxo", hex: "#6a3d9a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "bege", label: "Bege", hex: "#d8c4a0" },
+  { id: "preto", label: "Preto", hex: "#1a1a1a" },
+];
+const BEM_CASADO_MIN = 30;
+
 function isDoces(p: Product) {
   return p.category === "doces";
 }
 function isBolo(p: Product) {
   return p.id in BOLO_CONFIGS;
 }
+function isBemCasado(p: Product) {
+  return p.id === "bem-casado";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
@@ -146,6 +175,8 @@ export function ProductCard({ product }: { product: Product }) {
         {customizable && open && (
           isBolo(product) ? (
             <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+          ) : isBemCasado(product) ? (
+            <BemCasadoCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
@@ -591,6 +622,185 @@ function BoloCustomizationPanel({
       </div>
 
       <button onClick={handleAdd} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
+        Adicionar à sacola · {formatBRL(total)}
+      </button>
+    </div>
+  );
+}
+
+function BemCasadoCustomizationPanel({
+  product,
+  onClose,
+  onAdded,
+}: {
+  product: Product;
+  onClose: () => void;
+  onAdded: () => void;
+}) {
+  const { add } = useCart();
+  const [tag, setTag] = useState<"com" | "sem" | "">("");
+  const [qty, setQty] = useState(BEM_CASADO_MIN);
+  const [recheios, setRecheios] = useState<string[]>([]);
+  const [fitaColors, setFitaColors] = useState<string[]>([]);
+  const [notes, setNotes] = useState("");
+
+  const unitPrice = tag === "com" ? 4.5 : tag === "sem" ? 4 : product.price;
+  const total = qty * unitPrice;
+
+  function toggleRecheio(f: string) {
+    setRecheios((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 recheios.");
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+
+  function toggleFita(id: string) {
+    setFitaColors((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 cores de fita.");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  }
+
+  function handleQty(delta: number) {
+    setQty((q) => Math.max(BEM_CASADO_MIN, q + delta));
+  }
+
+  function handleAdd() {
+    if (!tag) return toast.error("Escolha com ou sem tag.");
+    if (recheios.length === 0) return toast.error("Escolha pelo menos 1 recheio.");
+    if (fitaColors.length === 0) return toast.error("Escolha pelo menos 1 cor de fita.");
+    if (qty < BEM_CASADO_MIN) return toast.error(`Pedido mínimo de ${BEM_CASADO_MIN} unidades.`);
+    add(product, qty, {
+      kind: "bem-casado",
+      notes,
+      unitPrice,
+      recheios,
+      fitaColors,
+      tag: tag as "com" | "sem",
+    });
+    toast.success(`${qty} ${product.name} adicionados à sacola.`);
+    onAdded();
+  }
+
+  return (
+    <div className="mt-4 -mx-1 rounded-lg border border-border bg-secondary/30 p-4">
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Personalize seu Bem-Casado</p>
+        <button onClick={onClose} className="text-muted-foreground hover:text-foreground" aria-label="Fechar">
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
+        <p className="mt-1 text-sm font-medium text-foreground">Medida: 5cm / quadrado</p>
+      </div>
+
+      {/* Tag */}
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Tag</h4>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {([
+            { id: "com", label: "Com tag", price: 4.5 },
+            { id: "sem", label: "Sem tag", price: 4 },
+          ] as const).map((opt) => {
+            const active = tag === opt.id;
+            return (
+              <button key={opt.id} onClick={() => setTag(opt.id)} className={`rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">{opt.label}</span>
+                  {active && <Check className="h-4 w-4 text-primary" />}
+                </div>
+                <div className="text-[11px] text-muted-foreground">{formatBRL(opt.price)} / unidade</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Quantidade */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Quantidade</h4>
+          <span className="text-[11px] text-muted-foreground">Mín. {BEM_CASADO_MIN} un.{tag && ` · ${formatBRL(unitPrice)} cada`}</span>
+        </div>
+        <div className="mt-2 flex items-center gap-3">
+          <div className="flex items-center gap-1 rounded-full border border-border bg-background">
+            <button onClick={() => handleQty(-1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary disabled:opacity-40" disabled={qty <= BEM_CASADO_MIN} aria-label="Diminuir">
+              <Minus className="h-3.5 w-3.5" />
+            </button>
+            <input type="number" value={qty} min={BEM_CASADO_MIN} step={1} onChange={(e) => {
+              const v = parseInt(e.target.value || "0", 10);
+              setQty(Number.isNaN(v) ? BEM_CASADO_MIN : Math.max(BEM_CASADO_MIN, v));
+            }} className="w-16 bg-transparent text-center text-sm font-semibold outline-none" />
+            <button onClick={() => handleQty(1)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary" aria-label="Aumentar">
+              <Plus className="h-3.5 w-3.5" />
+            </button>
+          </div>
+          <div className="ml-auto text-right">
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Total</div>
+            <div className="font-display text-lg font-semibold text-primary">{formatBRL(total)}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Recheios */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Recheios</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha até 2 · {recheios.length}/2</span>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {BEM_CASADO_RECHEIOS.map((f) => {
+            const active = recheios.includes(f);
+            return (
+              <button key={f} onClick={() => toggleRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                {active && <Check className="h-3 w-3" />}
+                {f}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Cor da fita */}
+      <div className="mt-5">
+        <div className="flex items-baseline justify-between">
+          <h4 className="text-sm font-semibold">Cor da fita</h4>
+          <span className="text-[11px] text-muted-foreground">Escolha até 2 · {fitaColors.length}/2</span>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {BEM_CASADO_FITAS.map((c) => {
+            const active = fitaColors.includes(c.id);
+            return (
+              <button key={c.id} onClick={() => toggleFita(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
+                {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+              </button>
+            );
+          })}
+        </div>
+        {fitaColors.length > 0 && (
+          <p className="mt-1.5 text-[11px] text-muted-foreground">
+            Selecionadas: <span className="font-medium">{fitaColors.map((id) => BEM_CASADO_FITAS.find((c) => c.id === id)?.label).join(", ")}</span>
+          </p>
+        )}
+      </div>
+
+      {/* Notes */}
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Observação</h4>
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value.slice(0, 280))} rows={2} className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20" />
+      </div>
+
+      <button onClick={handleAdd} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
         Adicionar à sacola · {formatBRL(total)}
       </button>
     </div>

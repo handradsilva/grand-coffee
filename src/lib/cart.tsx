@@ -8,14 +8,16 @@ export interface CartCustomization {
   flavors?: string[];
   color?: string;
   format?: string;
-  // Bolo
-  kind?: "doces" | "bolo";
+  // Bolo / Bem-Casado
+  kind?: "doces" | "bolo" | "bem-casado";
   weightKg?: number;
   recheios?: string[];
   adicionais?: string[];
   cobertura?: string;
   fitaColor?: string;
+  fitaColors?: string[];
   embalagem?: boolean;
+  tag?: "com" | "sem";
   modelImage?: string; // data URL
   modelImageName?: string;
 }

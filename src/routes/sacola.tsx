@@ -86,6 +86,16 @@ function Cart() {
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
         }
+        if (c.kind === "bem-casado") {
+          return [
+            `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
+            `   - Medida: 5cm / quadrado`,
+            `   - Tag: ${c.tag === "com" ? "Com tag (R$ 4,50/un.)" : "Sem tag (R$ 4,00/un.)"}`,
+            c.recheios && c.recheios.length ? `   - Recheios: ${c.recheios.join(", ")}` : "",
+            c.fitaColors && c.fitaColors.length ? `   - Cor(es) da fita: ${c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
+            c.notes ? `   - Obs.: ${c.notes}` : "",
+          ].filter(Boolean);
+        }
         return [
           `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
           c.flavors && c.flavors.length ? `   - Sabores: ${c.flavors.join(", ")}` : "",
@@ -167,9 +177,11 @@ function Cart() {
                   const unit = cartUnitPrice(i);
                   const c = i.customization;
                   const isBolo = c?.kind === "bolo";
+                  const isBemCasado = c?.kind === "bem-casado";
+                  const isDoces = c?.kind === "doces";
                   const isCustom = !!c;
-                  const step = isCustom && !isBolo ? 10 : 1;
-                  const minQty = isCustom && !isBolo ? 50 : 1;
+                  const step = isBemCasado ? 1 : (isDoces ? 10 : 1);
+                  const minQty = isBemCasado ? 30 : (isDoces ? 50 : 1);
                   return (
                     <li key={i.lineId} className="flex gap-4 p-5">
                       <img src={c?.modelImage || i.product.image} alt={i.product.name} className="h-24 w-24 rounded-md object-cover" />
@@ -208,7 +220,22 @@ function Cart() {
                                 )}
                               </div>
                             )}
-                            {c && !isBolo && (
+                            {c && isBemCasado && (
+                              <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
+                                <p><span className="font-medium text-foreground">Medida:</span> 5cm / quadrado</p>
+                                <p><span className="font-medium text-foreground">Tag:</span> {c.tag === "com" ? "Com tag" : "Sem tag"}</p>
+                                {c.recheios && c.recheios.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Recheios:</span> {c.recheios.join(", ")}</p>
+                                )}
+                                {c.fitaColors && c.fitaColors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Fita:</span> <span className="capitalize">{c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                )}
+                                {c.notes && (
+                                  <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
+                                )}
+                              </div>
+                            )}
+                            {c && isDoces && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
                                 {c.flavors && c.flavors.length > 0 && (
                                   <p><span className="font-medium text-foreground">Sabores:</span> {c.flavors.join(", ")}</p>
