@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ShoppingBag, Instagram, MapPin, Phone, Clock, MessageCircle } from "lucide-react";
+import { ShoppingBag, Instagram, MapPin, Phone, Clock } from "lucide-react";
+import whatsappIcon from "@/assets/whatsapp.png";
 import { type ReactNode } from "react";
 import { useCart } from "@/lib/cart";
 import { formatBRL } from "@/lib/products";
