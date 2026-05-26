@@ -153,8 +153,28 @@ function Cart() {
       toast.error("Preencha os campos obrigatórios.");
       return;
     }
-    if (form.mode === "entrega" && !form.address) {
-      toast.error("Informe o endereço de entrega.");
+    // Bloqueia domingo
+    const [yy, mm, dd] = form.date.split("-").map(Number);
+    const selected = new Date(yy, (mm ?? 1) - 1, dd ?? 1);
+    if (selected.getDay() === 0) {
+      toast.error("Não fazemos pedidos para retirada aos domingos. Escolha outro dia.");
+      return;
+    }
+    // Limite 60 dias
+    const limit = new Date();
+    limit.setHours(0, 0, 0, 0);
+    limit.setDate(limit.getDate() + 60);
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    if (selected < start || selected > limit) {
+      toast.error("Só é possível reservar para os próximos 60 dias.");
+      return;
+    }
+    // Horário 07:30 - 18:00
+    const [hh, mi] = form.time.split(":").map(Number);
+    const mins = (hh ?? 0) * 60 + (mi ?? 0);
+    if (mins < 7 * 60 + 30 || mins > 18 * 60) {
+      toast.error("Selecione um horário de retirada entre 07h30 e 18h.");
       return;
     }
     setSubmitting(true);
