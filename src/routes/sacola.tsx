@@ -267,8 +267,8 @@ function Cart() {
                                 {c.format && (
                                   <p><span className="font-medium text-foreground">Formato:</span> {c.format}</p>
                                 )}
-                                {c.color && (
-                                  <p><span className="font-medium text-foreground">Cor:</span> <span className="capitalize">{c.color.replace(/-/g, " ")}</span></p>
+                                {c.colors && c.colors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Cor(es):</span> <span className="capitalize">{c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
                                 )}
                                 {c.notes && (
                                   <p><span className="font-medium text-foreground">Obs.:</span> {c.notes}</p>
