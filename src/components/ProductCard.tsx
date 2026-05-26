@@ -24,6 +24,16 @@ import kit3d from "@/assets/kit-festa-3-4.jpeg";
 import kit3e from "@/assets/kit-festa-3-5.jpeg";
 import kit3f from "@/assets/kit-festa-3-6.jpeg";
 import kit3g from "@/assets/kit-festa-3-7.jpeg";
+import bc1 from "@/assets/bem-casado-1.jpeg";
+import bc2 from "@/assets/bem-casado-2.jpeg";
+import bc3 from "@/assets/bem-casado-3.jpeg";
+import bc4 from "@/assets/bem-casado-4.jpeg";
+import bc5 from "@/assets/bem-casado-5.jpeg";
+import bc6 from "@/assets/bem-casado-6.jpeg";
+import bc7 from "@/assets/bem-casado-7.jpeg";
+import bc8 from "@/assets/bem-casado-8.jpeg";
+import bc9 from "@/assets/bem-casado-9.jpeg";
+import bc10 from "@/assets/bem-casado-10.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -33,6 +43,8 @@ const VINTAGE_FLORAL_IMAGES = [
 const DOCES_TRADICIONAIS_IMAGES = [doces1, doces2, doces3, doces4];
 
 const KIT_FESTA_3_IMAGES = [kit3a, kit3b, kit3c, kit3d, kit3e, kit3f, kit3g];
+
+const BEM_CASADO_IMAGES = [bc1, bc2, bc3, bc4, bc5, bc6, bc7, bc8, bc9, bc10];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -375,6 +387,8 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={DOCES_TRADICIONAIS_IMAGES} alt={product.name} />
         ) : product.id === "kit-festa-3" ? (
           <ImageCarousel images={KIT_FESTA_3_IMAGES} alt={product.name} />
+        ) : product.id === "bem-casado" ? (
+          <ImageCarousel images={BEM_CASADO_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
