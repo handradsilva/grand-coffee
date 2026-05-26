@@ -232,7 +232,7 @@ function CustomizationPanel({
   const [flavors, setFlavors] = useState<string[]>([]);
   const [formats, setFormats] = useState<string[]>([]);
   const [qty, setQty] = useState(MIN_QTY);
-  const [color, setColor] = useState<string>("");
+  const [colors, setColors] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
 
   const total = qty * unitPrice;
