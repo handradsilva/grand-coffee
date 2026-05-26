@@ -626,7 +626,7 @@ function BoloCustomizationPanel({
       {/* Modelo do bolo (Bolo Decorado) */}
       {cfg.showModelImage && (
         <div className="mt-5">
-          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
           <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
           <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
           {modelImage ? (
@@ -647,6 +647,36 @@ function BoloCustomizationPanel({
               <ImageIcon className="h-4 w-4 opacity-60" />
             </button>
           )}
+        </div>
+      )}
+
+      {/* Toppers (Bolo Decorado) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Toppers</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+          </div>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {BOLO_TOPPERS.map((t) => {
+              const active = topper === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTopper(t.id)}
+                  className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {active && <Check className="h-3 w-3" />}
+                    {t.label}
+                  </span>
+                  <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
+                    {t.price === 0 ? "Sem custo" : `+${formatBRL(t.price)}`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
