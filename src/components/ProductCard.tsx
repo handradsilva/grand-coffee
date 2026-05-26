@@ -139,12 +139,33 @@ interface KitConfig {
   title: string;
   options: KitOption[];
   note: string;
+  salgadosNote?: string;
   boloRecheios: string[];
   maxBoloRecheios: number;
   coberturas?: string[];
   finos: boolean;
   cupcake: boolean;
+  showFinosColors?: boolean; // até 2 cores das forminhas
+  showSharedColor?: boolean; // 1 cor compartilhada (forminhas + fita naked)
+  showModelImage?: boolean;  // upload de foto modelo do bolo
 }
+
+const KIT_COLORS: { id: string; label: string; hex: string }[] = [
+  { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
+  { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
+  { id: "amarelo", label: "Amarelo", hex: "#f4d35e" },
+  { id: "verde-bandeira", label: "Verde bandeira", hex: "#2e7d32" },
+  { id: "verde-agua", label: "Verde água", hex: "#8ed1c4" },
+  { id: "azul-marinho", label: "Azul marinho", hex: "#1a237e" },
+  { id: "azul-claro", label: "Azul claro", hex: "#7bb3e8" },
+  { id: "laranja", label: "Laranja", hex: "#f0a05a" },
+  { id: "marrom", label: "Marrom", hex: "#8b5a3c" },
+  { id: "vermelho", label: "Vermelho", hex: "#d8504a" },
+  { id: "lilas", label: "Lilás", hex: "#b89cd9" },
+];
+
+const SALGADOS_NOTE = "Salgados nos sabores: Bolinha de queijo, coxinha de frango e risole de carne.";
+
 const KIT_CONFIGS: Record<string, KitConfig> = {
   "kit-festa-1": {
     title: "Kit Festa 1",
@@ -155,10 +176,13 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
       { id: "30p", label: "30 pessoas", price: 520, items: ["Bolo 3kg", "Topo Impresso", "100 doces", "100 salgados"] },
     ],
     note: "Acompanha bolo decorado em chantininho e topo impresso. Não incluso: bolo de 2 andares, vintage e floral cake, cores prata e dourado para bolo e forminhas.",
+    salgadosNote: SALGADOS_NOTE,
     boloRecheios: BOLO_CONFIGS["bolo-choc"].recheios,
     maxBoloRecheios: 2,
     finos: true,
     cupcake: false,
+    showFinosColors: true,
+    showModelImage: true,
   },
   "kit-festa-2": {
     title: "Kit Festa 2",
@@ -169,11 +193,13 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
       { id: "30p", label: "30 pessoas", price: 410, items: ["Naked 3kg", "50 doces", "100 salgados"] },
     ],
     note: "Acompanha Naked Cake no acetato. Modelo padrão. Não incluso topo personalizado.",
+    salgadosNote: SALGADOS_NOTE,
     boloRecheios: BOLO_CONFIGS["bolo-pote-tira"].recheios,
     maxBoloRecheios: 2,
     coberturas: BOLO_CONFIGS["bolo-pote-tira"].coberturas,
     finos: true,
     cupcake: false,
+    showSharedColor: true,
   },
   "kit-festa-3": {
     title: "Kit Festa 3",
@@ -187,6 +213,8 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     maxBoloRecheios: 2,
     finos: true,
     cupcake: true,
+    showFinosColors: true,
+    showModelImage: true,
   },
 };
 
@@ -1135,6 +1163,11 @@ function KitFestaCustomizationPanel({
   const [finosFormatos, setFinosFormatos] = useState<string[]>([]);
   const [finosRecheios, setFinosRecheios] = useState<string[]>([]);
   const [cupcakeRecheio, setCupcakeRecheio] = useState<string>("");
+  const [finosColors, setFinosColors] = useState<string[]>([]);
+  const [sharedColor, setSharedColor] = useState<string>("");
+  const [modelImage, setModelImage] = useState<string>("");
+  const [modelImageName, setModelImageName] = useState<string>("");
+  const fileRef = useRef<HTMLInputElement>(null);
   const [notes, setNotes] = useState("");
 
   const selected = cfg.options.find((o) => o.id === optionId);
@@ -1171,6 +1204,30 @@ function KitFestaCustomizationPanel({
       return [...prev, f];
     });
   }
+  function toggleFinosColor(id: string) {
+    setFinosColors((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 cores das forminhas.");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  }
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Imagem muito grande. Máx. 5MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setModelImage(reader.result as string);
+      setModelImageName(file.name);
+    };
+    reader.readAsDataURL(file);
+  }
 
   function handleAdd() {
     if (!selected) return toast.error("Escolha uma opção do kit.");
@@ -1180,6 +1237,9 @@ function KitFestaCustomizationPanel({
       if (finosFormatos.length === 0) return toast.error("Escolha pelo menos 1 formato dos doces finos.");
       if (finosRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio dos doces finos.");
     }
+    if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
+    if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
+    if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
       kind: "kit",
@@ -1192,6 +1252,10 @@ function KitFestaCustomizationPanel({
       finosFormatos: cfg.finos ? finosFormatos : undefined,
       finosRecheios: cfg.finos ? finosRecheios : undefined,
       cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
+      colors: cfg.showFinosColors ? finosColors : undefined,
+      fitaColor: cfg.showSharedColor ? sharedColor : undefined,
+      modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
+      modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
     onAdded();
@@ -1209,8 +1273,12 @@ function KitFestaCustomizationPanel({
       <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
         <p className="mt-1 text-xs text-foreground">{cfg.note}</p>
+        {cfg.salgadosNote && (
+          <p className="mt-1.5 text-xs font-medium text-foreground">{cfg.salgadosNote}</p>
+        )}
         <p className="mt-1.5 text-[11px] italic text-muted-foreground">Os kits não podem ser alterados.</p>
       </div>
+
 
       {/* Opções do Kit */}
       <div className="mt-5">
@@ -1340,6 +1408,86 @@ function KitFestaCustomizationPanel({
               );
             })}
           </div>
+        </div>
+      )}
+
+
+      {/* Cor das forminhas dos doces (Kit 1 / Kit 3) — até 2 cores */}
+      {cfg.showFinosColors && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Cor das forminhas dos doces</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosColors.length}/2</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {KIT_COLORS.map((c) => {
+              const active = finosColors.includes(c.id);
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => toggleFinosColor(c.id)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                  {c.label}
+                  {active && <Check className="h-3 w-3 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Cor compartilhada — forminhas + fita do naked (Kit 2) — 1 cor */}
+      {cfg.showSharedColor && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Cor das forminhas e da fita do naked</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1 cor (vale para os dois)</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {KIT_COLORS.map((c) => {
+              const active = sharedColor === c.id;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setSharedColor(active ? "" : c.id)}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                  {c.label}
+                  {active && <Check className="h-3 w-3 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Modelo do bolo (Kit 1 / Kit 3) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
+          <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
+          <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+          {modelImage ? (
+            <div className="mt-2 flex items-center gap-3 rounded-md border border-border bg-background p-2">
+              <img src={modelImage} alt="Modelo" className="h-16 w-16 rounded object-cover" />
+              <div className="flex-1 truncate text-xs">
+                <p className="truncate font-medium">{modelImageName}</p>
+                <button type="button" onClick={() => fileRef.current?.click()} className="mt-1 text-primary hover:underline">Trocar foto</button>
+              </div>
+              <button type="button" onClick={() => { setModelImage(""); setModelImageName(""); }} className="text-muted-foreground hover:text-destructive" aria-label="Remover">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => fileRef.current?.click()} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-4 py-3 text-xs font-medium text-foreground transition-colors hover:border-primary/50 hover:bg-secondary">
+              <Upload className="h-4 w-4" />
+              Enviar foto da galeria
+              <ImageIcon className="h-4 w-4 opacity-60" />
+            </button>
+          )}
         </div>
       )}
 
