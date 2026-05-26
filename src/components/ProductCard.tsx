@@ -325,24 +325,28 @@ function BoloCustomizationPanel({
   onAdded: () => void;
 }) {
   const { add } = useCart();
-  const basePrice = product.price; // 110 for 1kg
+  const cfg = BOLO_CONFIGS[product.id];
   const [weightKg, setWeightKg] = useState(1);
   const [recheios, setRecheios] = useState<string[]>([]);
   const [adicionais, setAdicionais] = useState<string[]>([]);
+  const [cobertura, setCobertura] = useState<string>("");
+  const [fitaColor, setFitaColor] = useState<string>("");
+  const [embalagem, setEmbalagem] = useState(false);
   const [notes, setNotes] = useState("");
   const [modelImage, setModelImage] = useState<string>("");
   const [modelImageName, setModelImageName] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const weightPrice = basePrice + ((weightKg - 1) / BOLO_STEP_KG) * BOLO_STEP_PRICE;
+  const weightPrice = cfg.basePrice + ((weightKg - 1) / cfg.stepKg) * cfg.stepPrice;
   const adicionaisPrice = adicionais.length * BOLO_ADICIONAL_PRICE;
-  const total = weightPrice + adicionaisPrice;
+  const embalagemPrice = embalagem ? NAKED_EMBALAGEM_PRICE : 0;
+  const total = weightPrice + adicionaisPrice + embalagemPrice;
 
   function toggleRecheio(f: string) {
     setRecheios((prev) => {
       if (prev.includes(f)) return prev.filter((x) => x !== f);
-      if (prev.length >= 2) {
-        toast.error("Máximo de 2 recheios.");
+      if (prev.length >= cfg.maxRecheios) {
+        toast.error(`Máximo de ${cfg.maxRecheios} recheios.`);
         return prev;
       }
       return [...prev, f];
@@ -374,15 +378,20 @@ function BoloCustomizationPanel({
 
   function handleAdd() {
     if (recheios.length === 0) return toast.error("Escolha pelo menos 1 recheio.");
+    if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura.");
+    if (cfg.showFita && !fitaColor) return toast.error("Escolha a cor da fita.");
     add(product, 1, {
       kind: "bolo",
       notes,
       unitPrice: total,
       weightKg,
       recheios,
-      adicionais,
-      modelImage: modelImage || undefined,
-      modelImageName: modelImageName || undefined,
+      adicionais: cfg.showAdicionais ? adicionais : undefined,
+      cobertura: cobertura || undefined,
+      fitaColor: fitaColor || undefined,
+      embalagem: cfg.showEmbalagem ? embalagem : undefined,
+      modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
+      modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} adicionado à sacola.`);
     onAdded();
@@ -397,25 +406,26 @@ function BoloCustomizationPanel({
         </button>
       </div>
 
-      {/* Header note */}
-      <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações da massa</p>
-        <p className="mt-1 text-sm font-medium text-foreground">Massa Amanteigada com Margarina e Cobertura em Chantilly</p>
-      </div>
+      {cfg.massaHeader && (
+        <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações da massa</p>
+          <p className="mt-1 text-sm font-medium text-foreground">{cfg.massaHeader}</p>
+        </div>
+      )}
 
       {/* Weight */}
       <div className="mt-5">
         <div className="flex items-baseline justify-between">
           <h4 className="text-sm font-semibold">Peso do bolo</h4>
-          <span className="text-[11px] text-muted-foreground">A partir de 1kg · +{formatBRL(BOLO_STEP_PRICE)} a cada 500g</span>
+          <span className="text-[11px] text-muted-foreground">A partir de 1kg · +{formatBRL(cfg.stepPrice)} a cada 500g</span>
         </div>
         <div className="mt-2 flex items-center gap-3">
           <div className="flex items-center gap-1 rounded-full border border-border bg-background">
-            <button onClick={() => handleWeight(-BOLO_STEP_KG)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary disabled:opacity-40" disabled={weightKg <= 1} aria-label="Diminuir 500g">
+            <button onClick={() => handleWeight(-cfg.stepKg)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary disabled:opacity-40" disabled={weightKg <= 1} aria-label="Diminuir 500g">
               <Minus className="h-3.5 w-3.5" />
             </button>
             <span className="w-20 text-center text-sm font-semibold">{weightKg.toFixed(1)} kg</span>
-            <button onClick={() => handleWeight(BOLO_STEP_KG)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary" aria-label="Aumentar 500g">
+            <button onClick={() => handleWeight(cfg.stepKg)} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary" aria-label="Aumentar 500g">
               <Plus className="h-3.5 w-3.5" />
             </button>
           </div>
@@ -430,10 +440,10 @@ function BoloCustomizationPanel({
       <div className="mt-5">
         <div className="flex items-baseline justify-between">
           <h4 className="text-sm font-semibold">Recheios</h4>
-          <span className="text-[11px] text-muted-foreground">Escolha até 2 · {recheios.length}/2</span>
+          <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxRecheios} · {recheios.length}/{cfg.maxRecheios}</span>
         </div>
         <div className="mt-2 flex flex-wrap gap-1.5">
-          {BOLO_RECHEIOS.map((f) => {
+          {cfg.recheios.map((f) => {
             const active = recheios.includes(f);
             return (
               <button key={f} onClick={() => toggleRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
@@ -445,50 +455,110 @@ function BoloCustomizationPanel({
         </div>
       </div>
 
-      {/* Adicionais */}
-      <div className="mt-5">
-        <div className="flex items-baseline justify-between">
-          <h4 className="text-sm font-semibold">Adicionais <span className="font-normal text-muted-foreground">(opcional)</span></h4>
-          <span className="text-[11px] text-muted-foreground">+{formatBRL(BOLO_ADICIONAL_PRICE)} por item</span>
-        </div>
-        <p className="mt-1 text-[11px] text-muted-foreground">Cada adicional escolhido soma {formatBRL(BOLO_ADICIONAL_PRICE)} ao valor final.</p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {BOLO_ADICIONAIS.map((f) => {
-            const active = adicionais.includes(f);
-            return (
-              <button key={f} onClick={() => toggleAdicional(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
-                {active && <Check className="h-3 w-3" />}
-                {f} <span className="ml-0.5 text-[10px] opacity-80">+{formatBRL(BOLO_ADICIONAL_PRICE)}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Modelo do bolo */}
-      <div className="mt-5">
-        <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-muted-foreground">(opcional)</span></h4>
-        <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
-        <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
-        {modelImage ? (
-          <div className="mt-2 flex items-center gap-3 rounded-md border border-border bg-background p-2">
-            <img src={modelImage} alt="Modelo" className="h-16 w-16 rounded object-cover" />
-            <div className="flex-1 truncate text-xs">
-              <p className="truncate font-medium">{modelImageName}</p>
-              <button type="button" onClick={() => fileRef.current?.click()} className="mt-1 text-primary hover:underline">Trocar foto</button>
-            </div>
-            <button type="button" onClick={() => { setModelImage(""); setModelImageName(""); }} className="text-muted-foreground hover:text-destructive" aria-label="Remover">
-              <X className="h-4 w-4" />
-            </button>
+      {/* Cobertura (Naked Cake) */}
+      {cfg.coberturas && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Cobertura</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
           </div>
-        ) : (
-          <button type="button" onClick={() => fileRef.current?.click()} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-4 py-3 text-xs font-medium text-foreground transition-colors hover:border-primary/50 hover:bg-secondary">
-            <Upload className="h-4 w-4" />
-            Enviar foto da galeria
-            <ImageIcon className="h-4 w-4 opacity-60" />
-          </button>
-        )}
-      </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.coberturas.map((f) => {
+              const active = cobertura === f;
+              return (
+                <button key={f} onClick={() => setCobertura(active ? "" : f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Cor da fita (Naked Cake) */}
+      {cfg.showFita && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Cor da fita</h4>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {FITA_COLORS.map((c) => {
+              const active = fitaColor === c.id;
+              return (
+                <button key={c.id} onClick={() => setFitaColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
+                  {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+                </button>
+              );
+            })}
+          </div>
+          {fitaColor && (
+            <p className="mt-1.5 text-[11px] text-muted-foreground">
+              Selecionada: <span className="font-medium">{FITA_COLORS.find((c) => c.id === fitaColor)?.label}</span>
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Embalagem (Naked Cake) */}
+      {cfg.showEmbalagem && (
+        <div className="mt-5">
+          <label className="flex cursor-pointer items-center justify-between gap-3 rounded-md border border-border bg-background px-3 py-2.5">
+            <div>
+              <p className="text-sm font-semibold">Adicionar embalagem</p>
+              <p className="text-[11px] text-muted-foreground">Opcional · +{formatBRL(NAKED_EMBALAGEM_PRICE)}</p>
+            </div>
+            <input type="checkbox" checked={embalagem} onChange={(e) => setEmbalagem(e.target.checked)} className="h-5 w-5 accent-primary" />
+          </label>
+        </div>
+      )}
+
+      {/* Adicionais (Bolo Decorado) */}
+      {cfg.showAdicionais && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicionais <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+            <span className="text-[11px] text-muted-foreground">+{formatBRL(BOLO_ADICIONAL_PRICE)} por item</span>
+          </div>
+          <p className="mt-1 text-[11px] text-muted-foreground">Cada adicional escolhido soma {formatBRL(BOLO_ADICIONAL_PRICE)} ao valor final.</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {BOLO_ADICIONAIS.map((f) => {
+              const active = adicionais.includes(f);
+              return (
+                <button key={f} onClick={() => toggleAdicional(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f} <span className="ml-0.5 text-[10px] opacity-80">+{formatBRL(BOLO_ADICIONAL_PRICE)}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Modelo do bolo (Bolo Decorado) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+          <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
+          <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+          {modelImage ? (
+            <div className="mt-2 flex items-center gap-3 rounded-md border border-border bg-background p-2">
+              <img src={modelImage} alt="Modelo" className="h-16 w-16 rounded object-cover" />
+              <div className="flex-1 truncate text-xs">
+                <p className="truncate font-medium">{modelImageName}</p>
+                <button type="button" onClick={() => fileRef.current?.click()} className="mt-1 text-primary hover:underline">Trocar foto</button>
+              </div>
+              <button type="button" onClick={() => { setModelImage(""); setModelImageName(""); }} className="text-muted-foreground hover:text-destructive" aria-label="Remover">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => fileRef.current?.click()} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-4 py-3 text-xs font-medium text-foreground transition-colors hover:border-primary/50 hover:bg-secondary">
+              <Upload className="h-4 w-4" />
+              Enviar foto da galeria
+              <ImageIcon className="h-4 w-4 opacity-60" />
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Notes */}
       <div className="mt-5">
@@ -506,6 +576,12 @@ function BoloCustomizationPanel({
           <div className="mt-1 flex justify-between text-muted-foreground">
             <span>{adicionais.length} adicional(is)</span>
             <span>+{formatBRL(adicionaisPrice)}</span>
+          </div>
+        )}
+        {embalagem && (
+          <div className="mt-1 flex justify-between text-muted-foreground">
+            <span>Embalagem</span>
+            <span>+{formatBRL(NAKED_EMBALAGEM_PRICE)}</span>
           </div>
         )}
         <div className="mt-2 flex items-baseline justify-between border-t border-border pt-2">
