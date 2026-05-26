@@ -82,6 +82,7 @@ function Cart() {
             c.fitaColor ? `   - Cor da fita: ${c.fitaColor.replace(/-/g, " ")}` : "",
             c.embalagem ? `   - Embalagem: sim (+R$ 3,00)` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
+            c.topper ? `   - Topper: ${c.topper}${c.topperPrice ? ` (+${formatBRL(c.topperPrice)})` : ""}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
