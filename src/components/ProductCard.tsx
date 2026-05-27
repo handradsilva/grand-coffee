@@ -1490,14 +1490,31 @@ function KitFestaCustomizationPanel({
     reader.readAsDataURL(file);
   }
 
+  function toggleTradicionalRecheio(f: string) {
+    setTradicionaisRecheios((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= maxTrad) {
+        toast.error(`Máximo de ${maxTrad} sabores tradicionais.`);
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+  function toggleAdicional(f: string) {
+    setAdicionais((prev) => prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]);
+  }
+
   function handleAdd() {
     if (!selected) return toast.error("Escolha uma opção do kit.");
     if (boloRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio do bolo.");
     if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura do bolo.");
-    if (cfg.finos) {
+    if (cfg.docesTipoChoice && !docesTipo) return toast.error("Escolha entre doces finos ou tradicionais.");
+    if (effectiveFinos) {
       if (finosFormatos.length === 0) return toast.error("Escolha pelo menos 1 formato dos doces finos.");
       if (finosRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio dos doces finos.");
     }
+    if (effectiveTradicionais && tradicionaisRecheios.length === 0) return toast.error("Escolha pelo menos 1 sabor dos doces tradicionais.");
+    if (cfg.bemCasadoRecheio && !bemCasadoRecheio) return toast.error("Escolha 1 recheio do bem-casado.");
     if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
     if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
@@ -1510,8 +1527,12 @@ function KitFestaCustomizationPanel({
       kitItems: selected.items,
       recheios: boloRecheios,
       cobertura: cobertura || undefined,
-      finosFormatos: cfg.finos ? finosFormatos : undefined,
-      finosRecheios: cfg.finos ? finosRecheios : undefined,
+      finosFormatos: effectiveFinos ? finosFormatos : undefined,
+      finosRecheios: effectiveFinos ? finosRecheios : undefined,
+      tradicionaisRecheios: effectiveTradicionais ? tradicionaisRecheios : undefined,
+      docesTipo: cfg.docesTipoChoice && docesTipo ? docesTipo : undefined,
+      bemCasadoRecheio: cfg.bemCasadoRecheio ? bemCasadoRecheio : undefined,
+      adicionais: cfg.showBoloAdicionais ? adicionais : undefined,
       cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
       colors: cfg.showFinosColors ? finosColors : undefined,
       fitaColor: cfg.showSharedColor ? sharedColor : undefined,
