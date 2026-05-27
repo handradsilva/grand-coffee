@@ -1471,20 +1471,22 @@ function KitFestaCustomizationPanel({
     });
   }
   function toggleFinosFormato(f: string) {
+    const max = cfg.maxFinosOptions ?? 2;
     setFinosFormatos((prev) => {
       if (prev.includes(f)) return prev.filter((x) => x !== f);
-      if (prev.length >= 2) {
-        toast.error("Máximo de 2 formatos.");
+      if (prev.length >= max) {
+        toast.error(`Máximo de ${max} formatos.`);
         return prev;
       }
       return [...prev, f];
     });
   }
   function toggleFinosRecheio(f: string) {
+    const max = cfg.maxFinosOptions ?? 2;
     setFinosRecheios((prev) => {
       if (prev.includes(f)) return prev.filter((x) => x !== f);
-      if (prev.length >= 2) {
-        toast.error("Máximo de 2 recheios dos doces finos.");
+      if (prev.length >= max) {
+        toast.error(`Máximo de ${max} recheios dos doces finos.`);
         return prev;
       }
       return [...prev, f];
