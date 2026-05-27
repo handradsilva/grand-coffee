@@ -1689,7 +1689,7 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
-      {/* Doces finos - formatos */}
+      {/* Doces finos - formatos e recheios (aparece após escolher "finos") */}
       {effectiveFinos && (
         <>
           <div className="mt-5">
@@ -1730,6 +1730,27 @@ function KitFestaCustomizationPanel({
         </>
       )}
 
+      {/* Doces tradicionais - sabores (aparece após escolher "tradicionais") */}
+      {effectiveTradicionais && cfg.tradicionaisRecheios && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Sabores dos doces tradicionais</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até {maxTrad} · {tradicionaisRecheios.length}/{maxTrad}</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.tradicionaisRecheios.map((f) => {
+              const active = tradicionaisRecheios.includes(f);
+              return (
+                <button key={f} onClick={() => toggleTradicionalRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Palheta de cores do Combo */}
       {cfg.showComboColors && (
         <div className="mt-5">
@@ -1754,27 +1775,6 @@ function KitFestaCustomizationPanel({
               Selecionadas: <span className="font-medium">{comboColors.map((id) => BEM_CASADO_FITAS.find((c) => c.id === id)?.label).join(", ")}</span>
             </p>
           )}
-        </div>
-      )}
-
-      {/* Doces tradicionais - recheios */}
-      {effectiveTradicionais && cfg.tradicionaisRecheios && (
-        <div className="mt-5">
-          <div className="flex items-baseline justify-between">
-            <h4 className="text-sm font-semibold">Sabores dos doces tradicionais</h4>
-            <span className="text-[11px] text-muted-foreground">Escolha até {maxTrad} · {tradicionaisRecheios.length}/{maxTrad}</span>
-          </div>
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {cfg.tradicionaisRecheios.map((f) => {
-              const active = tradicionaisRecheios.includes(f);
-              return (
-                <button key={f} onClick={() => toggleTradicionalRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
-                  {active && <Check className="h-3 w-3" />}
-                  {f}
-                </button>
-              );
-            })}
-          </div>
         </div>
       )}
 
