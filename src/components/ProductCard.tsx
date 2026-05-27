@@ -58,6 +58,16 @@ import kf2e from "@/assets/kit-festa-2-5.jpeg";
 import kf2f from "@/assets/kit-festa-2-6.jpeg";
 import kf2g from "@/assets/kit-festa-2-7.jpeg";
 import kf2h from "@/assets/kit-festa-2-8.jpeg";
+import bd1 from "@/assets/bolo-decorado-1.jpeg";
+import bd2 from "@/assets/bolo-decorado-2.jpeg";
+import bd3 from "@/assets/bolo-decorado-3.jpeg";
+import bd4 from "@/assets/bolo-decorado-4.jpeg";
+import bd5 from "@/assets/bolo-decorado-5.jpeg";
+import bd6 from "@/assets/bolo-decorado-6.jpeg";
+import bd7 from "@/assets/bolo-decorado-7.jpeg";
+import bd8 from "@/assets/bolo-decorado-8.jpeg";
+import bd9 from "@/assets/bolo-decorado-9.jpeg";
+import bd10 from "@/assets/bolo-decorado-10.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -79,6 +89,8 @@ const NAKED_CAKE_IMAGES = [nc1, nc2];
 const KIT_FESTA_1_IMAGES = [kf1a, kf1b, kf1c];
 
 const KIT_FESTA_2_IMAGES = [kf2a, kf2b, kf2c, kf2d, kf2e, kf2f, kf2g, kf2h];
+
+const BOLO_DECORADO_IMAGES = [bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, bd10];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -417,6 +429,8 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="relative aspect-square overflow-hidden bg-muted">
         {product.id === "bolo-vintage-floral" ? (
           <ImageCarousel images={VINTAGE_FLORAL_IMAGES} alt={product.name} />
+        ) : product.id === "bolo-choc" ? (
+          <ImageCarousel images={BOLO_DECORADO_IMAGES} alt={product.name} />
         ) : product.id === "doces-tradicionais" ? (
           <ImageCarousel images={DOCES_TRADICIONAIS_IMAGES} alt={product.name} />
         ) : product.id === "kit-festa-3" ? (
