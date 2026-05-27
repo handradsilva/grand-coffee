@@ -50,6 +50,14 @@ import nc2 from "@/assets/naked-cake-2.jpeg";
 import kf1a from "@/assets/kit-festa-1-1.jpeg";
 import kf1b from "@/assets/kit-festa-1-2.jpeg";
 import kf1c from "@/assets/kit-festa-1-3.jpeg";
+import kf2a from "@/assets/kit-festa-2-1.jpeg";
+import kf2b from "@/assets/kit-festa-2-2.jpeg";
+import kf2c from "@/assets/kit-festa-2-3.jpeg";
+import kf2d from "@/assets/kit-festa-2-4.jpeg";
+import kf2e from "@/assets/kit-festa-2-5.jpeg";
+import kf2f from "@/assets/kit-festa-2-6.jpeg";
+import kf2g from "@/assets/kit-festa-2-7.jpeg";
+import kf2h from "@/assets/kit-festa-2-8.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -69,6 +77,8 @@ const CUPCAKE_IMAGES = [cup1, cup2, cup3];
 const NAKED_CAKE_IMAGES = [nc1, nc2];
 
 const KIT_FESTA_1_IMAGES = [kf1a, kf1b, kf1c];
+
+const KIT_FESTA_2_IMAGES = [kf2a, kf2b, kf2c, kf2d, kf2e, kf2f, kf2g, kf2h];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -421,6 +431,8 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={NAKED_CAKE_IMAGES} alt={product.name} />
         ) : product.id === "kit-festa-1" ? (
           <ImageCarousel images={KIT_FESTA_1_IMAGES} alt={product.name} />
+        ) : product.id === "kit-festa-2" ? (
+          <ImageCarousel images={KIT_FESTA_2_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
