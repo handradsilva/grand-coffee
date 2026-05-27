@@ -325,6 +325,13 @@ interface KitConfig {
   showFinosColors?: boolean; // até 2 cores das forminhas
   showSharedColor?: boolean; // 1 cor compartilhada (forminhas + fita naked)
   showModelImage?: boolean;  // upload de foto modelo do bolo
+  docesTipoChoice?: boolean; // escolher entre finos ou tradicionais
+  tradicionaisRecheios?: string[]; // sabores dos doces tradicionais
+  maxTradicionaisRecheios?: number;
+  bemCasadoRecheio?: boolean; // escolher 1 recheio do bem-casado
+  bemCasadoRecheiosOpts?: string[];
+  showBoloAdicionais?: boolean; // adicionar adicionais do bolo (R$20 cada)
+  bolo2Andares?: boolean; // header indicando bolo 2 andares + flores
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
