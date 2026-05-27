@@ -125,6 +125,7 @@ function Cart() {
             c.adicionais && c.adicionais.length ? `   - Adicionais do bolo: ${c.adicionais.join(", ")}` : "",
             c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.fitaColor ? `   - Cor (forminhas + fita do naked): ${c.fitaColor.replace(/-/g, " ")}` : "",
+            c.comboColors && c.comboColors.length ? `   - Palhetas de cores do Combo: ${c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.cupcakeRecheios && c.cupcakeRecheios.length ? `   - Recheio cupcake: ${c.cupcakeRecheios.join(", ")}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
@@ -315,6 +316,9 @@ function Cart() {
                                 )}
                                 {c.fitaColor && (
                                   <p><span className="font-medium text-foreground">Cor (forminhas + fita):</span> <span className="capitalize">{c.fitaColor.replace(/-/g, " ")}</span></p>
+                                )}
+                                {c.comboColors && c.comboColors.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Palhetas de cores do Combo:</span> <span className="capitalize">{c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
                                 )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
