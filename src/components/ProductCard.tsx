@@ -332,6 +332,7 @@ interface KitConfig {
   bemCasadoRecheiosOpts?: string[];
   showBoloAdicionais?: boolean; // adicionar adicionais do bolo (R$20 cada)
   bolo2Andares?: boolean; // header indicando bolo 2 andares + flores
+  showComboColors?: boolean; // palheta de cores do combo (até 2, mesmas opções do bem-casado)
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
@@ -419,6 +420,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     bemCasadoRecheiosOpts: ["Doce de leite", "Brigadeiro", "Ninho"],
     showBoloAdicionais: true,
     bolo2Andares: true,
+    showComboColors: true,
   },
 };
 
@@ -1424,6 +1426,18 @@ function KitFestaCustomizationPanel({
   const [tradicionaisRecheios, setTradicionaisRecheios] = useState<string[]>([]);
   const [bemCasadoRecheio, setBemCasadoRecheio] = useState<string>("");
   const [adicionais, setAdicionais] = useState<string[]>([]);
+  const [comboColors, setComboColors] = useState<string[]>([]);
+
+  function toggleComboColor(id: string) {
+    setComboColors((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 cores da palheta.");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  }
 
   const selected = cfg.options.find((o) => o.id === optionId);
   const basePrice = selected?.price ?? product.price;
@@ -1517,6 +1531,7 @@ function KitFestaCustomizationPanel({
     if (cfg.bemCasadoRecheio && !bemCasadoRecheio) return toast.error("Escolha 1 recheio do bem-casado.");
     if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
     if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
+    if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da palheta do combo.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
@@ -1536,6 +1551,7 @@ function KitFestaCustomizationPanel({
       cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
       colors: cfg.showFinosColors ? finosColors : undefined,
       fitaColor: cfg.showSharedColor ? sharedColor : undefined,
+      comboColors: cfg.showComboColors ? comboColors : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
