@@ -1730,7 +1730,7 @@ function KitFestaCustomizationPanel({
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
               <h4 className="text-sm font-semibold">Recheios dos doces finos</h4>
-              <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosRecheios.length}/2</span>
+              <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxFinosOptions ?? 2} · {finosRecheios.length}/{cfg.maxFinosOptions ?? 2}</span>
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {FLAVORS_FINOS.map((f) => {
