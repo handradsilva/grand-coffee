@@ -1420,10 +1420,20 @@ function KitFestaCustomizationPanel({
   const [modelImageName, setModelImageName] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
   const [notes, setNotes] = useState("");
+  const [docesTipo, setDocesTipo] = useState<"finos" | "tradicionais" | "">("");
+  const [tradicionaisRecheios, setTradicionaisRecheios] = useState<string[]>([]);
+  const [bemCasadoRecheio, setBemCasadoRecheio] = useState<string>("");
+  const [adicionais, setAdicionais] = useState<string[]>([]);
 
   const selected = cfg.options.find((o) => o.id === optionId);
-  const unitPrice = selected?.price ?? product.price;
+  const basePrice = selected?.price ?? product.price;
+  const adicionaisPrice = cfg.showBoloAdicionais ? adicionais.length * BOLO_ADICIONAL_PRICE : 0;
+  const unitPrice = basePrice + adicionaisPrice;
   const total = unitPrice;
+
+  const effectiveFinos = cfg.docesTipoChoice ? docesTipo === "finos" : cfg.finos;
+  const effectiveTradicionais = cfg.docesTipoChoice && docesTipo === "tradicionais";
+  const maxTrad = cfg.maxTradicionaisRecheios ?? 3;
 
   function toggleBoloRecheio(f: string) {
     setBoloRecheios((prev) => {
