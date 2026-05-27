@@ -337,7 +337,9 @@ interface KitConfig {
   bemCasadoRecheiosOpts?: string[];
   showBoloAdicionais?: boolean; // adicionar adicionais do bolo (R$20 cada)
   bolo2Andares?: boolean; // header indicando bolo 2 andares + flores
-  showComboColors?: boolean; // palheta de cores do combo (até 2, mesmas opções do bem-casado)
+  showComboColors?: boolean; // paleta de cores do combo (até 2, mesmas opções do bem-casado)
+  maxFinosOptions?: number; // limite de formatos/recheios dos doces finos (default 2)
+  showComboLocal?: boolean; // pede local de montagem + contato do cerimonialista
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
