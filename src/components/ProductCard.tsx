@@ -400,6 +400,26 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     showFinosColors: true,
     showModelImage: true,
   },
+  "combo-casamento": {
+    title: "Combo Casamento",
+    options: [
+      { id: "30p", label: "30 convidados", price: 700, items: ["Bolo 3kg / 2 andares + flores", "100 doces + forminhas Camélia", "30 bem-casados com tag"] },
+      { id: "40p", label: "40 convidados", price: 950, items: ["Bolo 4kg / 2 andares + flores", "150 doces + forminhas Camélia", "40 bem-casados com tag"] },
+      { id: "50p", label: "50 convidados", price: 1200, items: ["Bolo 5kg / 2 andares + flores", "200 doces + forminhas Camélia", "50 bem-casados com tag"] },
+    ],
+    note: "Incluso: Bolo 2 andares + flores artificiais · Bem-casado com tag personalizada · Doces finos ou tradicionais (acompanha forminhas Camélia) · Montagem do bolo no local do evento (somente em São Luís). Encomenda com até 14 dias de antecedência e no máximo 2 meses antes da data, com confirmação mediante pagamento de 50%. Forminhas, fitas e flores: verificar cores/modelos disponíveis.",
+    boloRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Palha italiana", "Capuccino", "Maracujá"],
+    maxBoloRecheios: 2,
+    finos: false,
+    cupcake: false,
+    docesTipoChoice: true,
+    tradicionaisRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Casadinho", "Coco queimado", "Churros"],
+    maxTradicionaisRecheios: 3,
+    bemCasadoRecheio: true,
+    bemCasadoRecheiosOpts: ["Doce de leite", "Brigadeiro", "Ninho"],
+    showBoloAdicionais: true,
+    bolo2Andares: true,
+  },
 };
 
 function isDoces(p: Product) {
