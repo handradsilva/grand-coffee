@@ -42,6 +42,14 @@ import df5 from "@/assets/doces-finos-5.jpeg";
 import df6 from "@/assets/doces-finos-6.jpeg";
 import df7 from "@/assets/doces-finos-7.jpeg";
 import df8 from "@/assets/doces-finos-8.jpeg";
+import cup1 from "@/assets/cupcake-1.jpeg";
+import cup2 from "@/assets/cupcake-2.jpeg";
+import cup3 from "@/assets/cupcake-3.jpeg";
+import nc1 from "@/assets/naked-cake-1.jpeg";
+import nc2 from "@/assets/naked-cake-2.jpeg";
+import kf1a from "@/assets/kit-festa-1-1.jpeg";
+import kf1b from "@/assets/kit-festa-1-2.jpeg";
+import kf1c from "@/assets/kit-festa-1-3.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -55,6 +63,12 @@ const KIT_FESTA_3_IMAGES = [kit3a, kit3b, kit3c, kit3d, kit3e, kit3f, kit3g];
 const BEM_CASADO_IMAGES = [bc1, bc2, bc3, bc4, bc5, bc6, bc7, bc8, bc9, bc10];
 
 const DOCES_FINOS_IMAGES = [df1, df2, df3, df4, df5, df6, df7, df8];
+
+const CUPCAKE_IMAGES = [cup1, cup2, cup3];
+
+const NAKED_CAKE_IMAGES = [nc1, nc2];
+
+const KIT_FESTA_1_IMAGES = [kf1a, kf1b, kf1c];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -401,6 +415,12 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={BEM_CASADO_IMAGES} alt={product.name} />
         ) : product.id === "doces-finos" ? (
           <ImageCarousel images={DOCES_FINOS_IMAGES} alt={product.name} />
+        ) : product.id === "cupcake" ? (
+          <ImageCarousel images={CUPCAKE_IMAGES} alt={product.name} />
+        ) : product.id === "bolo-pote-tira" ? (
+          <ImageCarousel images={NAKED_CAKE_IMAGES} alt={product.name} />
+        ) : product.id === "kit-festa-1" ? (
+          <ImageCarousel images={KIT_FESTA_1_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
