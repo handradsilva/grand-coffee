@@ -32,6 +32,7 @@ export interface CartCustomization {
   docesTipo?: "finos" | "tradicionais";
   tradicionaisRecheios?: string[];
   bemCasadoRecheio?: string;
+  comboColors?: string[];
 }
 
 export interface CartItem {

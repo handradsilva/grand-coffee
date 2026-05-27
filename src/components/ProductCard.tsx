@@ -1730,6 +1730,33 @@ function KitFestaCustomizationPanel({
         </>
       )}
 
+      {/* Palheta de cores do Combo */}
+      {cfg.showComboColors && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Palhetas de cores do Combo</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até 2 · {comboColors.length}/2</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {BEM_CASADO_FITAS.map((c) => {
+              const active = comboColors.includes(c.id);
+              return (
+                <button key={c.id} onClick={() => toggleComboColor(c.id)} title={c.label} className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                  <span className="h-4 w-4 rounded-full border border-border/60" style={{ backgroundColor: c.hex }} />
+                  <span>{c.label}</span>
+                  {active && <Check className="h-3 w-3 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+          {comboColors.length > 0 && (
+            <p className="mt-1.5 text-[11px] text-muted-foreground">
+              Selecionadas: <span className="font-medium">{comboColors.map((id) => BEM_CASADO_FITAS.find((c) => c.id === id)?.label).join(", ")}</span>
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Doces tradicionais - recheios */}
       {effectiveTradicionais && cfg.tradicionaisRecheios && (
         <div className="mt-5">
