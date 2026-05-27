@@ -332,6 +332,7 @@ interface KitConfig {
   bemCasadoRecheiosOpts?: string[];
   showBoloAdicionais?: boolean; // adicionar adicionais do bolo (R$20 cada)
   bolo2Andares?: boolean; // header indicando bolo 2 andares + flores
+  showComboColors?: boolean; // palheta de cores do combo (até 2, mesmas opções do bem-casado)
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
@@ -419,6 +420,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     bemCasadoRecheiosOpts: ["Doce de leite", "Brigadeiro", "Ninho"],
     showBoloAdicionais: true,
     bolo2Andares: true,
+    showComboColors: true,
   },
 };
 
@@ -1424,6 +1426,18 @@ function KitFestaCustomizationPanel({
   const [tradicionaisRecheios, setTradicionaisRecheios] = useState<string[]>([]);
   const [bemCasadoRecheio, setBemCasadoRecheio] = useState<string>("");
   const [adicionais, setAdicionais] = useState<string[]>([]);
+  const [comboColors, setComboColors] = useState<string[]>([]);
+
+  function toggleComboColor(id: string) {
+    setComboColors((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id);
+      if (prev.length >= 2) {
+        toast.error("Máximo de 2 cores da palheta.");
+        return prev;
+      }
+      return [...prev, id];
+    });
+  }
 
   const selected = cfg.options.find((o) => o.id === optionId);
   const basePrice = selected?.price ?? product.price;
@@ -1517,6 +1531,7 @@ function KitFestaCustomizationPanel({
     if (cfg.bemCasadoRecheio && !bemCasadoRecheio) return toast.error("Escolha 1 recheio do bem-casado.");
     if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
     if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
+    if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da palheta do combo.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
@@ -1536,6 +1551,7 @@ function KitFestaCustomizationPanel({
       cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
       colors: cfg.showFinosColors ? finosColors : undefined,
       fitaColor: cfg.showSharedColor ? sharedColor : undefined,
+      comboColors: cfg.showComboColors ? comboColors : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
@@ -1712,6 +1728,33 @@ function KitFestaCustomizationPanel({
             </div>
           </div>
         </>
+      )}
+
+      {/* Palheta de cores do Combo */}
+      {cfg.showComboColors && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Palhetas de cores do Combo</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até 2 · {comboColors.length}/2</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {BEM_CASADO_FITAS.map((c) => {
+              const active = comboColors.includes(c.id);
+              return (
+                <button key={c.id} onClick={() => toggleComboColor(c.id)} title={c.label} className={`flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                  <span className="h-4 w-4 rounded-full border border-border/60" style={{ backgroundColor: c.hex }} />
+                  <span>{c.label}</span>
+                  {active && <Check className="h-3 w-3 text-primary" />}
+                </button>
+              );
+            })}
+          </div>
+          {comboColors.length > 0 && (
+            <p className="mt-1.5 text-[11px] text-muted-foreground">
+              Selecionadas: <span className="font-medium">{comboColors.map((id) => BEM_CASADO_FITAS.find((c) => c.id === id)?.label).join(", ")}</span>
+            </p>
+          )}
+        </div>
       )}
 
       {/* Doces tradicionais - recheios */}
