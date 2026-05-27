@@ -40,7 +40,7 @@ export const products: Product[] = [
   { id: "kit-festa-1", name: "Kit Festa 1", category: "kits", price: 200, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Salgados", image: kitFesta, featured: true },
   { id: "kit-festa-2", name: "Kit Festa 2", category: "kits", price: 160, unit: "a partir de 10 pessoas", description: "Naked Cake, Doces e Salgados", image: kitFesta },
   { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Cupcakes", image: kitFesta },
-  { id: "combo-casamento", name: "Combo Casamento", category: "combo-casamento", price: 700, unit: "a partir de 30 convidados", description: "Bolo 2 andares + flores, bem-casados com tag e doces finos ou tradicionais.", image: kitFesta, featured: true },
+  { id: "combo-casamento", name: "Combo Casamento", category: "combo-casamento", price: 700, unit: "a partir de 30 convidados", description: "Bolo 2 andares + flores, bem-casados com tag , doces finos ou tradicionais. (Não incluso decoração)", image: kitFesta, featured: true },
 
 ];
 
