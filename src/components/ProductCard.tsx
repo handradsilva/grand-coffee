@@ -194,6 +194,11 @@ const BOLO_ADICIONAIS = ["Morango", "Castanha", "Ameixa", "Nutella", "Geleia de 
 const BOLO_ADICIONAL_PRICE = 20;
 const NAKED_EMBALAGEM_PRICE = 3;
 
+const BOLO_EXTRAS: { id: string; label: string; price: number }[] = [
+  { id: "flores-artificiais", label: "Flores artificiais", price: 25 },
+  { id: "esferas-coloridas", label: "Esferas coloridas", price: 20 },
+];
+
 const BOLO_TOPPERS: { id: string; label: string; price: number }[] = [
   { id: "sem", label: "Sem topper", price: 0 },
   { id: "tematico", label: "Topper Temático", price: 20 },
