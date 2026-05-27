@@ -1544,7 +1544,9 @@ function KitFestaCustomizationPanel({
     if (cfg.bemCasadoRecheio && !bemCasadoRecheio) return toast.error("Escolha 1 recheio do bem-casado.");
     if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
     if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
-    if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da palheta do combo.");
+    if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da paleta do combo.");
+    if (cfg.showComboLocal && !comboLocal.trim()) return toast.error("Informe o local onde o bolo será montado.");
+    if (cfg.showComboLocal && !comboCerimonialista.trim()) return toast.error("Informe o contato do cerimonialista.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
@@ -1565,6 +1567,8 @@ function KitFestaCustomizationPanel({
       colors: cfg.showFinosColors ? finosColors : undefined,
       fitaColor: cfg.showSharedColor ? sharedColor : undefined,
       comboColors: cfg.showComboColors ? comboColors : undefined,
+      comboLocal: cfg.showComboLocal ? comboLocal.trim() : undefined,
+      comboCerimonialista: cfg.showComboLocal ? comboCerimonialista.trim() : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
