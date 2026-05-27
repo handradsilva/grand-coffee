@@ -1436,12 +1436,14 @@ function KitFestaCustomizationPanel({
   const [bemCasadoRecheio, setBemCasadoRecheio] = useState<string>("");
   const [adicionais, setAdicionais] = useState<string[]>([]);
   const [comboColors, setComboColors] = useState<string[]>([]);
+  const [comboLocal, setComboLocal] = useState("");
+  const [comboCerimonialista, setComboCerimonialista] = useState("");
 
   function toggleComboColor(id: string) {
     setComboColors((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
       if (prev.length >= 2) {
-        toast.error("Máximo de 2 cores da palheta.");
+        toast.error("Máximo de 2 cores da paleta.");
         return prev;
       }
       return [...prev, id];
