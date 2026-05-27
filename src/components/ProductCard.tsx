@@ -482,6 +482,8 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={KIT_FESTA_1_IMAGES} alt={product.name} />
         ) : product.id === "kit-festa-2" ? (
           <ImageCarousel images={KIT_FESTA_2_IMAGES} alt={product.name} />
+        ) : product.id === "combo-casamento" ? (
+          <ImageCarousel images={COMBO_CASAMENTO_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
