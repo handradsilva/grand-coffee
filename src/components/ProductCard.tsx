@@ -411,11 +411,8 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     note: "Incluso: Bolo 2 andares + flores artificiais · Bem-casado com tag personalizada · Doces finos ou tradicionais (acompanha forminhas Camélia) · Montagem do bolo no local do evento (somente em São Luís). Encomenda com até 14 dias de antecedência e no máximo 2 meses antes da data, com confirmação mediante pagamento de 50%. Forminhas, fitas e flores: verificar cores/modelos disponíveis.",
     boloRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Palha italiana", "Capuccino", "Maracujá"],
     maxBoloRecheios: 2,
-    finos: false,
+    finos: true,
     cupcake: false,
-    docesTipoChoice: true,
-    tradicionaisRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Casadinho", "Coco queimado", "Churros"],
-    maxTradicionaisRecheios: 3,
     bemCasadoRecheio: true,
     bemCasadoRecheiosOpts: ["Doce de leite", "Brigadeiro", "Ninho"],
     showBoloAdicionais: true,
@@ -1692,6 +1689,13 @@ function KitFestaCustomizationPanel({
       {/* Doces finos - formatos */}
       {effectiveFinos && (
         <>
+          {product.id === "combo-casamento" && (
+            <div className="mt-5 rounded-md border border-border bg-background/60 px-3 py-2">
+              <p className="text-xs text-muted-foreground">
+                Os doces deste combo são os <span className="font-semibold text-foreground">Doces Finos do Combo Casamento</span>, acompanham forminhas Camélia. Escolha abaixo os formatos e recheios.
+              </p>
+            </div>
+          )}
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
               <h4 className="text-sm font-semibold">Formatos dos doces finos</h4>
