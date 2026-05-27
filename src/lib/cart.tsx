@@ -23,12 +23,15 @@ export interface CartCustomization {
   topperPrice?: number;
   modelImage?: string; // data URL
   modelImageName?: string;
-  // Kit Festa
+  // Kit Festa / Combo
   kitOptionLabel?: string;
   kitItems?: string[];
   finosRecheios?: string[];
   finosFormatos?: string[];
   cupcakeRecheios?: string[];
+  docesTipo?: "finos" | "tradicionais";
+  tradicionaisRecheios?: string[];
+  bemCasadoRecheio?: string;
 }
 
 export interface CartItem {
