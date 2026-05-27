@@ -1689,6 +1689,13 @@ function KitFestaCustomizationPanel({
       {/* Doces finos - formatos */}
       {effectiveFinos && (
         <>
+          {product.id === "combo-casamento" && (
+            <div className="mt-5 rounded-md border border-border bg-background/60 px-3 py-2">
+              <p className="text-xs text-muted-foreground">
+                Os doces deste combo são os <span className="font-semibold text-foreground">Doces Finos do Combo Casamento</span>, acompanham forminhas Camélia. Escolha abaixo os formatos e recheios.
+              </p>
+            </div>
+          )}
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
               <h4 className="text-sm font-semibold">Formatos dos doces finos</h4>
