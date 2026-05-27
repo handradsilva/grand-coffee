@@ -68,6 +68,12 @@ import bd7 from "@/assets/bolo-decorado-7.jpeg";
 import bd8 from "@/assets/bolo-decorado-8.jpeg";
 import bd9 from "@/assets/bolo-decorado-9.jpeg";
 import bd10 from "@/assets/bolo-decorado-10.jpeg";
+import combo1 from "@/assets/combo-casamento-1.jpg";
+import combo2 from "@/assets/combo-casamento-2.jpg";
+import combo3 from "@/assets/combo-casamento-3.jpg";
+import combo4 from "@/assets/combo-casamento-4.png";
+import combo5 from "@/assets/combo-casamento-5.png";
+import combo6 from "@/assets/combo-casamento-6.png";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -91,6 +97,8 @@ const KIT_FESTA_1_IMAGES = [kf1a, kf1b, kf1c];
 const KIT_FESTA_2_IMAGES = [kf2a, kf2b, kf2c, kf2d, kf2e, kf2f, kf2g, kf2h];
 
 const BOLO_DECORADO_IMAGES = [bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, bd10];
+
+const COMBO_CASAMENTO_IMAGES = [combo1, combo2, combo3, combo4, combo5, combo6];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -317,6 +325,13 @@ interface KitConfig {
   showFinosColors?: boolean; // até 2 cores das forminhas
   showSharedColor?: boolean; // 1 cor compartilhada (forminhas + fita naked)
   showModelImage?: boolean;  // upload de foto modelo do bolo
+  docesTipoChoice?: boolean; // escolher entre finos ou tradicionais
+  tradicionaisRecheios?: string[]; // sabores dos doces tradicionais
+  maxTradicionaisRecheios?: number;
+  bemCasadoRecheio?: boolean; // escolher 1 recheio do bem-casado
+  bemCasadoRecheiosOpts?: string[];
+  showBoloAdicionais?: boolean; // adicionar adicionais do bolo (R$20 cada)
+  bolo2Andares?: boolean; // header indicando bolo 2 andares + flores
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
@@ -385,6 +400,26 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     showFinosColors: true,
     showModelImage: true,
   },
+  "combo-casamento": {
+    title: "Combo Casamento",
+    options: [
+      { id: "30p", label: "30 convidados", price: 700, items: ["Bolo 3kg / 2 andares + flores", "100 doces + forminhas Camélia", "30 bem-casados com tag"] },
+      { id: "40p", label: "40 convidados", price: 950, items: ["Bolo 4kg / 2 andares + flores", "150 doces + forminhas Camélia", "40 bem-casados com tag"] },
+      { id: "50p", label: "50 convidados", price: 1200, items: ["Bolo 5kg / 2 andares + flores", "200 doces + forminhas Camélia", "50 bem-casados com tag"] },
+    ],
+    note: "Incluso: Bolo 2 andares + flores artificiais · Bem-casado com tag personalizada · Doces finos ou tradicionais (acompanha forminhas Camélia) · Montagem do bolo no local do evento (somente em São Luís). Encomenda com até 14 dias de antecedência e no máximo 2 meses antes da data, com confirmação mediante pagamento de 50%. Forminhas, fitas e flores: verificar cores/modelos disponíveis.",
+    boloRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Palha italiana", "Capuccino", "Maracujá"],
+    maxBoloRecheios: 2,
+    finos: false,
+    cupcake: false,
+    docesTipoChoice: true,
+    tradicionaisRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Casadinho", "Coco queimado", "Churros"],
+    maxTradicionaisRecheios: 3,
+    bemCasadoRecheio: true,
+    bemCasadoRecheiosOpts: ["Doce de leite", "Brigadeiro", "Ninho"],
+    showBoloAdicionais: true,
+    bolo2Andares: true,
+  },
 };
 
 function isDoces(p: Product) {
@@ -447,6 +482,8 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={KIT_FESTA_1_IMAGES} alt={product.name} />
         ) : product.id === "kit-festa-2" ? (
           <ImageCarousel images={KIT_FESTA_2_IMAGES} alt={product.name} />
+        ) : product.id === "combo-casamento" ? (
+          <ImageCarousel images={COMBO_CASAMENTO_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
@@ -1383,10 +1420,20 @@ function KitFestaCustomizationPanel({
   const [modelImageName, setModelImageName] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
   const [notes, setNotes] = useState("");
+  const [docesTipo, setDocesTipo] = useState<"finos" | "tradicionais" | "">("");
+  const [tradicionaisRecheios, setTradicionaisRecheios] = useState<string[]>([]);
+  const [bemCasadoRecheio, setBemCasadoRecheio] = useState<string>("");
+  const [adicionais, setAdicionais] = useState<string[]>([]);
 
   const selected = cfg.options.find((o) => o.id === optionId);
-  const unitPrice = selected?.price ?? product.price;
+  const basePrice = selected?.price ?? product.price;
+  const adicionaisPrice = cfg.showBoloAdicionais ? adicionais.length * BOLO_ADICIONAL_PRICE : 0;
+  const unitPrice = basePrice + adicionaisPrice;
   const total = unitPrice;
+
+  const effectiveFinos = cfg.docesTipoChoice ? docesTipo === "finos" : cfg.finos;
+  const effectiveTradicionais = cfg.docesTipoChoice && docesTipo === "tradicionais";
+  const maxTrad = cfg.maxTradicionaisRecheios ?? 3;
 
   function toggleBoloRecheio(f: string) {
     setBoloRecheios((prev) => {
@@ -1443,14 +1490,31 @@ function KitFestaCustomizationPanel({
     reader.readAsDataURL(file);
   }
 
+  function toggleTradicionalRecheio(f: string) {
+    setTradicionaisRecheios((prev) => {
+      if (prev.includes(f)) return prev.filter((x) => x !== f);
+      if (prev.length >= maxTrad) {
+        toast.error(`Máximo de ${maxTrad} sabores tradicionais.`);
+        return prev;
+      }
+      return [...prev, f];
+    });
+  }
+  function toggleAdicional(f: string) {
+    setAdicionais((prev) => prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]);
+  }
+
   function handleAdd() {
     if (!selected) return toast.error("Escolha uma opção do kit.");
     if (boloRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio do bolo.");
     if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura do bolo.");
-    if (cfg.finos) {
+    if (cfg.docesTipoChoice && !docesTipo) return toast.error("Escolha entre doces finos ou tradicionais.");
+    if (effectiveFinos) {
       if (finosFormatos.length === 0) return toast.error("Escolha pelo menos 1 formato dos doces finos.");
       if (finosRecheios.length === 0) return toast.error("Escolha pelo menos 1 recheio dos doces finos.");
     }
+    if (effectiveTradicionais && tradicionaisRecheios.length === 0) return toast.error("Escolha pelo menos 1 sabor dos doces tradicionais.");
+    if (cfg.bemCasadoRecheio && !bemCasadoRecheio) return toast.error("Escolha 1 recheio do bem-casado.");
     if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
     if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
@@ -1463,8 +1527,12 @@ function KitFestaCustomizationPanel({
       kitItems: selected.items,
       recheios: boloRecheios,
       cobertura: cobertura || undefined,
-      finosFormatos: cfg.finos ? finosFormatos : undefined,
-      finosRecheios: cfg.finos ? finosRecheios : undefined,
+      finosFormatos: effectiveFinos ? finosFormatos : undefined,
+      finosRecheios: effectiveFinos ? finosRecheios : undefined,
+      tradicionaisRecheios: effectiveTradicionais ? tradicionaisRecheios : undefined,
+      docesTipo: cfg.docesTipoChoice && docesTipo ? docesTipo : undefined,
+      bemCasadoRecheio: cfg.bemCasadoRecheio ? bemCasadoRecheio : undefined,
+      adicionais: cfg.showBoloAdicionais ? adicionais : undefined,
       cupcakeRecheios: cfg.cupcake ? [cupcakeRecheio] : undefined,
       colors: cfg.showFinosColors ? finosColors : undefined,
       fitaColor: cfg.showSharedColor ? sharedColor : undefined,
@@ -1564,8 +1632,49 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
+      {/* Adicionais do bolo (Combo) */}
+      {cfg.showBoloAdicionais && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicionais do bolo</h4>
+            <span className="text-[11px] text-muted-foreground">+{formatBRL(BOLO_ADICIONAL_PRICE)} cada · opcional</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {[...BOLO_ADICIONAIS, "Kit Kat"].map((f) => {
+              const active = adicionais.includes(f);
+              return (
+                <button key={f} onClick={() => toggleAdicional(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Escolha doces finos ou tradicionais (Combo) */}
+      {cfg.docesTipoChoice && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Tipo dos doces</h4>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {(["finos", "tradicionais"] as const).map((t) => {
+              const active = docesTipo === t;
+              return (
+                <button key={t} onClick={() => setDocesTipo(t)} className={`rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold capitalize">Doces {t}</span>
+                    {active && <Check className="h-4 w-4 text-primary" />}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Doces finos - formatos */}
-      {cfg.finos && (
+      {effectiveFinos && (
         <>
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
@@ -1604,6 +1713,50 @@ function KitFestaCustomizationPanel({
           </div>
         </>
       )}
+
+      {/* Doces tradicionais - recheios */}
+      {effectiveTradicionais && cfg.tradicionaisRecheios && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Sabores dos doces tradicionais</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até {maxTrad} · {tradicionaisRecheios.length}/{maxTrad}</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.tradicionaisRecheios.map((f) => {
+              const active = tradicionaisRecheios.includes(f);
+              return (
+                <button key={f} onClick={() => toggleTradicionalRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Bem-casado - recheio (Combo) */}
+      {cfg.bemCasadoRecheio && cfg.bemCasadoRecheiosOpts && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Recheio do bem-casado</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.bemCasadoRecheiosOpts.map((f) => {
+              const active = bemCasadoRecheio === f;
+              return (
+                <button key={f} onClick={() => setBemCasadoRecheio(active ? "" : f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-1.5 text-[11px] text-muted-foreground">Acompanha tag personalizada e strass.</p>
+        </div>
+      )}
+
 
       {/* Cupcakes (Kit 3) */}
       {cfg.cupcake && (
