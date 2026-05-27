@@ -1632,8 +1632,49 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
+      {/* Adicionais do bolo (Combo) */}
+      {cfg.showBoloAdicionais && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicionais do bolo</h4>
+            <span className="text-[11px] text-muted-foreground">+{formatBRL(BOLO_ADICIONAL_PRICE)} cada · opcional</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {[...BOLO_ADICIONAIS, "Kit Kat"].map((f) => {
+              const active = adicionais.includes(f);
+              return (
+                <button key={f} onClick={() => toggleAdicional(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Escolha doces finos ou tradicionais (Combo) */}
+      {cfg.docesTipoChoice && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Tipo dos doces</h4>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {(["finos", "tradicionais"] as const).map((t) => {
+              const active = docesTipo === t;
+              return (
+                <button key={t} onClick={() => setDocesTipo(t)} className={`rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold capitalize">Doces {t}</span>
+                    {active && <Check className="h-4 w-4 text-primary" />}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Doces finos - formatos */}
-      {cfg.finos && (
+      {effectiveFinos && (
         <>
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
@@ -1672,6 +1713,50 @@ function KitFestaCustomizationPanel({
           </div>
         </>
       )}
+
+      {/* Doces tradicionais - recheios */}
+      {effectiveTradicionais && cfg.tradicionaisRecheios && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Sabores dos doces tradicionais</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha até {maxTrad} · {tradicionaisRecheios.length}/{maxTrad}</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.tradicionaisRecheios.map((f) => {
+              const active = tradicionaisRecheios.includes(f);
+              return (
+                <button key={f} onClick={() => toggleTradicionalRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Bem-casado - recheio (Combo) */}
+      {cfg.bemCasadoRecheio && cfg.bemCasadoRecheiosOpts && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Recheio do bem-casado</h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {cfg.bemCasadoRecheiosOpts.map((f) => {
+              const active = bemCasadoRecheio === f;
+              return (
+                <button key={f} onClick={() => setBemCasadoRecheio(active ? "" : f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>
+                  {active && <Check className="h-3 w-3" />}
+                  {f}
+                </button>
+              );
+            })}
+          </div>
+          <p className="mt-1.5 text-[11px] text-muted-foreground">Acompanha tag personalizada e strass.</p>
+        </div>
+      )}
+
 
       {/* Cupcakes (Kit 3) */}
       {cfg.cupcake && (
