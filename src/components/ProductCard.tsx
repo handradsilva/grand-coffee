@@ -68,6 +68,12 @@ import bd7 from "@/assets/bolo-decorado-7.jpeg";
 import bd8 from "@/assets/bolo-decorado-8.jpeg";
 import bd9 from "@/assets/bolo-decorado-9.jpeg";
 import bd10 from "@/assets/bolo-decorado-10.jpeg";
+import combo1 from "@/assets/combo-casamento-1.jpg";
+import combo2 from "@/assets/combo-casamento-2.jpg";
+import combo3 from "@/assets/combo-casamento-3.jpg";
+import combo4 from "@/assets/combo-casamento-4.png";
+import combo5 from "@/assets/combo-casamento-5.png";
+import combo6 from "@/assets/combo-casamento-6.png";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
@@ -91,6 +97,8 @@ const KIT_FESTA_1_IMAGES = [kf1a, kf1b, kf1c];
 const KIT_FESTA_2_IMAGES = [kf2a, kf2b, kf2c, kf2d, kf2e, kf2f, kf2g, kf2h];
 
 const BOLO_DECORADO_IMAGES = [bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, bd10];
+
+const COMBO_CASAMENTO_IMAGES = [combo1, combo2, combo3, combo4, combo5, combo6];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
