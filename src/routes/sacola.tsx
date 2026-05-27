@@ -295,6 +295,18 @@ function Cart() {
                                 {c.finosRecheios && c.finosRecheios.length > 0 && (
                                   <p><span className="font-medium text-foreground">Recheios doces finos:</span> {c.finosRecheios.join(", ")}</p>
                                 )}
+                                {c.tradicionaisRecheios && c.tradicionaisRecheios.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Sabores doces tradicionais:</span> {c.tradicionaisRecheios.join(", ")}</p>
+                                )}
+                                {c.docesTipo && (
+                                  <p><span className="font-medium text-foreground">Tipo dos doces:</span> {c.docesTipo === "finos" ? "Doces finos" : "Doces tradicionais"}</p>
+                                )}
+                                {c.bemCasadoRecheio && (
+                                  <p><span className="font-medium text-foreground">Recheio do bem-casado:</span> {c.bemCasadoRecheio}</p>
+                                )}
+                                {c.adicionais && c.adicionais.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Adicionais do bolo:</span> {c.adicionais.join(", ")}</p>
+                                )}
                                 {c.cupcakeRecheios && c.cupcakeRecheios.length > 0 && (
                                   <p><span className="font-medium text-foreground">Recheio cupcake:</span> {c.cupcakeRecheios.join(", ")}</p>
                                 )}
