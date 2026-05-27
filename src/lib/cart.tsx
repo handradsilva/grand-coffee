@@ -21,6 +21,10 @@ export interface CartCustomization {
   tag?: "com" | "sem";
   topper?: string;
   topperPrice?: number;
+  toppers?: string[];
+  toppersPrice?: number;
+  extras?: string[];
+  extrasPrice?: number;
   modelImage?: string; // data URL
   modelImageName?: string;
   // Kit Festa / Combo
@@ -33,6 +37,8 @@ export interface CartCustomization {
   tradicionaisRecheios?: string[];
   bemCasadoRecheio?: string;
   comboColors?: string[];
+  comboLocal?: string;
+  comboCerimonialista?: string;
 }
 
 export interface CartItem {
