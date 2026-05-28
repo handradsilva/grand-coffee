@@ -39,6 +39,7 @@ export interface CartCustomization {
   comboColors?: string[];
   comboLocal?: string;
   comboCerimonialista?: string;
+  coupleNames?: string;
 }
 
 export interface CartItem {
