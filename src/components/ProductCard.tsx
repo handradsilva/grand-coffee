@@ -344,6 +344,7 @@ interface KitConfig {
   showComboColors?: boolean; // paleta de cores do combo (até 2, mesmas opções do bem-casado)
   maxFinosOptions?: number; // limite de formatos/recheios dos doces finos (default 2)
   showComboLocal?: boolean; // pede local de montagem + contato do cerimonialista
+  showCoupleNames?: boolean; // pede nome dos noivos
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
@@ -434,6 +435,8 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     showComboColors: true,
     maxFinosOptions: 4,
     showComboLocal: true,
+    showModelImage: true,
+    showCoupleNames: true,
   },
 };
 
@@ -1516,6 +1519,8 @@ function KitFestaCustomizationPanel({
   const [comboColors, setComboColors] = useState<string[]>([]);
   const [comboLocal, setComboLocal] = useState("");
   const [comboCerimonialista, setComboCerimonialista] = useState("");
+  const [noivo1, setNoivo1] = useState("");
+  const [noivo2, setNoivo2] = useState("");
 
   function toggleComboColor(id: string) {
     setComboColors((prev) => {
@@ -1625,6 +1630,7 @@ function KitFestaCustomizationPanel({
     if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da paleta do combo.");
     if (cfg.showComboLocal && !comboLocal.trim()) return toast.error("Informe o local onde o bolo será montado.");
     if (cfg.showComboLocal && !comboCerimonialista.trim()) return toast.error("Informe o contato do cerimonialista.");
+    if (cfg.showCoupleNames && (!noivo1.trim() || !noivo2.trim())) return toast.error("Informe o nome dos noivos.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
@@ -1649,6 +1655,7 @@ function KitFestaCustomizationPanel({
       comboCerimonialista: cfg.showComboLocal ? comboCerimonialista.trim() : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
+      coupleNames: cfg.showCoupleNames ? `${noivo1.trim()} & ${noivo2.trim()}` : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1895,6 +1902,55 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
+      {/* Nome dos Noivos (Combo) */}
+      {cfg.showCoupleNames && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Nome dos Noivos <span className="font-normal text-primary">(obrigatório)</span></h4>
+          <p className="mt-1 text-[11px] text-muted-foreground">Para personalizarmos tags, topper e detalhes do combo.</p>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            <input
+              value={noivo1}
+              onChange={(e) => setNoivo1(e.target.value.slice(0, 60))}
+              placeholder="Nome do(a) noivo(a) 1"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+            <input
+              value={noivo2}
+              onChange={(e) => setNoivo2(e.target.value.slice(0, 60))}
+              placeholder="Nome do(a) noivo(a) 2"
+              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Modelo do bolo (Combo) — entre Recheio do bem-casado e Local de montagem */}
+      {cfg.showModelImage && cfg.showComboLocal && (
+        <div className="mt-5">
+          <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
+          <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
+          <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+          {modelImage ? (
+            <div className="mt-2 flex items-center gap-3 rounded-md border border-border bg-background p-2">
+              <img src={modelImage} alt="Modelo" className="h-16 w-16 rounded object-cover" />
+              <div className="flex-1 truncate text-xs">
+                <p className="truncate font-medium">{modelImageName}</p>
+                <button type="button" onClick={() => fileRef.current?.click()} className="mt-1 text-primary hover:underline">Trocar foto</button>
+              </div>
+              <button type="button" onClick={() => { setModelImage(""); setModelImageName(""); }} className="text-muted-foreground hover:text-destructive" aria-label="Remover">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => fileRef.current?.click()} className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-4 py-3 text-xs font-medium text-foreground transition-colors hover:border-primary/50 hover:bg-secondary">
+              <Upload className="h-4 w-4" />
+              Enviar foto da galeria
+              <ImageIcon className="h-4 w-4 opacity-60" />
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Local de montagem + contato do cerimonialista (Combo) */}
       {cfg.showComboLocal && (
         <div className="mt-5 space-y-3">
@@ -1997,7 +2053,7 @@ function KitFestaCustomizationPanel({
       )}
 
       {/* Modelo do bolo (Kit 1 / Kit 3) */}
-      {cfg.showModelImage && (
+      {cfg.showModelImage && !cfg.showComboLocal && (
         <div className="mt-5">
           <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
           <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>

@@ -131,6 +131,7 @@ function Cart() {
             c.comboColors && c.comboColors.length ? `   - Paleta de cores do Combo: ${c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.comboLocal ? `   - Local de montagem: ${c.comboLocal}` : "",
             c.comboCerimonialista ? `   - Cerimonialista: ${c.comboCerimonialista}` : "",
+            c.coupleNames ? `   - Nome dos Noivos: ${c.coupleNames}` : "",
             c.cupcakeRecheios && c.cupcakeRecheios.length ? `   - Recheio cupcake: ${c.cupcakeRecheios.join(", ")}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
@@ -336,6 +337,9 @@ function Cart() {
                                 )}
                                 {c.comboCerimonialista && (
                                   <p><span className="font-medium text-foreground">Cerimonialista:</span> {c.comboCerimonialista}</p>
+                                )}
+                                {c.coupleNames && (
+                                  <p><span className="font-medium text-foreground">Nome dos Noivos:</span> {c.coupleNames}</p>
                                 )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
