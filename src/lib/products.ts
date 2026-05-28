@@ -5,8 +5,9 @@ import boloPote from "@/assets/p-bolo-pote.jpg";
 import coxinha from "@/assets/p-coxinha.jpg";
 import quiche from "@/assets/p-quiche.jpg";
 import kitFesta from "@/assets/p-kit-festa.jpg";
+import caixaDegustacao from "@/assets/p-caixa-degustacao.jpeg";
 
-export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento";
+export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao";
 
 export interface Product {
   id: string;
@@ -27,6 +28,7 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
   { id: "bem-casados", label: "Bem-Casados", blurb: "Lembrancinha ideal para seu evento" },
   { id: "kits", label: "Kit Festas", blurb: "Combos para celebrar" },
   { id: "combo-casamento", label: "Combo Casamento", blurb: "Celebre Conosco" },
+  { id: "caixa-degustacao", label: "Caixa Degustação", blurb: "Experimente nossos sabores" },
 ];
 
 export const products: Product[] = [
@@ -41,6 +43,8 @@ export const products: Product[] = [
   { id: "kit-festa-2", name: "Kit Festa 2", category: "kits", price: 160, unit: "a partir de 10 pessoas", description: "Naked Cake, Doces e Salgados", image: kitFesta },
   { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Cupcakes", image: kitFesta },
   { id: "combo-casamento", name: "Combo Casamento", category: "combo-casamento", price: 700, unit: "a partir de 30 convidados", description: "Bolo 2 andares + flores, bem-casados com tag , doces finos ou tradicionais. (Não incluso decoração)", image: kitFesta, featured: true },
+  { id: "caixa-degustacao", name: "Caixa Degustação", category: "caixa-degustacao", price: 60, unit: "unidade", description: "", image: caixaDegustacao },
+
 
 ];
 

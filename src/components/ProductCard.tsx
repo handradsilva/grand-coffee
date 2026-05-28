@@ -455,8 +455,11 @@ function isCupcake(p: Product) {
 function isKit(p: Product) {
   return p.id in KIT_CONFIGS;
 }
+function isCaixaDegustacao(p: Product) {
+  return p.id === "caixa-degustacao";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p) || isCaixaDegustacao(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
@@ -557,6 +560,8 @@ export function ProductCard({ product }: { product: Product }) {
             <CupcakeCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : isKit(product) ? (
             <KitFestaCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+          ) : isCaixaDegustacao(product) ? (
+            <CaixaDegustacaoPanel product={product} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
@@ -2094,6 +2099,65 @@ function KitFestaCustomizationPanel({
 
       <button onClick={handleAdd} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
         Adicionar à sacola · {formatBRL(total)}
+      </button>
+    </div>
+  );
+}
+
+const CAIXA_DEGUSTACAO_ITEMS = [
+  "1 fatia de brigadeiro e ninho",
+  "17 doces tradicionais e finos",
+  "3 bem-casados (brigadeiro, beijinho e doce de leite)",
+];
+
+function CaixaDegustacaoPanel({ product, onAdded }: { product: Product; onAdded: () => void }) {
+  const { add } = useCart();
+  const [notes, setNotes] = useState("");
+
+  function handleAdd() {
+    add(product, 1, {
+      notes,
+      unitPrice: product.price,
+    });
+    toast.success(`${product.name} adicionado à sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    onAdded();
+  }
+
+  return (
+    <div className="mt-3 rounded-md border border-border bg-secondary/30 p-5">
+      <p className="text-xs font-semibold uppercase tracking-wider text-primary">O que vem na caixa</p>
+      <h4 className="mt-1 font-display text-lg text-foreground">Conteúdo da Caixa Degustação</h4>
+
+      <ul className="mt-3 space-y-2">
+        {CAIXA_DEGUSTACAO_ITEMS.map((it) => (
+          <li key={it} className="flex items-start gap-2 text-sm text-foreground">
+            <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Observação</h4>
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value.slice(0, 280))}
+          rows={2}
+          placeholder="Alguma preferência ou aviso para a confeitaria?"
+          className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+        />
+      </div>
+
+      <div className="mt-5 rounded-md border border-border bg-background px-4 py-3 text-xs">
+        <div className="flex items-baseline justify-between">
+          <span className="font-semibold uppercase tracking-wider">Total</span>
+          <span className="font-display text-lg font-semibold text-primary">{formatBRL(product.price)}</span>
+        </div>
+      </div>
+
+      <button onClick={handleAdd} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
+        Adicionar à sacola · {formatBRL(product.price)}
       </button>
     </div>
   );
