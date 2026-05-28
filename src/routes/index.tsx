@@ -78,14 +78,6 @@ function Home() {
       {/* CATEGORIES */}
       <section id="categorias" className="border-y border-border/60 bg-secondary/30 py-20 scroll-mt-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="mb-10 overflow-hidden rounded-lg">
-            <img
-              src={catalogosCapa}
-              alt="Capa dos catálogos"
-              loading="lazy"
-              className="aspect-[16/9] w-full object-cover md:aspect-[21/9]"
-            />
-          </div>
           <div className="flex items-end justify-between gap-6">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Categorias</p>
