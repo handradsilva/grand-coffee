@@ -560,6 +560,8 @@ export function ProductCard({ product }: { product: Product }) {
             <CupcakeCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : isKit(product) ? (
             <KitFestaCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+          ) : isCaixaDegustacao(product) ? (
+            <CaixaDegustacaoPanel product={product} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
