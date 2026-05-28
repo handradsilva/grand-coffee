@@ -517,7 +517,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div>
           <h3 className="font-display text-lg leading-tight text-foreground">{product.name}</h3>
           {product.description && (
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">{product.description}</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
           )}
         </div>
         <div className="mt-auto flex items-end justify-between pt-2">
