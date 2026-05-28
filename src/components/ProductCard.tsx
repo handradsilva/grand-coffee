@@ -1519,6 +1519,8 @@ function KitFestaCustomizationPanel({
   const [comboColors, setComboColors] = useState<string[]>([]);
   const [comboLocal, setComboLocal] = useState("");
   const [comboCerimonialista, setComboCerimonialista] = useState("");
+  const [noivo1, setNoivo1] = useState("");
+  const [noivo2, setNoivo2] = useState("");
 
   function toggleComboColor(id: string) {
     setComboColors((prev) => {
