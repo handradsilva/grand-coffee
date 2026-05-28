@@ -344,6 +344,7 @@ interface KitConfig {
   showComboColors?: boolean; // paleta de cores do combo (até 2, mesmas opções do bem-casado)
   maxFinosOptions?: number; // limite de formatos/recheios dos doces finos (default 2)
   showComboLocal?: boolean; // pede local de montagem + contato do cerimonialista
+  showCoupleNames?: boolean; // pede nome dos noivos
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
