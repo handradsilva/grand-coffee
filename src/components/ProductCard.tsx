@@ -2138,16 +2138,6 @@ function CaixaDegustacaoPanel({ product, onAdded }: { product: Product; onAdded:
         ))}
       </ul>
 
-      <div className="mt-5">
-        <h4 className="text-sm font-semibold">Observação</h4>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value.slice(0, 280))}
-          rows={2}
-          placeholder=""
-          className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-        />
-      </div>
 
       <div className="mt-5 rounded-md border border-border bg-background px-4 py-3 text-xs">
         <div className="flex items-baseline justify-between">
