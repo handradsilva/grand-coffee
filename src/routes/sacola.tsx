@@ -87,6 +87,8 @@ function Cart() {
             c.embalagem ? `   - Embalagem: sim (+R$ 3,00)` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
             c.topper ? `   - Topper: ${c.topper}${c.topperPrice ? ` (+${formatBRL(c.topperPrice)})` : ""}` : "",
+            c.toppers && c.toppers.length ? `   - Toppers: ${c.toppers.join(", ")}${c.toppersPrice ? ` (+${formatBRL(c.toppersPrice)})` : ""}` : "",
+            c.extras && c.extras.length ? `   - Adicionais especiais: ${c.extras.join(", ")}${c.extrasPrice ? ` (+${formatBRL(c.extrasPrice)})` : ""}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
@@ -105,6 +107,7 @@ function Cart() {
           return [
             `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
             `   - Massa amanteigada com margarina / Cobertura em chantilly`,
+            c.tag ? `   - Tag: ${c.tag === "com" ? "Com tag (R$ 6,50/un.)" : "Sem tag (R$ 6,00/un.)"}` : "",
             c.recheios && c.recheios.length ? `   - Recheios: ${c.recheios.join(", ")}` : "",
             c.fitaColors && c.fitaColors.length ? `   - Cor(es): ${c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
@@ -125,7 +128,9 @@ function Cart() {
             c.adicionais && c.adicionais.length ? `   - Adicionais do bolo: ${c.adicionais.join(", ")}` : "",
             c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.fitaColor ? `   - Cor (forminhas + fita do naked): ${c.fitaColor.replace(/-/g, " ")}` : "",
-            c.comboColors && c.comboColors.length ? `   - Palhetas de cores do Combo: ${c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
+            c.comboColors && c.comboColors.length ? `   - Paleta de cores do Combo: ${c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
+            c.comboLocal ? `   - Local de montagem: ${c.comboLocal}` : "",
+            c.comboCerimonialista ? `   - Cerimonialista: ${c.comboCerimonialista}` : "",
             c.cupcakeRecheios && c.cupcakeRecheios.length ? `   - Recheio cupcake: ${c.cupcakeRecheios.join(", ")}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
@@ -271,6 +276,12 @@ function Cart() {
                                 {c.topper && (
                                   <p><span className="font-medium text-foreground">Topper:</span> {c.topper}</p>
                                 )}
+                                {c.toppers && c.toppers.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Toppers:</span> {c.toppers.join(", ")}</p>
+                                )}
+                                {c.extras && c.extras.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Adicionais especiais:</span> {c.extras.join(", ")}</p>
+                                )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
                                 )}
@@ -318,7 +329,13 @@ function Cart() {
                                   <p><span className="font-medium text-foreground">Cor (forminhas + fita):</span> <span className="capitalize">{c.fitaColor.replace(/-/g, " ")}</span></p>
                                 )}
                                 {c.comboColors && c.comboColors.length > 0 && (
-                                  <p><span className="font-medium text-foreground">Palhetas de cores do Combo:</span> <span className="capitalize">{c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                  <p><span className="font-medium text-foreground">Paleta de cores do Combo:</span> <span className="capitalize">{c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                )}
+                                {c.comboLocal && (
+                                  <p><span className="font-medium text-foreground">Local de montagem:</span> {c.comboLocal}</p>
+                                )}
+                                {c.comboCerimonialista && (
+                                  <p><span className="font-medium text-foreground">Cerimonialista:</span> {c.comboCerimonialista}</p>
                                 )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
@@ -346,6 +363,9 @@ function Cart() {
                             {c && isCupcake && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
                                 <p>Massa amanteigada · Chantilly</p>
+                                {c.tag && (
+                                  <p><span className="font-medium text-foreground">Tag:</span> {c.tag === "com" ? "Com tag" : "Sem tag"}</p>
+                                )}
                                 {c.recheios && c.recheios.length > 0 && (
                                   <p><span className="font-medium text-foreground">Recheios:</span> {c.recheios.join(", ")}</p>
                                 )}

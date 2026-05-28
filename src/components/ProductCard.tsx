@@ -194,6 +194,11 @@ const BOLO_ADICIONAIS = ["Morango", "Castanha", "Ameixa", "Nutella", "Geleia de 
 const BOLO_ADICIONAL_PRICE = 20;
 const NAKED_EMBALAGEM_PRICE = 3;
 
+const BOLO_EXTRAS: { id: string; label: string; price: number }[] = [
+  { id: "flores-artificiais", label: "Flores artificiais", price: 25 },
+  { id: "esferas-coloridas", label: "Esferas coloridas", price: 20 },
+];
+
 const BOLO_TOPPERS: { id: string; label: string; price: number }[] = [
   { id: "sem", label: "Sem topper", price: 0 },
   { id: "tematico", label: "Topper Temático", price: 20 },
@@ -332,7 +337,9 @@ interface KitConfig {
   bemCasadoRecheiosOpts?: string[];
   showBoloAdicionais?: boolean; // adicionar adicionais do bolo (R$20 cada)
   bolo2Andares?: boolean; // header indicando bolo 2 andares + flores
-  showComboColors?: boolean; // palheta de cores do combo (até 2, mesmas opções do bem-casado)
+  showComboColors?: boolean; // paleta de cores do combo (até 2, mesmas opções do bem-casado)
+  maxFinosOptions?: number; // limite de formatos/recheios dos doces finos (default 2)
+  showComboLocal?: boolean; // pede local de montagem + contato do cerimonialista
 }
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
@@ -408,19 +415,21 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
       { id: "40p", label: "40 convidados", price: 950, items: ["Bolo 4kg / 2 andares + flores", "150 doces + forminhas Camélia", "40 bem-casados com tag"] },
       { id: "50p", label: "50 convidados", price: 1200, items: ["Bolo 5kg / 2 andares + flores", "200 doces + forminhas Camélia", "50 bem-casados com tag"] },
     ],
-    note: "Incluso: Bolo 2 andares + flores artificiais · Bem-casado com tag personalizada · Doces finos ou tradicionais (acompanha forminhas Camélia) · Montagem do bolo no local do evento (somente em São Luís). Encomenda com até 14 dias de antecedência e no máximo 2 meses antes da data, com confirmação mediante pagamento de 50%. Forminhas, fitas e flores: verificar cores/modelos disponíveis.",
+    note: "Incluso: Bolo 2 andares + flores artificiais · Bem-casado com tag personalizada · Doces finos ou tradicionais (acompanha forminhas Camélia) · Montagem do bolo no local do evento (somente em São Luís). Encomenda com até 14 dias de antecedência e no máximo 2 meses antes da data, com confirmação mediante pagamento de 50%.",
     boloRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Doce de leite", "Abacaxi", "Palha italiana", "Capuccino", "Maracujá"],
     maxBoloRecheios: 2,
     finos: false,
     cupcake: false,
     docesTipoChoice: true,
     tradicionaisRecheios: ["Brigadeiro", "Ninho", "Beijinho", "Casadinho", "Coco queimado", "Churros"],
-    maxTradicionaisRecheios: 3,
+    maxTradicionaisRecheios: 4,
     bemCasadoRecheio: true,
     bemCasadoRecheiosOpts: ["Doce de leite", "Brigadeiro", "Ninho"],
     showBoloAdicionais: true,
     bolo2Andares: true,
     showComboColors: true,
+    maxFinosOptions: 4,
+    showComboLocal: true,
   },
 };
 
@@ -745,15 +754,18 @@ function BoloCustomizationPanel({
   const [notes, setNotes] = useState("");
   const [modelImage, setModelImage] = useState<string>("");
   const [modelImageName, setModelImageName] = useState<string>("");
-  const [topper, setTopper] = useState<string>("");
+  const [toppers, setToppers] = useState<string[]>([]);
+  const [extras, setExtras] = useState<string[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const weightPrice = cfg.basePrice + ((weightKg - 1) / cfg.stepKg) * cfg.stepPrice;
   const adicionaisPrice = adicionais.length * BOLO_ADICIONAL_PRICE;
   const embalagemPrice = embalagem ? NAKED_EMBALAGEM_PRICE : 0;
-  const topperObj = BOLO_TOPPERS.find((t) => t.id === topper);
-  const topperPrice = topperObj?.price ?? 0;
-  const total = weightPrice + adicionaisPrice + embalagemPrice + topperPrice;
+  const selectedToppers = BOLO_TOPPERS.filter((t) => toppers.includes(t.id));
+  const toppersPrice = selectedToppers.reduce((a, t) => a + t.price, 0);
+  const selectedExtras = BOLO_EXTRAS.filter((e) => extras.includes(e.id));
+  const extrasPrice = selectedExtras.reduce((a, e) => a + e.price, 0);
+  const total = weightPrice + adicionaisPrice + embalagemPrice + toppersPrice + extrasPrice;
 
   function toggleRecheio(f: string) {
     setRecheios((prev) => {
@@ -794,7 +806,7 @@ function BoloCustomizationPanel({
     if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura.");
     if (cfg.showFita && !fitaColor) return toast.error("Escolha a cor da fita.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
-    if (cfg.showModelImage && !topper) return toast.error("Escolha uma opção de topper.");
+    if (cfg.showModelImage && toppers.length === 0) return toast.error("Escolha pelo menos 1 topper.");
     add(product, 1, {
       kind: "bolo",
       notes,
@@ -805,8 +817,10 @@ function BoloCustomizationPanel({
       cobertura: cobertura || undefined,
       fitaColor: fitaColor || undefined,
       embalagem: cfg.showEmbalagem ? embalagem : undefined,
-      topper: cfg.showModelImage && topperObj ? topperObj.label : undefined,
-      topperPrice: cfg.showModelImage && topperObj ? topperObj.price : undefined,
+      toppers: cfg.showModelImage && selectedToppers.length ? selectedToppers.map((t) => t.label) : undefined,
+      toppersPrice: cfg.showModelImage && selectedToppers.length ? toppersPrice : undefined,
+      extras: cfg.showModelImage && selectedExtras.length ? selectedExtras.map((e) => e.label) : undefined,
+      extrasPrice: cfg.showModelImage && selectedExtras.length ? extrasPrice : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
@@ -984,15 +998,15 @@ function BoloCustomizationPanel({
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
             <h4 className="text-sm font-semibold">Toppers</h4>
-            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+            <span className="text-[11px] text-muted-foreground">Selecione 1 ou mais · {toppers.length}/{BOLO_TOPPERS.length}</span>
           </div>
           <div className="mt-2 flex flex-col gap-1.5">
             {BOLO_TOPPERS.map((t) => {
-              const active = topper === t.id;
+              const active = toppers.includes(t.id);
               return (
                 <button
                   key={t.id}
-                  onClick={() => setTopper(t.id)}
+                  onClick={() => setToppers((prev) => prev.includes(t.id) ? prev.filter((x) => x !== t.id) : [...prev, t.id])}
                   className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
                 >
                   <span className="flex items-center gap-1.5">
@@ -1001,6 +1015,36 @@ function BoloCustomizationPanel({
                   </span>
                   <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
                     {t.price === 0 ? "Sem custo" : `+${formatBRL(t.price)}`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Adicionais especiais — Flores artificiais / Esferas coloridas (Bolo Decorado) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicionais especiais <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+            <span className="text-[11px] text-muted-foreground">Selecione 1 ou mais</span>
+          </div>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {BOLO_EXTRAS.map((e) => {
+              const active = extras.includes(e.id);
+              return (
+                <button
+                  key={e.id}
+                  onClick={() => setExtras((prev) => prev.includes(e.id) ? prev.filter((x) => x !== e.id) : [...prev, e.id])}
+                  className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {active && <Check className="h-3 w-3" />}
+                    {e.label}
+                  </span>
+                  <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
+                    +{formatBRL(e.price)}
                   </span>
                 </button>
               );
@@ -1045,10 +1089,16 @@ function BoloCustomizationPanel({
             <span>+{formatBRL(NAKED_EMBALAGEM_PRICE)}</span>
           </div>
         )}
-        {topperObj && topperObj.price > 0 && (
+        {toppersPrice > 0 && (
           <div className="mt-1 flex justify-between text-muted-foreground">
-            <span>Topper</span>
-            <span>+{formatBRL(topperObj.price)}</span>
+            <span>{selectedToppers.length} topper(s)</span>
+            <span>+{formatBRL(toppersPrice)}</span>
+          </div>
+        )}
+        {extrasPrice > 0 && (
+          <div className="mt-1 flex justify-between text-muted-foreground">
+            <span>{selectedExtras.length} adicional(is) especial(is)</span>
+            <span>+{formatBRL(extrasPrice)}</span>
           </div>
         )}
         <div className="mt-2 flex items-baseline justify-between border-t border-border pt-2">
@@ -1254,12 +1304,13 @@ function CupcakeCustomizationPanel({
   onAdded: () => void;
 }) {
   const { add } = useCart();
+  const [tag, setTag] = useState<"com" | "sem" | "">("");
   const [qty, setQty] = useState(CUPCAKE_MIN);
   const [recheios, setRecheios] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
 
-  const unitPrice = product.price;
+  const unitPrice = tag === "com" ? 6.5 : tag === "sem" ? 6 : product.price;
   const total = qty * unitPrice;
 
   function toggleRecheio(f: string) {
@@ -1289,6 +1340,7 @@ function CupcakeCustomizationPanel({
   }
 
   function handleAdd() {
+    if (!tag) return toast.error("Escolha com ou sem tag.");
     if (recheios.length === 0) return toast.error("Escolha pelo menos 1 recheio.");
     if (colors.length === 0) return toast.error("Escolha pelo menos 1 cor.");
     if (qty < CUPCAKE_MIN) return toast.error(`Pedido mínimo de ${CUPCAKE_MIN} unidades.`);
@@ -1298,6 +1350,7 @@ function CupcakeCustomizationPanel({
       unitPrice,
       recheios,
       fitaColors: colors,
+      tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1316,6 +1369,28 @@ function CupcakeCustomizationPanel({
       <div className="mt-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5">
         <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Especificações</p>
         <p className="mt-1 text-sm font-medium text-foreground">Massa amanteigada com margarina / Cobertura em chantilly</p>
+      </div>
+
+      {/* Tag */}
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Tag</h4>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {([
+            { id: "com", label: "Com tag", price: 6.5 },
+            { id: "sem", label: "Sem tag", price: 6 },
+          ] as const).map((opt) => {
+            const active = tag === opt.id;
+            return (
+              <button key={opt.id} onClick={() => setTag(opt.id)} className={`rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">{opt.label}</span>
+                  {active && <Check className="h-4 w-4 text-primary" />}
+                </div>
+                <div className="text-[11px] text-muted-foreground">{formatBRL(opt.price)} / unidade</div>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Quantidade */}
@@ -1427,12 +1502,14 @@ function KitFestaCustomizationPanel({
   const [bemCasadoRecheio, setBemCasadoRecheio] = useState<string>("");
   const [adicionais, setAdicionais] = useState<string[]>([]);
   const [comboColors, setComboColors] = useState<string[]>([]);
+  const [comboLocal, setComboLocal] = useState("");
+  const [comboCerimonialista, setComboCerimonialista] = useState("");
 
   function toggleComboColor(id: string) {
     setComboColors((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
       if (prev.length >= 2) {
-        toast.error("Máximo de 2 cores da palheta.");
+        toast.error("Máximo de 2 cores da paleta.");
         return prev;
       }
       return [...prev, id];
@@ -1460,20 +1537,22 @@ function KitFestaCustomizationPanel({
     });
   }
   function toggleFinosFormato(f: string) {
+    const max = cfg.maxFinosOptions ?? 2;
     setFinosFormatos((prev) => {
       if (prev.includes(f)) return prev.filter((x) => x !== f);
-      if (prev.length >= 2) {
-        toast.error("Máximo de 2 formatos.");
+      if (prev.length >= max) {
+        toast.error(`Máximo de ${max} formatos.`);
         return prev;
       }
       return [...prev, f];
     });
   }
   function toggleFinosRecheio(f: string) {
+    const max = cfg.maxFinosOptions ?? 2;
     setFinosRecheios((prev) => {
       if (prev.includes(f)) return prev.filter((x) => x !== f);
-      if (prev.length >= 2) {
-        toast.error("Máximo de 2 recheios dos doces finos.");
+      if (prev.length >= max) {
+        toast.error(`Máximo de ${max} recheios dos doces finos.`);
         return prev;
       }
       return [...prev, f];
@@ -1531,7 +1610,9 @@ function KitFestaCustomizationPanel({
     if (cfg.bemCasadoRecheio && !bemCasadoRecheio) return toast.error("Escolha 1 recheio do bem-casado.");
     if (cfg.showFinosColors && finosColors.length === 0) return toast.error("Escolha pelo menos 1 cor das forminhas.");
     if (cfg.showSharedColor && !sharedColor) return toast.error("Escolha a cor das forminhas e da fita.");
-    if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da palheta do combo.");
+    if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da paleta do combo.");
+    if (cfg.showComboLocal && !comboLocal.trim()) return toast.error("Informe o local onde o bolo será montado.");
+    if (cfg.showComboLocal && !comboCerimonialista.trim()) return toast.error("Informe o contato do cerimonialista.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
@@ -1552,6 +1633,8 @@ function KitFestaCustomizationPanel({
       colors: cfg.showFinosColors ? finosColors : undefined,
       fitaColor: cfg.showSharedColor ? sharedColor : undefined,
       comboColors: cfg.showComboColors ? comboColors : undefined,
+      comboLocal: cfg.showComboLocal ? comboLocal.trim() : undefined,
+      comboCerimonialista: cfg.showComboLocal ? comboCerimonialista.trim() : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
@@ -1695,7 +1778,7 @@ function KitFestaCustomizationPanel({
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
               <h4 className="text-sm font-semibold">Formatos dos doces finos</h4>
-              <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosFormatos.length}/2</span>
+              <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxFinosOptions ?? 2} · {finosFormatos.length}/{cfg.maxFinosOptions ?? 2}</span>
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {FORMATS_FINOS.map((f) => {
@@ -1713,7 +1796,7 @@ function KitFestaCustomizationPanel({
           <div className="mt-5">
             <div className="flex items-baseline justify-between">
               <h4 className="text-sm font-semibold">Recheios dos doces finos</h4>
-              <span className="text-[11px] text-muted-foreground">Escolha até 2 · {finosRecheios.length}/2</span>
+              <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxFinosOptions ?? 2} · {finosRecheios.length}/{cfg.maxFinosOptions ?? 2}</span>
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {FLAVORS_FINOS.map((f) => {
@@ -1751,11 +1834,11 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
-      {/* Palheta de cores do Combo */}
+      {/* Paleta de cores do Combo */}
       {cfg.showComboColors && (
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
-            <h4 className="text-sm font-semibold">Palhetas de cores do Combo</h4>
+            <h4 className="text-sm font-semibold">Paleta de cores do Combo</h4>
             <span className="text-[11px] text-muted-foreground">Escolha até 2 · {comboColors.length}/2</span>
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
@@ -1797,6 +1880,32 @@ function KitFestaCustomizationPanel({
             })}
           </div>
           <p className="mt-1.5 text-[11px] text-muted-foreground">Acompanha tag personalizada e strass.</p>
+        </div>
+      )}
+
+      {/* Local de montagem + contato do cerimonialista (Combo) */}
+      {cfg.showComboLocal && (
+        <div className="mt-5 space-y-3">
+          <div>
+            <h4 className="text-sm font-semibold">Local de montagem do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
+            <p className="mt-1 text-[11px] text-muted-foreground">Endereço completo do evento onde montaremos o bolo.</p>
+            <input
+              value={comboLocal}
+              onChange={(e) => setComboLocal(e.target.value.slice(0, 200))}
+              placeholder="Ex: Espaço Villa Real — Av. dos Holandeses, 1500, São Luís/MA"
+              className="mt-2 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold">Contato do cerimonialista <span className="font-normal text-primary">(obrigatório)</span></h4>
+            <p className="mt-1 text-[11px] text-muted-foreground">Nome e telefone/WhatsApp para alinharmos a montagem.</p>
+            <input
+              value={comboCerimonialista}
+              onChange={(e) => setComboCerimonialista(e.target.value.slice(0, 200))}
+              placeholder="Ex: Ana Souza — (98) 99999-9999"
+              className="mt-2 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
         </div>
       )}
 
