@@ -998,15 +998,15 @@ function BoloCustomizationPanel({
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
             <h4 className="text-sm font-semibold">Toppers</h4>
-            <span className="text-[11px] text-muted-foreground">Escolha 1</span>
+            <span className="text-[11px] text-muted-foreground">Selecione 1 ou mais · {toppers.length}/{BOLO_TOPPERS.length}</span>
           </div>
           <div className="mt-2 flex flex-col gap-1.5">
             {BOLO_TOPPERS.map((t) => {
-              const active = topper === t.id;
+              const active = toppers.includes(t.id);
               return (
                 <button
                   key={t.id}
-                  onClick={() => setTopper(t.id)}
+                  onClick={() => setToppers((prev) => prev.includes(t.id) ? prev.filter((x) => x !== t.id) : [...prev, t.id])}
                   className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
                 >
                   <span className="flex items-center gap-1.5">
@@ -1015,6 +1015,36 @@ function BoloCustomizationPanel({
                   </span>
                   <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
                     {t.price === 0 ? "Sem custo" : `+${formatBRL(t.price)}`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Adicionais especiais — Flores artificiais / Esferas coloridas (Bolo Decorado) */}
+      {cfg.showModelImage && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicionais especiais <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+            <span className="text-[11px] text-muted-foreground">Selecione 1 ou mais</span>
+          </div>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {BOLO_EXTRAS.map((e) => {
+              const active = extras.includes(e.id);
+              return (
+                <button
+                  key={e.id}
+                  onClick={() => setExtras((prev) => prev.includes(e.id) ? prev.filter((x) => x !== e.id) : [...prev, e.id])}
+                  className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {active && <Check className="h-3 w-3" />}
+                    {e.label}
+                  </span>
+                  <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
+                    +{formatBRL(e.price)}
                   </span>
                 </button>
               );
