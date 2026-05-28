@@ -21,6 +21,7 @@ import bemCasados from "@/assets/cat-bem-casados.jpg";
 import kits from "@/assets/cat-kits.jpg";
 import comboCasamento from "@/assets/cat-combo-casamento.jpg";
 import caixaDegustacaoCat from "@/assets/cat-caixa-degustacao.jpg";
+import miniDecorCat from "@/assets/cat-mini-decor.jpeg";
 import catalogosCapa from "@/assets/catalogos-capa.jpeg";
 import { categories } from "@/lib/products";
 
