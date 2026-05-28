@@ -87,6 +87,8 @@ function Cart() {
             c.embalagem ? `   - Embalagem: sim (+R$ 3,00)` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais: ${c.adicionais.join(", ")} (+${formatBRL(c.adicionais.length * 20)})` : "",
             c.topper ? `   - Topper: ${c.topper}${c.topperPrice ? ` (+${formatBRL(c.topperPrice)})` : ""}` : "",
+            c.toppers && c.toppers.length ? `   - Toppers: ${c.toppers.join(", ")}${c.toppersPrice ? ` (+${formatBRL(c.toppersPrice)})` : ""}` : "",
+            c.extras && c.extras.length ? `   - Adicionais especiais: ${c.extras.join(", ")}${c.extrasPrice ? ` (+${formatBRL(c.extrasPrice)})` : ""}` : "",
             photoUrl ? `   - 📸 Foto modelo: ${photoUrl}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
           ].filter(Boolean);
