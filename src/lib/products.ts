@@ -1,15 +1,19 @@
-import brigadeiro from "@/assets/p-brigadeiro.jpg";
-import macaron from "@/assets/p-macaron.jpg";
-import boloChoc from "@/assets/p-bolo-choc.jpg";
-import boloPote from "@/assets/p-bolo-pote.jpg";
-import coxinha from "@/assets/p-coxinha.jpg";
-import quiche from "@/assets/p-quiche.jpg";
-import kitFesta from "@/assets/p-kit-festa.jpg";
+import docesTradicionais from "@/assets/doces-tradicionais-1.jpeg";
+import docesFinos from "@/assets/doces-finos-1.jpeg";
+import boloDecorado from "@/assets/bolo-decorado-1.jpeg";
+import nakedCake from "@/assets/naked-cake-1.jpeg";
+import vintageFloral from "@/assets/vintage-floral-00.jpeg";
+import cupcakeImg from "@/assets/cupcake-1.jpeg";
+import bemCasadoImg from "@/assets/bem-casado-1.jpeg";
+import kitFesta1 from "@/assets/kit-festa-1-0.jpeg";
+import kitFesta2 from "@/assets/kit-festa-2-1.jpeg";
+import kitFesta3 from "@/assets/kit-festa-3-1.jpeg";
+import comboCasamento from "@/assets/combo-casamento-1.jpeg";
 import caixaDegustacao from "@/assets/p-caixa-degustacao.jpeg";
 import mdRustica from "@/assets/p-mini-decor-rustica.jpeg";
 import mdFestaCarrinho from "@/assets/p-mini-decor-festa-carrinho-1.jpeg";
 import mdMesaRipada from "@/assets/p-mini-decor-mesa-ripada.jpeg";
-import mdCarrinhoMesa from "@/assets/p-mini-decor-carrinho-mesa-1.jpeg";
+import mdCarrinhoMesa from "@/assets/p-mini-decor-carrinho-mesa-2.jpeg";
 import mdMinimalista from "@/assets/p-mini-decor-mesa-minimalista.jpeg";
 
 export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao" | "mini-decor";
@@ -38,17 +42,17 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
 ];
 
 export const products: Product[] = [
-  { id: "doces-tradicionais", name: "Doces Tradicionais", category: "doces", price: 150, unit: "cento (100 un.)", description: "15 gramas por unidade", image: brigadeiro, tags: ["mais vendido"], featured: true },
-  { id: "doces-finos", name: "Doces Finos", category: "doces", price: 140, unit: "cento (100 un.)", description: "", image: macaron, featured: true },
-  { id: "bolo-choc", name: "Bolo Decorado", category: "bolos", price: 110, unit: "1kg", description: "Bolos decorados com cobertura em Chantilly", image: boloChoc, featured: true },
-  { id: "bolo-pote-tira", name: "Naked Cake", category: "bolos", price: 95, unit: "1kg", description: "Bolo no acetato", image: boloPote },
-  { id: "bolo-vintage-floral", name: "Vintage e Floral", category: "bolos", price: 120, unit: "1kg", description: "Modelos vintage ou floral com acabamento manual em Chantilly", image: boloChoc },
-  { id: "cupcake", name: "Cupcake", category: "cupcakes", price: 6, unit: "unidade", description: "", image: boloPote },
-  { id: "bem-casado", name: "Bem-Casado", category: "bem-casados", price: 4, unit: "unidade", description: "BEM-VIVIDO, BEM-NASCIDO, BEM-COMEMORADO, BEM-BATIZADO", image: macaron },
-  { id: "kit-festa-1", name: "Kit Festa 1", category: "kits", price: 200, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Salgados", image: kitFesta, featured: true },
-  { id: "kit-festa-2", name: "Kit Festa 2", category: "kits", price: 160, unit: "a partir de 10 pessoas", description: "Naked Cake, Doces e Salgados", image: kitFesta },
-  { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Cupcakes", image: kitFesta },
-  { id: "combo-casamento", name: "Combo Casamento", category: "combo-casamento", price: 700, unit: "a partir de 30 convidados", description: "Bolo 2 andares + flores, bem-casados com tag , doces finos ou tradicionais. (Não incluso decoração)", image: kitFesta, featured: true },
+  { id: "doces-tradicionais", name: "Doces Tradicionais", category: "doces", price: 150, unit: "cento (100 un.)", description: "15 gramas por unidade", image: docesTradicionais, tags: ["mais vendido"], featured: true },
+  { id: "doces-finos", name: "Doces Finos", category: "doces", price: 140, unit: "cento (100 un.)", description: "", image: docesFinos, featured: true },
+  { id: "bolo-choc", name: "Bolo Decorado", category: "bolos", price: 110, unit: "1kg", description: "Bolos decorados com cobertura em Chantilly", image: boloDecorado, featured: true },
+  { id: "bolo-pote-tira", name: "Naked Cake", category: "bolos", price: 95, unit: "1kg", description: "Bolo no acetato", image: nakedCake },
+  { id: "bolo-vintage-floral", name: "Vintage e Floral", category: "bolos", price: 120, unit: "1kg", description: "Modelos vintage ou floral com acabamento manual em Chantilly", image: vintageFloral },
+  { id: "cupcake", name: "Cupcake", category: "cupcakes", price: 6, unit: "unidade", description: "", image: cupcakeImg },
+  { id: "bem-casado", name: "Bem-Casado", category: "bem-casados", price: 4, unit: "unidade", description: "BEM-VIVIDO, BEM-NASCIDO, BEM-COMEMORADO, BEM-BATIZADO", image: bemCasadoImg },
+  { id: "kit-festa-1", name: "Kit Festa 1", category: "kits", price: 200, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Salgados", image: kitFesta1, featured: true },
+  { id: "kit-festa-2", name: "Kit Festa 2", category: "kits", price: 160, unit: "a partir de 10 pessoas", description: "Naked Cake, Doces e Salgados", image: kitFesta2 },
+  { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Cupcakes", image: kitFesta3 },
+  { id: "combo-casamento", name: "Combo Casamento", category: "combo-casamento", price: 700, unit: "a partir de 30 convidados", description: "Bolo 2 andares + flores, bem-casados com tag , doces finos ou tradicionais. (Não incluso decoração)", image: comboCasamento, featured: true },
   { id: "caixa-degustacao", name: "Caixa Degustação", category: "caixa-degustacao", price: 60, unit: "unidade", description: "", image: caixaDegustacao },
   { id: "mini-decor-rustica", name: "Decoração Rústica", category: "mini-decor", price: 400, unit: "evento", description: "", image: mdRustica },
   { id: "mini-decor-festa-carrinho", name: "Festa no Carrinho", category: "mini-decor", price: 210, unit: "evento", description: "", image: mdFestaCarrinho },
