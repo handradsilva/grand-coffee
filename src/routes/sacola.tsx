@@ -363,6 +363,9 @@ function Cart() {
                             {c && isCupcake && (
                               <div className="mt-2 space-y-0.5 text-xs text-muted-foreground">
                                 <p>Massa amanteigada · Chantilly</p>
+                                {c.tag && (
+                                  <p><span className="font-medium text-foreground">Tag:</span> {c.tag === "com" ? "Com tag" : "Sem tag"}</p>
+                                )}
                                 {c.recheios && c.recheios.length > 0 && (
                                   <p><span className="font-medium text-foreground">Recheios:</span> {c.recheios.join(", ")}</p>
                                 )}
