@@ -1,15 +1,19 @@
-import brigadeiro from "@/assets/p-brigadeiro.jpg";
-import macaron from "@/assets/p-macaron.jpg";
-import boloChoc from "@/assets/p-bolo-choc.jpg";
-import boloPote from "@/assets/p-bolo-pote.jpg";
-import coxinha from "@/assets/p-coxinha.jpg";
-import quiche from "@/assets/p-quiche.jpg";
-import kitFesta from "@/assets/p-kit-festa.jpg";
+import docesTradicionais from "@/assets/doces-tradicionais-1.jpeg";
+import docesFinos from "@/assets/doces-finos-1.jpeg";
+import boloDecorado from "@/assets/bolo-decorado-1.jpeg";
+import nakedCake from "@/assets/naked-cake-1.jpeg";
+import vintageFloral from "@/assets/vintage-floral-00.jpeg";
+import cupcakeImg from "@/assets/cupcake-1.jpeg";
+import bemCasadoImg from "@/assets/bem-casado-1.jpeg";
+import kitFesta1 from "@/assets/kit-festa-1-0.jpeg";
+import kitFesta2 from "@/assets/kit-festa-2-1.jpeg";
+import kitFesta3 from "@/assets/kit-festa-3-1.jpeg";
+import comboCasamento from "@/assets/combo-casamento-1.jpeg";
 import caixaDegustacao from "@/assets/p-caixa-degustacao.jpeg";
 import mdRustica from "@/assets/p-mini-decor-rustica.jpeg";
 import mdFestaCarrinho from "@/assets/p-mini-decor-festa-carrinho-1.jpeg";
 import mdMesaRipada from "@/assets/p-mini-decor-mesa-ripada.jpeg";
-import mdCarrinhoMesa from "@/assets/p-mini-decor-carrinho-mesa-1.jpeg";
+import mdCarrinhoMesa from "@/assets/p-mini-decor-carrinho-mesa-2.jpeg";
 import mdMinimalista from "@/assets/p-mini-decor-mesa-minimalista.jpeg";
 
 export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao" | "mini-decor";
