@@ -6,7 +6,7 @@ import coxinha from "@/assets/p-coxinha.jpg";
 import quiche from "@/assets/p-quiche.jpg";
 import kitFesta from "@/assets/p-kit-festa.jpg";
 
-export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento";
+export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao";
 
 export interface Product {
   id: string;
