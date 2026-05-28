@@ -68,12 +68,16 @@ import bd7 from "@/assets/bolo-decorado-7.jpeg";
 import bd8 from "@/assets/bolo-decorado-8.jpeg";
 import bd9 from "@/assets/bolo-decorado-9.jpeg";
 import bd10 from "@/assets/bolo-decorado-10.jpeg";
-import combo1 from "@/assets/combo-casamento-1.jpg";
-import combo2 from "@/assets/combo-casamento-2.jpg";
-import combo3 from "@/assets/combo-casamento-3.jpg";
-import combo4 from "@/assets/combo-casamento-4.png";
-import combo5 from "@/assets/combo-casamento-5.png";
-import combo6 from "@/assets/combo-casamento-6.png";
+import combo1 from "@/assets/combo-casamento-1.jpeg";
+import combo2 from "@/assets/combo-casamento-2.jpeg";
+import combo3 from "@/assets/combo-casamento-3.jpeg";
+import combo4 from "@/assets/combo-casamento-4.jpeg";
+import combo5 from "@/assets/combo-casamento-5.jpeg";
+import combo6 from "@/assets/combo-casamento-6.jpeg";
+import combo7 from "@/assets/combo-casamento-7.jpeg";
+import combo8 from "@/assets/combo-casamento-8.jpeg";
+import combo9 from "@/assets/combo-casamento-9.jpeg";
+import combo10 from "@/assets/combo-casamento-10.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
   vintage1, vintage2, vintage3, vintage4, vintage5,
