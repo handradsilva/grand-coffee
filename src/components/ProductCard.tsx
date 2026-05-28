@@ -1630,6 +1630,7 @@ function KitFestaCustomizationPanel({
     if (cfg.showComboColors && comboColors.length === 0) return toast.error("Escolha pelo menos 1 cor da paleta do combo.");
     if (cfg.showComboLocal && !comboLocal.trim()) return toast.error("Informe o local onde o bolo será montado.");
     if (cfg.showComboLocal && !comboCerimonialista.trim()) return toast.error("Informe o contato do cerimonialista.");
+    if (cfg.showCoupleNames && (!noivo1.trim() || !noivo2.trim())) return toast.error("Informe o nome dos noivos.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
     if (cfg.cupcake && !cupcakeRecheio) return toast.error("Escolha 1 recheio do cupcake.");
     add(product, 1, {
