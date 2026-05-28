@@ -338,6 +338,9 @@ function Cart() {
                                 {c.comboCerimonialista && (
                                   <p><span className="font-medium text-foreground">Cerimonialista:</span> {c.comboCerimonialista}</p>
                                 )}
+                                {c.coupleNames && (
+                                  <p><span className="font-medium text-foreground">Nome dos Noivos:</span> {c.coupleNames}</p>
+                                )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
                                 )}
