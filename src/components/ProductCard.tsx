@@ -1655,6 +1655,7 @@ function KitFestaCustomizationPanel({
       comboCerimonialista: cfg.showComboLocal ? comboCerimonialista.trim() : undefined,
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
+      coupleNames: cfg.showCoupleNames ? `${noivo1.trim()} & ${noivo2.trim()}` : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
