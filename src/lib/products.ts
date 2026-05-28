@@ -7,7 +7,7 @@ import quiche from "@/assets/p-quiche.jpg";
 import kitFesta from "@/assets/p-kit-festa.jpg";
 import caixaDegustacao from "@/assets/p-caixa-degustacao.jpeg";
 
-export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao";
+export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao" | "mini-decor";
 
 export interface Product {
   id: string;
