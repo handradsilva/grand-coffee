@@ -1838,7 +1838,7 @@ function KitFestaCustomizationPanel({
       {cfg.showComboColors && (
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
-            <h4 className="text-sm font-semibold">Paleta de cores do Combo</h4>
+            <h4 className="text-sm font-semibold">Paleta de cores</h4>
             <span className="text-[11px] text-muted-foreground">Escolha até 2 · {comboColors.length}/2</span>
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
