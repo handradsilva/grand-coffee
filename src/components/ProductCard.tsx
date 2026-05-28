@@ -104,6 +104,16 @@ const BOLO_DECORADO_IMAGES = [bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, bd10]
 
 const COMBO_CASAMENTO_IMAGES = [combo1, combo2, combo3, combo4, combo5, combo6, combo7, combo8, combo9, combo10];
 
+import mdFc1 from "@/assets/p-mini-decor-festa-carrinho-1.jpeg";
+import mdFc2 from "@/assets/p-mini-decor-festa-carrinho-2.jpeg";
+import mdFc3 from "@/assets/p-mini-decor-festa-carrinho-3.jpeg";
+import mdCm1 from "@/assets/p-mini-decor-carrinho-mesa-1.jpeg";
+import mdCm2 from "@/assets/p-mini-decor-carrinho-mesa-2.jpeg";
+import mdCm3 from "@/assets/p-mini-decor-carrinho-mesa-3.jpeg";
+
+const FESTA_CARRINHO_IMAGES = [mdFc1, mdFc2, mdFc3];
+const CARRINHO_OU_MESA_IMAGES = [mdCm1, mdCm2, mdCm3];
+
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
@@ -508,6 +518,10 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={KIT_FESTA_2_IMAGES} alt={product.name} />
         ) : product.id === "combo-casamento" ? (
           <ImageCarousel images={COMBO_CASAMENTO_IMAGES} alt={product.name} />
+        ) : product.id === "mini-decor-festa-carrinho" ? (
+          <ImageCarousel images={FESTA_CARRINHO_IMAGES} alt={product.name} />
+        ) : product.id === "mini-decor-carrinho-mesa" ? (
+          <ImageCarousel images={CARRINHO_OU_MESA_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
