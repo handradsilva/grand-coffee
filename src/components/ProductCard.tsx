@@ -2157,3 +2157,85 @@ function CaixaDegustacaoPanel({ product, onAdded }: { product: Product; onAdded:
     </div>
   );
 }
+
+const MINI_DECOR_SPECS: Record<string, string[]> = {
+  "mini-decor-rustica": [
+    "2 mesas ripadas",
+    "Tapete",
+    "Boleira e doceiras",
+    "Jarros com flores",
+    "Jarros com velas flutuantes",
+    "Nome Love ou porta-retrato",
+  ],
+  "mini-decor-festa-carrinho": [
+    "Boleira",
+    "Doceiras",
+    "Tapete",
+    "Jarros com flores ou arco de balão",
+  ],
+  "mini-decor-mesa-ripada": [
+    "Mesa ripada",
+    "Jarros com flores",
+    "Boleira",
+    "Doceiras",
+    "Nome Love ou porta-retrato",
+  ],
+  "mini-decor-carrinho-mesa": [
+    "Carrinho ou mesa branca",
+    "Arco de balão personalizado",
+    "Boleira",
+    "Doceiras",
+    "Bandeirola ou arco de balão",
+    "Display de mesa",
+  ],
+  "mini-decor-minimalista": [
+    "Mesa",
+    "Jarros com flores",
+    "Boleira",
+    "Doceiras",
+    "Arco de balões personalizado",
+    "Balões na frente da mesa",
+  ],
+};
+
+function MiniDecorPanel({ product, onAdded }: { product: Product; onAdded: () => void }) {
+  const { add } = useCart();
+  const items = MINI_DECOR_SPECS[product.id] ?? [];
+
+  function handleAdd() {
+    add(product, 1, {
+      notes: "",
+      unitPrice: product.price,
+    });
+    toast.success(`${product.name} reservado na sacola.`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    onAdded();
+  }
+
+  return (
+    <div className="mt-3 rounded-md border border-border bg-secondary/30 p-5">
+      <p className="text-xs font-semibold uppercase tracking-wider text-primary">O que está incluso</p>
+      <h4 className="mt-1 font-display text-lg text-foreground">{product.name}</h4>
+
+      <ul className="mt-3 space-y-2">
+        {items.map((it) => (
+          <li key={it} className="flex items-start gap-2 text-sm text-foreground">
+            <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+            <span>{it}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-5 rounded-md border border-border bg-background px-4 py-3 text-xs">
+        <div className="flex items-baseline justify-between">
+          <span className="font-semibold uppercase tracking-wider">Total</span>
+          <span className="font-display text-lg font-semibold text-primary">{formatBRL(product.price)}</span>
+        </div>
+      </div>
+
+      <button onClick={handleAdd} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
+        Adicionar à sacola · {formatBRL(product.price)}
+      </button>
+    </div>
+  );
+}
