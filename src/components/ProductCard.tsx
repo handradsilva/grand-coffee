@@ -110,9 +110,15 @@ import mdFc3 from "@/assets/p-mini-decor-festa-carrinho-3.jpeg";
 import mdCm1 from "@/assets/p-mini-decor-carrinho-mesa-1.jpeg";
 import mdCm2 from "@/assets/p-mini-decor-carrinho-mesa-2.jpeg";
 import mdCm3 from "@/assets/p-mini-decor-carrinho-mesa-3.jpeg";
+import mdRustica1 from "@/assets/p-mini-decor-rustica.jpeg";
+import mdRustica2 from "@/assets/p-mini-decor-rustica-2.jpeg";
+import mdMesaRipada1 from "@/assets/p-mini-decor-mesa-ripada.jpeg";
+import mdMesaRipada2 from "@/assets/p-mini-decor-mesa-ripada-2.jpeg";
 
 const FESTA_CARRINHO_IMAGES = [mdFc1, mdFc2, mdFc3];
-const CARRINHO_OU_MESA_IMAGES = [mdCm1, mdCm2, mdCm3];
+const CARRINHO_OU_MESA_IMAGES = [mdCm2, mdCm1, mdCm3];
+const RUSTICA_IMAGES = [mdRustica1, mdRustica2];
+const MESA_RIPADA_IMAGES = [mdMesaRipada1, mdMesaRipada2];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
@@ -522,6 +528,10 @@ export function ProductCard({ product }: { product: Product }) {
           <ImageCarousel images={FESTA_CARRINHO_IMAGES} alt={product.name} />
         ) : product.id === "mini-decor-carrinho-mesa" ? (
           <ImageCarousel images={CARRINHO_OU_MESA_IMAGES} alt={product.name} />
+        ) : product.id === "mini-decor-rustica" ? (
+          <ImageCarousel images={RUSTICA_IMAGES} alt={product.name} />
+        ) : product.id === "mini-decor-mesa-ripada" ? (
+          <ImageCarousel images={MESA_RIPADA_IMAGES} alt={product.name} />
         ) : (
           <img
             src={product.image}
