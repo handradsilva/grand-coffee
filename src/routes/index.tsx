@@ -35,7 +35,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento, "caixa-degustacao": caixaDegustacaoCat };
+const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento, "caixa-degustacao": caixaDegustacaoCat, "mini-decor": miniDecorCat };
 
 function Home() {
   return (
