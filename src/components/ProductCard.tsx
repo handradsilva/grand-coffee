@@ -2202,15 +2202,35 @@ function MiniDecorPanel({ product, onAdded }: { product: Product; onAdded: () =>
   const { add } = useCart();
   const items = MINI_DECOR_SPECS[product.id] ?? [];
 
+  const [tipoEvento, setTipoEvento] = useState("");
+  const [tema, setTema] = useState("");
+  const [local, setLocal] = useState("");
+  const [data, setData] = useState("");
+  const [hora, setHora] = useState("");
+  const [paleta, setPaleta] = useState("");
+
+  const allFilled = [tipoEvento, tema, local, data, hora, paleta].every((v) => v.trim().length > 0);
+
   function handleAdd() {
-    add(product, 1, {
-      notes: "",
-      unitPrice: product.price,
-    });
+    if (!allFilled) {
+      toast.error("Preencha todas as informações do evento.");
+      return;
+    }
+    const notes = [
+      `Tipo de evento: ${tipoEvento.trim()}`,
+      `Tema: ${tema.trim()}`,
+      `Local: ${local.trim()}`,
+      `Data: ${data.trim()}`,
+      `Hora: ${hora.trim()}`,
+      `Paleta de cores: ${paleta.trim()}`,
+    ].join("\n");
+    add(product, 1, { notes, unitPrice: product.price });
     toast.success(`${product.name} reservado na sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
     onAdded();
   }
+
+  const inputClass = "mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20";
 
   return (
     <div className="mt-3 rounded-md border border-border bg-secondary/30 p-5">
@@ -2226,6 +2246,34 @@ function MiniDecorPanel({ product, onAdded }: { product: Product; onAdded: () =>
         ))}
       </ul>
 
+      <div className="mt-5 space-y-3">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">Informações do evento</p>
+        <label className="block text-xs font-medium text-foreground">
+          Tipo de evento
+          <input value={tipoEvento} onChange={(e) => setTipoEvento(e.target.value.slice(0, 80))} placeholder="Ex: casamento, aniversário..." className={inputClass} />
+        </label>
+        <label className="block text-xs font-medium text-foreground">
+          Tema
+          <input value={tema} onChange={(e) => setTema(e.target.value.slice(0, 80))} placeholder="Ex: floral, princesa..." className={inputClass} />
+        </label>
+        <label className="block text-xs font-medium text-foreground">
+          Local do evento
+          <input value={local} onChange={(e) => setLocal(e.target.value.slice(0, 160))} placeholder="Endereço ou nome do espaço" className={inputClass} />
+        </label>
+        <label className="block text-xs font-medium text-foreground">
+          Data
+          <input value={data} onChange={(e) => setData(e.target.value.slice(0, 40))} placeholder="Ex: 15 de março de 2026" className={inputClass} />
+        </label>
+        <label className="block text-xs font-medium text-foreground">
+          Hora
+          <input value={hora} onChange={(e) => setHora(e.target.value.slice(0, 40))} placeholder="Ex: 19h00" className={inputClass} />
+        </label>
+        <label className="block text-xs font-medium text-foreground">
+          Paleta de cores
+          <input value={paleta} onChange={(e) => setPaleta(e.target.value.slice(0, 120))} placeholder="Ex: rosa, branco e dourado" className={inputClass} />
+        </label>
+      </div>
+
       <div className="mt-5 rounded-md border border-border bg-background px-4 py-3 text-xs">
         <div className="flex items-baseline justify-between">
           <span className="font-semibold uppercase tracking-wider">Total</span>
@@ -2233,7 +2281,7 @@ function MiniDecorPanel({ product, onAdded }: { product: Product; onAdded: () =>
         </div>
       </div>
 
-      <button onClick={handleAdd} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99]">
+      <button onClick={handleAdd} disabled={!allFilled} className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50">
         Adicionar à sacola · {formatBRL(product.price)}
       </button>
     </div>
