@@ -1340,6 +1340,7 @@ function CupcakeCustomizationPanel({
   }
 
   function handleAdd() {
+    if (!tag) return toast.error("Escolha com ou sem tag.");
     if (recheios.length === 0) return toast.error("Escolha pelo menos 1 recheio.");
     if (colors.length === 0) return toast.error("Escolha pelo menos 1 cor.");
     if (qty < CUPCAKE_MIN) return toast.error(`Pedido mínimo de ${CUPCAKE_MIN} unidades.`);
@@ -1349,6 +1350,7 @@ function CupcakeCustomizationPanel({
       unitPrice,
       recheios,
       fitaColors: colors,
+      tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
