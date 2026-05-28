@@ -919,8 +919,10 @@ function BoloCustomizationPanel({
             {FITA_COLORS.map((c) => {
               const active = fitaColor === c.id;
               return (
-                <button key={c.id} onClick={() => setFitaColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
-                  {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+                <button key={c.id} onClick={() => setFitaColor(active ? "" : c.id)} title={c.label} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                  <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                  {c.label}
+                  {active && <Check className="h-3 w-3 text-primary" />}
                 </button>
               );
             })}
