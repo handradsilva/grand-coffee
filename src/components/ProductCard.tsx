@@ -1371,6 +1371,28 @@ function CupcakeCustomizationPanel({
         <p className="mt-1 text-sm font-medium text-foreground">Massa amanteigada com margarina / Cobertura em chantilly</p>
       </div>
 
+      {/* Tag */}
+      <div className="mt-5">
+        <h4 className="text-sm font-semibold">Tag</h4>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          {([
+            { id: "com", label: "Com tag", price: 6.5 },
+            { id: "sem", label: "Sem tag", price: 6 },
+          ] as const).map((opt) => {
+            const active = tag === opt.id;
+            return (
+              <button key={opt.id} onClick={() => setTag(opt.id)} className={`rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">{opt.label}</span>
+                  {active && <Check className="h-4 w-4 text-primary" />}
+                </div>
+                <div className="text-[11px] text-muted-foreground">{formatBRL(opt.price)} / unidade</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Quantidade */}
       <div className="mt-5">
         <div className="flex items-baseline justify-between">
