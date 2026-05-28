@@ -3,6 +3,7 @@ import { Plus, Minus, X, Check, Upload, Image as ImageIcon } from "lucide-react"
 import { useCart } from "@/lib/cart";
 import { formatBRL, type Product } from "@/lib/products";
 import { toast } from "sonner";
+import vintage0 from "@/assets/vintage-floral-0.jpeg";
 import vintage1 from "@/assets/vintage-floral-1.jpeg";
 import vintage2 from "@/assets/vintage-floral-2.jpeg";
 import vintage3 from "@/assets/vintage-floral-3.jpeg";
@@ -47,6 +48,7 @@ import cup2 from "@/assets/cupcake-2.jpeg";
 import cup3 from "@/assets/cupcake-3.jpeg";
 import nc1 from "@/assets/naked-cake-1.jpeg";
 import nc2 from "@/assets/naked-cake-2.jpeg";
+import kf10 from "@/assets/kit-festa-1-0.jpeg";
 import kf1a from "@/assets/kit-festa-1-1.jpeg";
 import kf1b from "@/assets/kit-festa-1-2.jpeg";
 import kf1c from "@/assets/kit-festa-1-3.jpeg";
@@ -80,7 +82,7 @@ import combo9 from "@/assets/combo-casamento-9.jpeg";
 import combo10 from "@/assets/combo-casamento-10.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
-  vintage1, vintage2, vintage3, vintage4, vintage5,
+  vintage0, vintage1, vintage2, vintage3, vintage4, vintage5,
   vintage6, vintage7, vintage8, vintage9, vintage10,
 ];
 
@@ -96,7 +98,7 @@ const CUPCAKE_IMAGES = [cup1, cup2, cup3];
 
 const NAKED_CAKE_IMAGES = [nc1, nc2];
 
-const KIT_FESTA_1_IMAGES = [kf1a, kf1b, kf1c];
+const KIT_FESTA_1_IMAGES = [kf10, kf1a, kf1b, kf1c];
 
 const KIT_FESTA_2_IMAGES = [kf2a, kf2b, kf2c, kf2d, kf2e, kf2f, kf2g, kf2h];
 
