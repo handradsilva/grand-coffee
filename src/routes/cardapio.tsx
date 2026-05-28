@@ -56,6 +56,25 @@ function Menu() {
         </div>
       </div>
 
+      {cat === "mini-decor" && (
+        <div className="mt-10 rounded-lg border border-primary/30 bg-cream/60 p-6">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Antes de reservar — leia com atenção</p>
+          <h2 className="mt-2 font-display text-2xl text-foreground">Informações</h2>
+          <p className="mt-4 text-sm leading-relaxed text-foreground">
+            Nosso acervo de boleiras, jarros e doceiras conta com 20 cores disponíveis. As fotos a seguir são apenas exemplos. Iremos montar a sua mesa de acordo com a sua paleta de cores ou tema. Enviamos foto para aprovação.
+          </p>
+          <ul className="mt-4 space-y-2 text-sm leading-relaxed text-foreground">
+            <li className="flex gap-2"><span className="text-primary">•</span><span>A reserva será feita após o pagamento de 50% do valor e o restante a ser pago no dia da entrega.</span></li>
+            <li className="flex gap-2"><span className="text-primary">•</span><span>Todos os itens devem ser devolvidos, não são para venda, apenas aluguel.</span></li>
+            <li className="flex gap-2"><span className="text-primary">•</span><span>A montagem é feita no local do evento e logo após a festa, é feito a retirada.</span></li>
+            <li className="flex gap-2"><span className="text-primary">•</span><span>As nossas mesas não podem ser expostas a água, umidade, tintas e nem a objetos cortantes.</span></li>
+            <li className="flex gap-2"><span className="text-primary">•</span><span>Fazemos entrega somente na cidade de São Luís, de segunda a domingo, 7:00h às 18:00h.</span></li>
+            <li className="flex gap-2"><span className="text-primary">•</span><span>Nos informe o dia, horário e local da sua festa para que possamos ver direitinho a disponibilidade.</span></li>
+            <li className="flex gap-2"><span className="text-primary">•</span><span>Pedimos que faça a sua reserva com no mínimo 2 dias de antecedência para que possamos organizar e deixar tudo lindo para a sua festa.</span></li>
+          </ul>
+        </div>
+      )}
+
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((p) => <ProductCard key={p.id} product={p} />)}
       </div>
