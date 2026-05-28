@@ -47,7 +47,7 @@ function Header() {
           className="relative inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-burgundy-deep"
         >
           <ShoppingBag className="h-4 w-4" />
-          <span className="hidden sm:inline">Finalizar Encomenda</span>
+          <span>Finalizar Encomenda</span>
           {count > 0 && (
             <span className="ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cream px-1.5 text-xs font-semibold text-primary">
               {count}
