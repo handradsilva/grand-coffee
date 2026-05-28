@@ -1089,10 +1089,16 @@ function BoloCustomizationPanel({
             <span>+{formatBRL(NAKED_EMBALAGEM_PRICE)}</span>
           </div>
         )}
-        {topperObj && topperObj.price > 0 && (
+        {toppersPrice > 0 && (
           <div className="mt-1 flex justify-between text-muted-foreground">
-            <span>Topper</span>
-            <span>+{formatBRL(topperObj.price)}</span>
+            <span>{selectedToppers.length} topper(s)</span>
+            <span>+{formatBRL(toppersPrice)}</span>
+          </div>
+        )}
+        {extrasPrice > 0 && (
+          <div className="mt-1 flex justify-between text-muted-foreground">
+            <span>{selectedExtras.length} adicional(is) especial(is)</span>
+            <span>+{formatBRL(extrasPrice)}</span>
           </div>
         )}
         <div className="mt-2 flex items-baseline justify-between border-t border-border pt-2">
