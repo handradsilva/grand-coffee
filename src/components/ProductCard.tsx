@@ -458,8 +458,11 @@ function isKit(p: Product) {
 function isCaixaDegustacao(p: Product) {
   return p.id === "caixa-degustacao";
 }
+function isMiniDecor(p: Product) {
+  return p.category === "mini-decor";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p) || isCaixaDegustacao(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p) || isCaixaDegustacao(p) || isMiniDecor(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
