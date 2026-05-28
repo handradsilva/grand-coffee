@@ -29,6 +29,7 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
   { id: "kits", label: "Kit Festas", blurb: "Combos para celebrar" },
   { id: "combo-casamento", label: "Combo Casamento", blurb: "Celebre Conosco" },
   { id: "caixa-degustacao", label: "Caixa Degustação", blurb: "Experimente nossos sabores" },
+  { id: "mini-decor", label: "Mini Decor", blurb: "Decoração para sua festa" },
 ];
 
 export const products: Product[] = [
