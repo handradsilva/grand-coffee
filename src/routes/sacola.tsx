@@ -107,6 +107,7 @@ function Cart() {
           return [
             `• ${i.qty}× ${i.product.name} — ${formatBRL(i.qty * unit)}`,
             `   - Massa amanteigada com margarina / Cobertura em chantilly`,
+            c.tag ? `   - Tag: ${c.tag === "com" ? "Com tag (R$ 6,50/un.)" : "Sem tag (R$ 6,00/un.)"}` : "",
             c.recheios && c.recheios.length ? `   - Recheios: ${c.recheios.join(", ")}` : "",
             c.fitaColors && c.fitaColors.length ? `   - Cor(es): ${c.fitaColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.notes ? `   - Obs.: ${c.notes}` : "",
