@@ -1304,12 +1304,13 @@ function CupcakeCustomizationPanel({
   onAdded: () => void;
 }) {
   const { add } = useCart();
+  const [tag, setTag] = useState<"com" | "sem" | "">("");
   const [qty, setQty] = useState(CUPCAKE_MIN);
   const [recheios, setRecheios] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
 
-  const unitPrice = product.price;
+  const unitPrice = tag === "com" ? 6.5 : tag === "sem" ? 6 : product.price;
   const total = qty * unitPrice;
 
   function toggleRecheio(f: string) {
