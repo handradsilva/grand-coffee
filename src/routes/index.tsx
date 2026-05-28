@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento };
+const catImg: Record<string, string> = { doces, bolos, cupcakes, "bem-casados": bemCasados, kits, "combo-casamento": comboCasamento, "caixa-degustacao": caixaDegustacaoCat };
 
 function Home() {
   return (
