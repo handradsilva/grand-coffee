@@ -276,6 +276,12 @@ function Cart() {
                                 {c.topper && (
                                   <p><span className="font-medium text-foreground">Topper:</span> {c.topper}</p>
                                 )}
+                                {c.toppers && c.toppers.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Toppers:</span> {c.toppers.join(", ")}</p>
+                                )}
+                                {c.extras && c.extras.length > 0 && (
+                                  <p><span className="font-medium text-foreground">Adicionais especiais:</span> {c.extras.join(", ")}</p>
+                                )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
                                 )}
