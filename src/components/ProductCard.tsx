@@ -517,7 +517,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div>
           <h3 className="font-display text-lg leading-tight text-foreground">{product.name}</h3>
           {product.description && (
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground line-clamp-2">{product.description}</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
           )}
         </div>
         <div className="mt-auto flex items-end justify-between pt-2">
@@ -709,8 +709,10 @@ function CustomizationPanel({
           {COLORS.map((c) => {
             const active = colors.includes(c.id);
             return (
-              <button key={c.id} onClick={() => toggleColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
-                {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+              <button key={c.id} onClick={() => toggleColor(c.id)} title={c.label} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                {c.label}
+                {active && <Check className="h-3 w-3 text-primary" />}
               </button>
             );
           })}
@@ -917,8 +919,10 @@ function BoloCustomizationPanel({
             {FITA_COLORS.map((c) => {
               const active = fitaColor === c.id;
               return (
-                <button key={c.id} onClick={() => setFitaColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
-                  {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+                <button key={c.id} onClick={() => setFitaColor(active ? "" : c.id)} title={c.label} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                  <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                  {c.label}
+                  {active && <Check className="h-3 w-3 text-primary" />}
                 </button>
               );
             })}
@@ -1268,8 +1272,10 @@ function BemCasadoCustomizationPanel({
           {BEM_CASADO_FITAS.map((c) => {
             const active = fitaColors.includes(c.id);
             return (
-              <button key={c.id} onClick={() => toggleFita(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
-                {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+              <button key={c.id} onClick={() => toggleFita(c.id)} title={c.label} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                {c.label}
+                {active && <Check className="h-3 w-3 text-primary" />}
               </button>
             );
           })}
@@ -1448,8 +1454,10 @@ function CupcakeCustomizationPanel({
           {CUPCAKE_COLORS.map((c) => {
             const active = colors.includes(c.id);
             return (
-              <button key={c.id} onClick={() => toggleColor(c.id)} title={c.label} aria-label={c.label} className={`relative h-8 w-8 rounded-full border-2 transition-all ${active ? "border-primary scale-110" : "border-border hover:border-primary/40"}`} style={{ backgroundColor: c.hex }}>
-                {active && <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />}
+              <button key={c.id} onClick={() => toggleColor(c.id)} title={c.label} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}>
+                <span className="h-4 w-4 rounded-full border border-border/50" style={{ background: c.hex }} />
+                {c.label}
+                {active && <Check className="h-3 w-3 text-primary" />}
               </button>
             );
           })}
@@ -1838,7 +1846,7 @@ function KitFestaCustomizationPanel({
       {cfg.showComboColors && (
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
-            <h4 className="text-sm font-semibold">Paleta de cores do Combo</h4>
+            <h4 className="text-sm font-semibold">Paleta de cores</h4>
             <span className="text-[11px] text-muted-foreground">Escolha até 2 · {comboColors.length}/2</span>
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
