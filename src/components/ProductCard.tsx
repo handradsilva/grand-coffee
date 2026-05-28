@@ -455,8 +455,11 @@ function isCupcake(p: Product) {
 function isKit(p: Product) {
   return p.id in KIT_CONFIGS;
 }
+function isCaixaDegustacao(p: Product) {
+  return p.id === "caixa-degustacao";
+}
 function isCustomizable(p: Product) {
-  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p);
+  return isDoces(p) || isBolo(p) || isBemCasado(p) || isCupcake(p) || isKit(p) || isCaixaDegustacao(p);
 }
 function isFinos(p: Product) {
   return p.id === "doces-finos";
