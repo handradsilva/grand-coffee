@@ -3,6 +3,7 @@ import { Plus, Minus, X, Check, Upload, Image as ImageIcon } from "lucide-react"
 import { useCart } from "@/lib/cart";
 import { formatBRL, type Product } from "@/lib/products";
 import { toast } from "sonner";
+import vintage00 from "@/assets/vintage-floral-00.jpeg";
 import vintage0 from "@/assets/vintage-floral-0.jpeg";
 import vintage1 from "@/assets/vintage-floral-1.jpeg";
 import vintage2 from "@/assets/vintage-floral-2.jpeg";
@@ -82,7 +83,7 @@ import combo9 from "@/assets/combo-casamento-9.jpeg";
 import combo10 from "@/assets/combo-casamento-10.jpeg";
 
 const VINTAGE_FLORAL_IMAGES = [
-  vintage0, vintage1, vintage2, vintage3, vintage4, vintage5,
+  vintage00, vintage0, vintage1, vintage2, vintage3, vintage4, vintage5,
   vintage6, vintage7, vintage8, vintage9, vintage10,
 ];
 
