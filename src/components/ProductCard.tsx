@@ -435,6 +435,8 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     showComboColors: true,
     maxFinosOptions: 4,
     showComboLocal: true,
+    showModelImage: true,
+    showCoupleNames: true,
   },
 };
 
