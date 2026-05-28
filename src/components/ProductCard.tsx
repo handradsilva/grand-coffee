@@ -102,7 +102,7 @@ const KIT_FESTA_2_IMAGES = [kf2a, kf2b, kf2c, kf2d, kf2e, kf2f, kf2g, kf2h];
 
 const BOLO_DECORADO_IMAGES = [bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, bd10];
 
-const COMBO_CASAMENTO_IMAGES = [combo1, combo2, combo3, combo4, combo5, combo6];
+const COMBO_CASAMENTO_IMAGES = [combo1, combo2, combo3, combo4, combo5, combo6, combo7, combo8, combo9, combo10];
 
 function ImageCarousel({ images, alt }: { images: string[]; alt: string }) {
   const [index, setIndex] = useState(0);
