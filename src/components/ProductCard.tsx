@@ -1817,6 +1817,32 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
+      {/* Local de montagem + contato do cerimonialista (Combo) */}
+      {cfg.showComboLocal && (
+        <div className="mt-5 space-y-3">
+          <div>
+            <h4 className="text-sm font-semibold">Local de montagem do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
+            <p className="mt-1 text-[11px] text-muted-foreground">Endereço completo do evento onde montaremos o bolo.</p>
+            <input
+              value={comboLocal}
+              onChange={(e) => setComboLocal(e.target.value.slice(0, 200))}
+              placeholder="Ex: Espaço Villa Real — Av. dos Holandeses, 1500, São Luís/MA"
+              className="mt-2 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+          <div>
+            <h4 className="text-sm font-semibold">Contato do cerimonialista <span className="font-normal text-primary">(obrigatório)</span></h4>
+            <p className="mt-1 text-[11px] text-muted-foreground">Nome e telefone/WhatsApp para alinharmos a montagem.</p>
+            <input
+              value={comboCerimonialista}
+              onChange={(e) => setComboCerimonialista(e.target.value.slice(0, 200))}
+              placeholder="Ex: Ana Souza — (98) 99999-9999"
+              className="mt-2 w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+        </div>
+      )}
+
 
       {/* Cupcakes (Kit 3) */}
       {cfg.cupcake && (
