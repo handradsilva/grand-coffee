@@ -7,7 +7,7 @@ import quiche from "@/assets/p-quiche.jpg";
 import kitFesta from "@/assets/p-kit-festa.jpg";
 import caixaDegustacao from "@/assets/p-caixa-degustacao.jpeg";
 
-export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao";
+export type Category = "doces" | "bolos" | "cupcakes" | "bem-casados" | "kits" | "combo-casamento" | "caixa-degustacao" | "mini-decor";
 
 export interface Product {
   id: string;
@@ -29,6 +29,7 @@ export const categories: { id: Category; label: string; blurb: string }[] = [
   { id: "kits", label: "Kit Festas", blurb: "Combos para celebrar" },
   { id: "combo-casamento", label: "Combo Casamento", blurb: "Celebre Conosco" },
   { id: "caixa-degustacao", label: "Caixa Degustação", blurb: "Experimente nossos sabores" },
+  { id: "mini-decor", label: "Mini Decor", blurb: "Decoração para sua festa" },
 ];
 
 export const products: Product[] = [
@@ -44,8 +45,11 @@ export const products: Product[] = [
   { id: "kit-festa-3", name: "Kit Festa 3", category: "kits", price: 170, unit: "a partir de 10 pessoas", description: "Bolo decorado, Doces e Cupcakes", image: kitFesta },
   { id: "combo-casamento", name: "Combo Casamento", category: "combo-casamento", price: 700, unit: "a partir de 30 convidados", description: "Bolo 2 andares + flores, bem-casados com tag , doces finos ou tradicionais. (Não incluso decoração)", image: kitFesta, featured: true },
   { id: "caixa-degustacao", name: "Caixa Degustação", category: "caixa-degustacao", price: 60, unit: "unidade", description: "", image: caixaDegustacao },
-
-
+  { id: "mini-decor-rustica", name: "Decoração Rústica", category: "mini-decor", price: 400, unit: "evento", description: "", image: kitFesta },
+  { id: "mini-decor-festa-carrinho", name: "Festa no Carrinho", category: "mini-decor", price: 210, unit: "evento", description: "", image: kitFesta },
+  { id: "mini-decor-mesa-ripada", name: "Mesa Ripada", category: "mini-decor", price: 230, unit: "evento", description: "", image: kitFesta },
+  { id: "mini-decor-carrinho-mesa", name: "Carrinho ou Mesa", category: "mini-decor", price: 245, unit: "evento", description: "", image: kitFesta },
+  { id: "mini-decor-minimalista", name: "Mesa Minimalista", category: "mini-decor", price: 235, unit: "evento", description: "", image: kitFesta },
 ];
 
 export const formatBRL = (n: number) =>
