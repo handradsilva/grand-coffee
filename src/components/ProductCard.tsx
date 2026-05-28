@@ -550,7 +550,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {open ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-            {product.price === 0 ? "Em breve" : open ? "Fechar" : "Fazer Encomenda"}
+            {product.price === 0 ? "Em breve" : open ? "Fechar" : isMiniDecor(product) ? "Fazer Reserva" : "Fazer Encomenda"}
           </button>
         </div>
 
@@ -565,6 +565,8 @@ export function ProductCard({ product }: { product: Product }) {
             <KitFestaCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           ) : isCaixaDegustacao(product) ? (
             <CaixaDegustacaoPanel product={product} onAdded={() => setOpen(false)} />
+          ) : isMiniDecor(product) ? (
+            <MiniDecorPanel product={product} onAdded={() => setOpen(false)} />
           ) : (
             <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
           )
