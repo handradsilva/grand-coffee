@@ -329,7 +329,13 @@ function Cart() {
                                   <p><span className="font-medium text-foreground">Cor (forminhas + fita):</span> <span className="capitalize">{c.fitaColor.replace(/-/g, " ")}</span></p>
                                 )}
                                 {c.comboColors && c.comboColors.length > 0 && (
-                                  <p><span className="font-medium text-foreground">Palhetas de cores do Combo:</span> <span className="capitalize">{c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                  <p><span className="font-medium text-foreground">Paleta de cores do Combo:</span> <span className="capitalize">{c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}</span></p>
+                                )}
+                                {c.comboLocal && (
+                                  <p><span className="font-medium text-foreground">Local de montagem:</span> {c.comboLocal}</p>
+                                )}
+                                {c.comboCerimonialista && (
+                                  <p><span className="font-medium text-foreground">Cerimonialista:</span> {c.comboCerimonialista}</p>
                                 )}
                                 {c.modelImage && (
                                   <p className="text-primary">📸 Foto modelo anexada</p>
