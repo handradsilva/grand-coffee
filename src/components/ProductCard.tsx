@@ -2053,7 +2053,7 @@ function KitFestaCustomizationPanel({
       )}
 
       {/* Modelo do bolo (Kit 1 / Kit 3) */}
-      {cfg.showModelImage && (
+      {cfg.showModelImage && !cfg.showComboLocal && (
         <div className="mt-5">
           <h4 className="text-sm font-semibold">Modelo do bolo <span className="font-normal text-primary">(obrigatório)</span></h4>
           <p className="mt-1 text-[11px] text-muted-foreground">Envie uma foto de referência da sua galeria para usarmos como base.</p>
