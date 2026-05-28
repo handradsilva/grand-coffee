@@ -754,15 +754,18 @@ function BoloCustomizationPanel({
   const [notes, setNotes] = useState("");
   const [modelImage, setModelImage] = useState<string>("");
   const [modelImageName, setModelImageName] = useState<string>("");
-  const [topper, setTopper] = useState<string>("");
+  const [toppers, setToppers] = useState<string[]>([]);
+  const [extras, setExtras] = useState<string[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const weightPrice = cfg.basePrice + ((weightKg - 1) / cfg.stepKg) * cfg.stepPrice;
   const adicionaisPrice = adicionais.length * BOLO_ADICIONAL_PRICE;
   const embalagemPrice = embalagem ? NAKED_EMBALAGEM_PRICE : 0;
-  const topperObj = BOLO_TOPPERS.find((t) => t.id === topper);
-  const topperPrice = topperObj?.price ?? 0;
-  const total = weightPrice + adicionaisPrice + embalagemPrice + topperPrice;
+  const selectedToppers = BOLO_TOPPERS.filter((t) => toppers.includes(t.id));
+  const toppersPrice = selectedToppers.reduce((a, t) => a + t.price, 0);
+  const selectedExtras = BOLO_EXTRAS.filter((e) => extras.includes(e.id));
+  const extrasPrice = selectedExtras.reduce((a, e) => a + e.price, 0);
+  const total = weightPrice + adicionaisPrice + embalagemPrice + toppersPrice + extrasPrice;
 
   function toggleRecheio(f: string) {
     setRecheios((prev) => {
