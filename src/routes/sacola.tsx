@@ -189,6 +189,9 @@ function Cart() {
       return;
     }
     setSubmitting(true);
+    // Abre a janela IMEDIATAMENTE (dentro do gesto do usuário) para não ser bloqueada
+    // por navegadores (especialmente iOS Safari) após o await do upload.
+    const waWindow = window.open("about:blank", "_blank");
     const photoUrls: Record<string, string> = {};
     const itemsWithPhoto = items.filter((i) => i.customization?.modelImage);
     if (itemsWithPhoto.length > 0) {
@@ -199,12 +202,18 @@ function Cart() {
       }
       if (Object.keys(photoUrls).length < itemsWithPhoto.length) {
         toast.error("Falha ao enviar alguma foto. Tente novamente.");
+        if (waWindow) waWindow.close();
         setSubmitting(false);
         return;
       }
     }
     const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(buildMessage(photoUrls))}`;
-    window.open(url, "_blank");
+    if (waWindow) {
+      waWindow.location.href = url;
+    } else {
+      // Fallback: popup foi bloqueado — navega na mesma aba
+      window.location.href = url;
+    }
     toast.success("Pedido enviado! Confirmaremos pelo WhatsApp.");
     clear();
     setSubmitting(false);
