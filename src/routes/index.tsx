@@ -127,21 +127,6 @@ function Home() {
         </div>
       </section>
 
-      {/* FEEDBACKS */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">Feedbacks</p>
-            <h2 className="mt-3 font-display text-4xl text-foreground md:text-5xl">Quem prova, volta.</h2>
-            <div className="mt-4 flex items-center justify-center gap-1 text-gold">
-              {[...Array(4)].map((_, i) => <Star key={i} className="h-5 w-5 fill-gold" />)}
-              <StarHalf className="h-5 w-5 fill-gold" />
-              <span className="ml-2 text-sm font-semibold text-foreground">4,9 / 5</span>
-            </div>
-          </div>
-          <FeedbacksCarousel />
-        </div>
-      </section>
 
 
       {/* CTA */}
