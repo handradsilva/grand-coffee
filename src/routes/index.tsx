@@ -92,6 +92,7 @@ function Home() {
               <Link
                 key={c.id}
                 to="/cardapio"
+                search={{ cat: c.id }}
                 className="group relative overflow-hidden rounded-md bg-card"
               >
                 <div className="aspect-[3/4] overflow-hidden">
