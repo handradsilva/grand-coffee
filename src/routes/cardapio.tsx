@@ -4,7 +4,16 @@ import { Search } from "lucide-react";
 import { categories, products, type Category } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 
+const CATEGORY_IDS = categories.map((c) => c.id) as Category[];
+
 export const Route = createFileRoute("/cardapio")({
+  validateSearch: (search: Record<string, unknown>): { cat?: Category } => {
+    const cat = search.cat;
+    if (typeof cat === "string" && (CATEGORY_IDS as string[]).includes(cat)) {
+      return { cat: cat as Category };
+    }
+    return {};
+  },
   head: () => ({
     meta: [
       { title: "Cardápio — Grand Coffee Confeitaria" },
@@ -17,8 +26,10 @@ export const Route = createFileRoute("/cardapio")({
 });
 
 function Menu() {
-  const [cat, setCat] = useState<Category>(categories[0].id);
+  const { cat: initialCat } = Route.useSearch();
+  const [cat, setCat] = useState<Category>(initialCat ?? categories[0].id);
   const [q, setQ] = useState("");
+
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
