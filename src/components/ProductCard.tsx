@@ -577,7 +577,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-all hover:bg-burgundy-deep active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {open ? <X className="h-3.5 w-3.5" /> : <Plus className="h-3.5 w-3.5" />}
-            {product.price === 0 ? "Em breve" : open ? "Fechar" : isMiniDecor(product) ? "Fazer Reserva" : "Fazer Encomenda"}
+            {product.price === 0 ? "Em breve" : open ? "Fechar" : "Ver detalhes"}
           </button>
         </div>
 
@@ -1855,7 +1855,7 @@ function KitFestaCustomizationPanel({
               <span className="text-[11px] text-muted-foreground">Escolha até {cfg.maxFinosOptions ?? 2} · {finosRecheios.length}/{cfg.maxFinosOptions ?? 2}</span>
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5">
-              {FLAVORS_FINOS.map((f) => {
+              {FLAVORS_FINOS.filter((f) => !(["kit-festa-1","kit-festa-2","kit-festa-3"].includes(product.id) && f === "Maracujá")).map((f) => {
                 const active = finosRecheios.includes(f);
                 return (
                   <button key={f} onClick={() => toggleFinosRecheio(f)} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}>

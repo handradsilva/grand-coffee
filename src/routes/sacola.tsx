@@ -512,6 +512,7 @@ function Cart() {
 
                 <Field label="Observações" className="md:col-span-2">
                   <textarea rows={3} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} className={`${inputCls} h-auto resize-none py-3`} />
+                  <p className="mt-2 text-xs font-medium text-primary">Para confirmação da encomenda é necessário pagamento de 50% ou valor total.</p>
                 </Field>
               </div>
               <div className="border-t border-border bg-secondary/40 px-6 py-5">
