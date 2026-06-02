@@ -1755,6 +1755,12 @@ function KitFestaCustomizationPanel({
         <p className="mt-1.5 text-[11px] italic text-muted-foreground">Os kits não podem ser alterados.</p>
       </div>
 
+      {product.id === "combo-casamento" && (
+        <div className="mt-3 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5">
+          <p className="text-xs font-semibold text-destructive">Atenção: O Combo-Casamento estará indisponível para os dias 6 e 7 de agosto</p>
+        </div>
+      )}
+
 
       {/* Opções do Kit */}
       <div className="mt-5">
