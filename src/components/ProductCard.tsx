@@ -1743,6 +1743,8 @@ function KitFestaCustomizationPanel({
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
       coupleNames: cfg.showCoupleNames ? `${noivo1.trim()} & ${noivo2.trim()}` : undefined,
+      extras: cfg.showSalgadosExtra && salgadosExtraOpt ? [`Adicional de salgados: ${salgadosExtraOpt.label}`] : undefined,
+      extrasPrice: cfg.showSalgadosExtra && salgadosExtraOpt ? salgadosExtraOpt.price : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
