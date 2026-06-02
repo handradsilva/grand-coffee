@@ -126,6 +126,7 @@ function Cart() {
             c.tradicionaisRecheios && c.tradicionaisRecheios.length ? `   - Sabores doces tradicionais: ${c.tradicionaisRecheios.join(", ")}` : "",
             c.bemCasadoRecheio ? `   - Recheio do bem-casado: ${c.bemCasadoRecheio}` : "",
             c.adicionais && c.adicionais.length ? `   - Adicionais do bolo: ${c.adicionais.join(", ")}` : "",
+            c.extras && c.extras.length ? `   - ${c.extras.join(", ")}` : "",
             c.colors && c.colors.length ? `   - Cor(es) das forminhas: ${c.colors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
             c.fitaColor ? `   - Cor (forminhas + fita do naked): ${c.fitaColor.replace(/-/g, " ")}` : "",
             c.comboColors && c.comboColors.length ? `   - Paleta de cores do Combo: ${c.comboColors.map((s) => s.replace(/-/g, " ")).join(", ")}` : "",
