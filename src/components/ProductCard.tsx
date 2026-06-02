@@ -852,7 +852,7 @@ function BoloCustomizationPanel({
     if (cfg.coberturas && !cobertura) return toast.error("Escolha 1 cobertura.");
     if (cfg.showFita && !fitaColor) return toast.error("Escolha a cor da fita.");
     if (cfg.showModelImage && !modelImage) return toast.error("Envie a foto modelo do bolo.");
-    if (cfg.showModelImage && toppers.length === 0) return toast.error("Escolha pelo menos 1 topper.");
+    if (cfg.showModelImage && cfg.showToppers !== false && toppers.length === 0) return toast.error("Escolha pelo menos 1 topper.");
     add(product, 1, {
       kind: "bolo",
       notes,
