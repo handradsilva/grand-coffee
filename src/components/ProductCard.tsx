@@ -229,6 +229,12 @@ const BOLO_TOPPERS: { id: string; label: string; price: number }[] = [
   { id: "flores", label: "Topper (Nome + Idade + Flores de papel)", price: 25 },
 ];
 
+const VINTAGE_TOPPERS: { id: string; label: string; price: number }[] = [
+  { id: "escrito-bolo", label: "Nome, idade ou frase escrita direto no bolo", price: 0 },
+  { id: "papel", label: "Nome/idade ou Happy Birthday em papel laminado ou impresso", price: 10 },
+  { id: "foto", label: "Foto no bolo", price: 5 },
+];
+
 const FITA_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
   { id: "rosa-claro", label: "Rosa claro", hex: "#f4a8c0" },
