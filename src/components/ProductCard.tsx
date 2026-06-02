@@ -1079,7 +1079,7 @@ function BoloCustomizationPanel({
       )}
 
       {/* Adicionais especiais — Flores artificiais / Esferas coloridas (Bolo Decorado) */}
-      {cfg.showModelImage && (
+      {cfg.showModelImage && product.id !== "bolo-vintage-floral" && (
         <div className="mt-5">
           <div className="flex items-baseline justify-between">
             <h4 className="text-sm font-semibold">Adicionais especiais <span className="font-normal text-muted-foreground">(opcional)</span></h4>
@@ -1107,6 +1107,37 @@ function BoloCustomizationPanel({
           </div>
         </div>
       )}
+
+      {/* Toppers (Vintage e Floral) */}
+      {product.id === "bolo-vintage-floral" && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Toppers <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+            <span className="text-[11px] text-muted-foreground">Selecione 1 ou mais</span>
+          </div>
+          <div className="mt-2 flex flex-col gap-1.5">
+            {VINTAGE_TOPPERS.map((t) => {
+              const active = toppers.includes(t.id);
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setToppers((prev) => prev.includes(t.id) ? prev.filter((x) => x !== t.id) : [...prev, t.id])}
+                  className={`flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-left text-xs font-medium transition-all ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {active && <Check className="h-3 w-3" />}
+                    {t.label}
+                  </span>
+                  <span className={`text-[11px] ${active ? "opacity-90" : "text-muted-foreground"}`}>
+                    {t.price === 0 ? "Sem custo" : `+${formatBRL(t.price)}`}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
 
       {/* Notes */}
       <div className="mt-5">
