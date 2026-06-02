@@ -1605,6 +1605,7 @@ function KitFestaCustomizationPanel({
   const [comboCerimonialista, setComboCerimonialista] = useState("");
   const [noivo1, setNoivo1] = useState("");
   const [noivo2, setNoivo2] = useState("");
+  const [salgadosExtra, setSalgadosExtra] = useState<"" | "50" | "100">("");
 
   function toggleComboColor(id: string) {
     setComboColors((prev) => {
