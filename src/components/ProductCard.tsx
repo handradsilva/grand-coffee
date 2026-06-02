@@ -1621,7 +1621,9 @@ function KitFestaCustomizationPanel({
   const selected = cfg.options.find((o) => o.id === optionId);
   const basePrice = selected?.price ?? product.price;
   const adicionaisPrice = cfg.showBoloAdicionais ? adicionais.length * BOLO_ADICIONAL_PRICE : 0;
-  const unitPrice = basePrice + adicionaisPrice;
+  const salgadosExtraOpt = SALGADOS_EXTRA_OPTIONS.find((o) => o.id === salgadosExtra);
+  const salgadosExtraPrice = salgadosExtraOpt?.price ?? 0;
+  const unitPrice = basePrice + adicionaisPrice + salgadosExtraPrice;
   const total = unitPrice;
 
   const effectiveFinos = cfg.docesTipoChoice ? docesTipo === "finos" : cfg.finos;
