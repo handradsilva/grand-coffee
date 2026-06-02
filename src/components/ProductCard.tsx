@@ -445,6 +445,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     cupcake: true,
     showFinosColors: true,
     showModelImage: true,
+    showSalgadosExtra: true,
   },
   "combo-casamento": {
     title: "Combo Casamento",
