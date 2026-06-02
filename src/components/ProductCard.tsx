@@ -370,7 +370,13 @@ interface KitConfig {
   maxFinosOptions?: number; // limite de formatos/recheios dos doces finos (default 2)
   showComboLocal?: boolean; // pede local de montagem + contato do cerimonialista
   showCoupleNames?: boolean; // pede nome dos noivos
+  showSalgadosExtra?: boolean; // adicional de salgados (50un R$45 / 100un R$90)
 }
+
+const SALGADOS_EXTRA_OPTIONS: { id: "50" | "100"; label: string; price: number }[] = [
+  { id: "50", label: "50 unidades", price: 45 },
+  { id: "100", label: "100 unidades", price: 90 },
+];
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
