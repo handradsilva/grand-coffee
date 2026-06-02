@@ -2174,6 +2174,34 @@ function KitFestaCustomizationPanel({
         </div>
       )}
 
+      {/* Adicional de salgados (Kit Festa 1/2/3) */}
+      {cfg.showSalgadosExtra && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicional de salgados <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1 ou nenhum</span>
+          </div>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            {SALGADOS_EXTRA_OPTIONS.map((o) => {
+              const active = salgadosExtra === o.id;
+              return (
+                <button
+                  key={o.id}
+                  onClick={() => setSalgadosExtra(active ? "" : o.id)}
+                  className={`flex items-center justify-between rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="inline-flex items-center gap-2 text-sm font-medium">
+                    {active && <Check className="h-3.5 w-3.5 text-primary" />}
+                    {o.label}
+                  </span>
+                  <span className="font-display text-sm font-semibold text-primary">+{formatBRL(o.price)}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* Notes */}
       <div className="mt-5">
         <h4 className="text-sm font-semibold">Observação</h4>
