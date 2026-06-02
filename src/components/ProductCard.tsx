@@ -429,6 +429,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     finos: true,
     cupcake: false,
     showSharedColor: true,
+    showSalgadosExtra: true,
   },
   "kit-festa-3": {
     title: "Kit Festa 3",
