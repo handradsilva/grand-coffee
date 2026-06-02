@@ -370,7 +370,13 @@ interface KitConfig {
   maxFinosOptions?: number; // limite de formatos/recheios dos doces finos (default 2)
   showComboLocal?: boolean; // pede local de montagem + contato do cerimonialista
   showCoupleNames?: boolean; // pede nome dos noivos
+  showSalgadosExtra?: boolean; // adicional de salgados (50un R$45 / 100un R$90)
 }
+
+const SALGADOS_EXTRA_OPTIONS: { id: "50" | "100"; label: string; price: number }[] = [
+  { id: "50", label: "50 unidades", price: 45 },
+  { id: "100", label: "100 unidades", price: 90 },
+];
 
 const KIT_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "rosa-pink", label: "Rosa pink", hex: "#e91e63" },
@@ -405,6 +411,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     cupcake: false,
     showFinosColors: true,
     showModelImage: true,
+    showSalgadosExtra: true,
   },
   "kit-festa-2": {
     title: "Kit Festa 2",
@@ -422,6 +429,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     finos: true,
     cupcake: false,
     showSharedColor: true,
+    showSalgadosExtra: true,
   },
   "kit-festa-3": {
     title: "Kit Festa 3",
@@ -437,6 +445,7 @@ const KIT_CONFIGS: Record<string, KitConfig> = {
     cupcake: true,
     showFinosColors: true,
     showModelImage: true,
+    showSalgadosExtra: true,
   },
   "combo-casamento": {
     title: "Combo Casamento",
@@ -1596,6 +1605,7 @@ function KitFestaCustomizationPanel({
   const [comboCerimonialista, setComboCerimonialista] = useState("");
   const [noivo1, setNoivo1] = useState("");
   const [noivo2, setNoivo2] = useState("");
+  const [salgadosExtra, setSalgadosExtra] = useState<"" | "50" | "100">("");
 
   function toggleComboColor(id: string) {
     setComboColors((prev) => {
@@ -1611,7 +1621,9 @@ function KitFestaCustomizationPanel({
   const selected = cfg.options.find((o) => o.id === optionId);
   const basePrice = selected?.price ?? product.price;
   const adicionaisPrice = cfg.showBoloAdicionais ? adicionais.length * BOLO_ADICIONAL_PRICE : 0;
-  const unitPrice = basePrice + adicionaisPrice;
+  const salgadosExtraOpt = SALGADOS_EXTRA_OPTIONS.find((o) => o.id === salgadosExtra);
+  const salgadosExtraPrice = salgadosExtraOpt?.price ?? 0;
+  const unitPrice = basePrice + adicionaisPrice + salgadosExtraPrice;
   const total = unitPrice;
 
   const effectiveFinos = cfg.docesTipoChoice ? docesTipo === "finos" : cfg.finos;
@@ -1731,6 +1743,8 @@ function KitFestaCustomizationPanel({
       modelImage: cfg.showModelImage && modelImage ? modelImage : undefined,
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
       coupleNames: cfg.showCoupleNames ? `${noivo1.trim()} & ${noivo2.trim()}` : undefined,
+      extras: cfg.showSalgadosExtra && salgadosExtraOpt ? [`Adicional de salgados: ${salgadosExtraOpt.label}`] : undefined,
+      extrasPrice: cfg.showSalgadosExtra && salgadosExtraOpt ? salgadosExtraOpt.price : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2157,6 +2171,34 @@ function KitFestaCustomizationPanel({
               <ImageIcon className="h-4 w-4 opacity-60" />
             </button>
           )}
+        </div>
+      )}
+
+      {/* Adicional de salgados (Kit Festa 1/2/3) */}
+      {cfg.showSalgadosExtra && (
+        <div className="mt-5">
+          <div className="flex items-baseline justify-between">
+            <h4 className="text-sm font-semibold">Adicional de salgados <span className="font-normal text-muted-foreground">(opcional)</span></h4>
+            <span className="text-[11px] text-muted-foreground">Escolha 1 ou nenhum</span>
+          </div>
+          <div className="mt-2 grid gap-2 sm:grid-cols-2">
+            {SALGADOS_EXTRA_OPTIONS.map((o) => {
+              const active = salgadosExtra === o.id;
+              return (
+                <button
+                  key={o.id}
+                  onClick={() => setSalgadosExtra(active ? "" : o.id)}
+                  className={`flex items-center justify-between rounded-md border px-3 py-2.5 text-left transition-all ${active ? "border-primary bg-primary/10" : "border-border bg-background hover:border-primary/40"}`}
+                >
+                  <span className="inline-flex items-center gap-2 text-sm font-medium">
+                    {active && <Check className="h-3.5 w-3.5 text-primary" />}
+                    {o.label}
+                  </span>
+                  <span className="font-display text-sm font-semibold text-primary">+{formatBRL(o.price)}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 
