@@ -330,6 +330,9 @@ function Cart() {
                                 {c.adicionais && c.adicionais.length > 0 && (
                                   <p><span className="font-medium text-foreground">Adicionais do bolo:</span> {c.adicionais.join(", ")}</p>
                                 )}
+                                {c.extras && c.extras.length > 0 && (
+                                  <p><span className="font-medium text-foreground">{c.extras.join(", ")}</span>{c.extrasPrice ? <> (+{formatBRL(c.extrasPrice)})</> : null}</p>
+                                )}
                                 {c.cupcakeRecheios && c.cupcakeRecheios.length > 0 && (
                                   <p><span className="font-medium text-foreground">Recheio cupcake:</span> {c.cupcakeRecheios.join(", ")}</p>
                                 )}
