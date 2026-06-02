@@ -813,7 +813,8 @@ function BoloCustomizationPanel({
   const weightPrice = cfg.basePrice + ((weightKg - 1) / cfg.stepKg) * cfg.stepPrice;
   const adicionaisPrice = adicionais.length * BOLO_ADICIONAL_PRICE;
   const embalagemPrice = embalagem ? NAKED_EMBALAGEM_PRICE : 0;
-  const selectedToppers = BOLO_TOPPERS.filter((t) => toppers.includes(t.id));
+  const TOPPERS_LIST = product.id === "bolo-vintage-floral" ? VINTAGE_TOPPERS : BOLO_TOPPERS;
+  const selectedToppers = TOPPERS_LIST.filter((t) => toppers.includes(t.id));
   const toppersPrice = selectedToppers.reduce((a, t) => a + t.price, 0);
   const selectedExtras = BOLO_EXTRAS.filter((e) => extras.includes(e.id));
   const extrasPrice = selectedExtras.reduce((a, e) => a + e.price, 0);
