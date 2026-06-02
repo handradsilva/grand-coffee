@@ -1757,7 +1757,7 @@ function KitFestaCustomizationPanel({
 
       {product.id === "combo-casamento" && (
         <div className="mt-3 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2.5">
-          <p className="text-xs font-semibold text-destructive">Atenção: O Combo-Casamento estará indisponível para os dias 6 e 7 de agosto</p>
+          <p className="text-xs font-semibold text-destructive">Atenção: O Combo-Casamento estará indisponivel para os dias 2, 3, 4, 5, 6 e 7 de agosto</p>
         </div>
       )}
 
