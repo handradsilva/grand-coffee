@@ -527,7 +527,8 @@ export function ProductCard({ product }: { product: Product }) {
 
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+    <article ref={articleRef} className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+
       <div className="relative aspect-square overflow-hidden bg-muted">
         {product.id === "bolo-vintage-floral" ? (
           <ImageCarousel images={VINTAGE_FLORAL_IMAGES} alt={product.name} />
