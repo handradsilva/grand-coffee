@@ -506,18 +506,33 @@ export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const [open, setOpen] = useState(false);
   const articleRef = useRef<HTMLElement>(null);
+  const openScrollYRef = useRef<number>(0);
+  const openCardTopRef = useRef<number>(0);
 
   const customizable = isCustomizable(product);
 
   function closePanel() {
+    // Capture card's current top in viewport BEFORE removing the panel
+    const cardTopBefore = articleRef.current?.getBoundingClientRect().top ?? 0;
     setOpen(false);
     requestAnimationFrame(() => {
-      articleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => {
+        // After panel removed, restore scroll so the card sits where it was when opened
+        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? 0;
+        const delta = cardTopAfter - cardTopBefore;
+        if (Math.abs(delta) > 1) {
+          window.scrollBy({ top: delta, behavior: "auto" });
+        }
+      });
     });
   }
 
   function handleClick() {
     if (customizable) {
+      if (!open) {
+        openScrollYRef.current = window.scrollY;
+        openCardTopRef.current = articleRef.current?.getBoundingClientRect().top ?? 0;
+      }
       setOpen((v) => !v);
     } else {
       add(product);
