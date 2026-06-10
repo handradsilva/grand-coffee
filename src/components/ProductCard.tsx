@@ -608,19 +608,19 @@ export function ProductCard({ product }: { product: Product }) {
 
         {customizable && open && (
           isBolo(product) ? (
-            <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <BoloCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isBemCasado(product) ? (
-            <BemCasadoCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <BemCasadoCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isCupcake(product) ? (
-            <CupcakeCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <CupcakeCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isKit(product) ? (
-            <KitFestaCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <KitFestaCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isCaixaDegustacao(product) ? (
-            <CaixaDegustacaoPanel product={product} onAdded={() => setOpen(false)} />
+            <CaixaDegustacaoPanel product={product} onAdded={closePanel} />
           ) : isMiniDecor(product) ? (
-            <MiniDecorPanel product={product} onAdded={() => setOpen(false)} />
+            <MiniDecorPanel product={product} onAdded={closePanel} />
           ) : (
-            <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <CustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           )
         )}
       </div>
