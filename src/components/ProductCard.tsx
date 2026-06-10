@@ -511,19 +511,38 @@ export function ProductCard({ product }: { product: Product }) {
 
   const customizable = isCustomizable(product);
 
+  function restorePageScroll(top: number) {
+    const html = document.documentElement;
+    const previousScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+
+    const scrollingElement = document.scrollingElement as HTMLElement | null;
+    if (scrollingElement) scrollingElement.scrollTop = top;
+    html.scrollTop = top;
+    document.body.scrollTop = top;
+    window.scrollTo(0, top);
+
+    requestAnimationFrame(() => {
+      html.style.scrollBehavior = previousScrollBehavior;
+    });
+  }
+
   function closePanel() {
     const targetScrollY = openScrollYRef.current;
+    (document.activeElement as HTMLElement | null)?.blur();
     setOpen(false);
 
     let attempts = 0;
     const restoreScroll = () => {
-      window.scrollTo({ top: targetScrollY, behavior: "auto" });
+      restorePageScroll(targetScrollY);
       attempts += 1;
-      if (attempts < 5) requestAnimationFrame(restoreScroll);
+      if (attempts < 8) requestAnimationFrame(restoreScroll);
     };
 
     requestAnimationFrame(restoreScroll);
-    window.setTimeout(() => window.scrollTo({ top: targetScrollY, behavior: "auto" }), 160);
+    [80, 180, 360].forEach((delay) => {
+      window.setTimeout(() => restorePageScroll(targetScrollY), delay);
+    });
   }
 
   function handleClick() {
