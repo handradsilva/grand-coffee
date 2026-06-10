@@ -528,20 +528,33 @@ export function ProductCard({ product }: { product: Product }) {
   }
 
   function closePanel() {
-    const targetScrollY = openScrollYRef.current;
+    const cardTopNow = articleRef.current?.getBoundingClientRect().top ?? openCardTopRef.current;
+    const targetScrollY = Math.max(0, window.scrollY + cardTopNow - openCardTopRef.current);
     (document.activeElement as HTMLElement | null)?.blur();
-    setOpen(false);
+    restorePageScroll(targetScrollY);
 
-    let attempts = 0;
-    const restoreScroll = () => {
-      restorePageScroll(targetScrollY);
-      attempts += 1;
-      if (attempts < 8) requestAnimationFrame(restoreScroll);
-    };
+    requestAnimationFrame(() => {
+      setOpen(false);
 
-    requestAnimationFrame(restoreScroll);
+      let attempts = 0;
+      const restoreScroll = () => {
+        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? openCardTopRef.current;
+        const adjustedTarget = Math.max(0, window.scrollY + cardTopAfter - openCardTopRef.current);
+        restorePageScroll(adjustedTarget);
+        attempts += 1;
+        if (attempts < 8) requestAnimationFrame(restoreScroll);
+      };
+
+      requestAnimationFrame(restoreScroll);
+    });
+
     [80, 180, 360].forEach((delay) => {
-      window.setTimeout(() => restorePageScroll(targetScrollY), delay);
+      restorePageScroll(targetScrollY);
+      window.setTimeout(() => {
+        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? openCardTopRef.current;
+        const adjustedTarget = Math.max(0, window.scrollY + cardTopAfter - openCardTopRef.current);
+        restorePageScroll(adjustedTarget);
+      }, delay);
     });
   }
 
