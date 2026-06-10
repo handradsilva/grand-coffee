@@ -683,7 +683,7 @@ function CustomizationPanel({
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
     add(product, qty, { kind: "doces", flavors, colors, notes, unitPrice, ...(finos ? { format: formats.join(", ") } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -887,7 +887,7 @@ function BoloCustomizationPanel({
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} adicionado à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -1268,7 +1268,7 @@ function BemCasadoCustomizationPanel({
       tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -1450,7 +1450,7 @@ function CupcakeCustomizationPanel({
       tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -1747,7 +1747,7 @@ function KitFestaCustomizationPanel({
       extrasPrice: cfg.showSalgadosExtra && salgadosExtraOpt ? salgadosExtraOpt.price : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -2238,7 +2238,7 @@ function CaixaDegustacaoPanel({ product, onAdded }: { product: Product; onAdded:
       unitPrice: product.price,
     });
     toast.success(`${product.name} adicionado à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -2339,7 +2339,7 @@ function MiniDecorPanel({ product, onAdded }: { product: Product; onAdded: () =>
     ].join("\n");
     add(product, 1, { notes, unitPrice: product.price });
     toast.success(`${product.name} reservado na sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
