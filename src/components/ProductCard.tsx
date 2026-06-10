@@ -505,8 +505,16 @@ function isFinos(p: Product) {
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const [open, setOpen] = useState(false);
+  const articleRef = useRef<HTMLElement>(null);
 
   const customizable = isCustomizable(product);
+
+  function closePanel() {
+    setOpen(false);
+    requestAnimationFrame(() => {
+      articleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
   function handleClick() {
     if (customizable) {
@@ -516,6 +524,7 @@ export function ProductCard({ product }: { product: Product }) {
       toast.success(`${product.name} adicionado à sacola.`);
     }
   }
+
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
