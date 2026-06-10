@@ -505,8 +505,16 @@ function isFinos(p: Product) {
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const [open, setOpen] = useState(false);
+  const articleRef = useRef<HTMLElement>(null);
 
   const customizable = isCustomizable(product);
+
+  function closePanel() {
+    setOpen(false);
+    requestAnimationFrame(() => {
+      articleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
   function handleClick() {
     if (customizable) {
@@ -517,8 +525,10 @@ export function ProductCard({ product }: { product: Product }) {
     }
   }
 
+
   return (
-    <article className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+    <article ref={articleRef} className="group flex flex-col overflow-hidden rounded-lg border border-border/60 bg-card transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+
       <div className="relative aspect-square overflow-hidden bg-muted">
         {product.id === "bolo-vintage-floral" ? (
           <ImageCarousel images={VINTAGE_FLORAL_IMAGES} alt={product.name} />
@@ -598,19 +608,19 @@ export function ProductCard({ product }: { product: Product }) {
 
         {customizable && open && (
           isBolo(product) ? (
-            <BoloCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <BoloCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isBemCasado(product) ? (
-            <BemCasadoCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <BemCasadoCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isCupcake(product) ? (
-            <CupcakeCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <CupcakeCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isKit(product) ? (
-            <KitFestaCustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <KitFestaCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           ) : isCaixaDegustacao(product) ? (
-            <CaixaDegustacaoPanel product={product} onAdded={() => setOpen(false)} />
+            <CaixaDegustacaoPanel product={product} onAdded={closePanel} />
           ) : isMiniDecor(product) ? (
-            <MiniDecorPanel product={product} onAdded={() => setOpen(false)} />
+            <MiniDecorPanel product={product} onAdded={closePanel} />
           ) : (
-            <CustomizationPanel product={product} onClose={() => setOpen(false)} onAdded={() => setOpen(false)} />
+            <CustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
           )
         )}
       </div>
@@ -683,7 +693,7 @@ function CustomizationPanel({
     if (qty < MIN_QTY) return toast.error(`Pedido mínimo de ${MIN_QTY} unidades.`);
     add(product, qty, { kind: "doces", flavors, colors, notes, unitPrice, ...(finos ? { format: formats.join(", ") } : {}) });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -887,7 +897,7 @@ function BoloCustomizationPanel({
       modelImageName: cfg.showModelImage && modelImageName ? modelImageName : undefined,
     });
     toast.success(`${product.name} adicionado à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -1268,7 +1278,7 @@ function BemCasadoCustomizationPanel({
       tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -1450,7 +1460,7 @@ function CupcakeCustomizationPanel({
       tag: tag as "com" | "sem",
     });
     toast.success(`${qty} ${product.name} adicionados à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -1747,7 +1757,7 @@ function KitFestaCustomizationPanel({
       extrasPrice: cfg.showSalgadosExtra && salgadosExtraOpt ? salgadosExtraOpt.price : undefined,
     });
     toast.success(`${product.name} (${selected.label}) adicionado à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -2238,7 +2248,7 @@ function CaixaDegustacaoPanel({ product, onAdded }: { product: Product; onAdded:
       unitPrice: product.price,
     });
     toast.success(`${product.name} adicionado à sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
@@ -2339,7 +2349,7 @@ function MiniDecorPanel({ product, onAdded }: { product: Product; onAdded: () =>
     ].join("\n");
     add(product, 1, { notes, unitPrice: product.price });
     toast.success(`${product.name} reservado na sacola.`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    
     onAdded();
   }
 
