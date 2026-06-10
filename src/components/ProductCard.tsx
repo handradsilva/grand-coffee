@@ -512,19 +512,18 @@ export function ProductCard({ product }: { product: Product }) {
   const customizable = isCustomizable(product);
 
   function closePanel() {
-    // Capture card's current top in viewport BEFORE removing the panel
-    const cardTopBefore = articleRef.current?.getBoundingClientRect().top ?? 0;
+    const targetScrollY = openScrollYRef.current;
     setOpen(false);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // After panel removed, restore scroll so the card sits where it was when opened
-        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? 0;
-        const delta = cardTopAfter - cardTopBefore;
-        if (Math.abs(delta) > 1) {
-          window.scrollBy({ top: delta, behavior: "auto" });
-        }
-      });
-    });
+
+    let attempts = 0;
+    const restoreScroll = () => {
+      window.scrollTo({ top: targetScrollY, behavior: "auto" });
+      attempts += 1;
+      if (attempts < 5) requestAnimationFrame(restoreScroll);
+    };
+
+    requestAnimationFrame(restoreScroll);
+    window.setTimeout(() => window.scrollTo({ top: targetScrollY, behavior: "auto" }), 160);
   }
 
   function handleClick() {
