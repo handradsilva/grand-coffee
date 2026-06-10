@@ -505,26 +505,64 @@ function isFinos(p: Product) {
 export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const [open, setOpen] = useState(false);
+  const [closingSpacerHeight, setClosingSpacerHeight] = useState(0);
   const articleRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const openScrollYRef = useRef<number>(0);
   const openCardTopRef = useRef<number>(0);
 
   const customizable = isCustomizable(product);
 
-  function closePanel() {
-    // Capture card's current top in viewport BEFORE removing the panel
-    const cardTopBefore = articleRef.current?.getBoundingClientRect().top ?? 0;
-    setOpen(false);
+  function restorePageScroll(top: number) {
+    const html = document.documentElement;
+    const previousScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+
+    const scrollingElement = document.scrollingElement as HTMLElement | null;
+    if (scrollingElement) scrollingElement.scrollTop = top;
+    html.scrollTop = top;
+    document.body.scrollTop = top;
+    window.scrollTo(0, top);
+
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // After panel removed, restore scroll so the card sits where it was when opened
-        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? 0;
-        const delta = cardTopAfter - cardTopBefore;
-        if (Math.abs(delta) > 1) {
-          window.scrollBy({ top: delta, behavior: "auto" });
-        }
-      });
+      html.style.scrollBehavior = previousScrollBehavior;
     });
+  }
+
+  function closePanel() {
+    const panelHeight = panelRef.current?.getBoundingClientRect().height ?? 0;
+    const cardTopNow = articleRef.current?.getBoundingClientRect().top ?? openCardTopRef.current;
+    const targetScrollY = Math.max(0, window.scrollY + cardTopNow - openCardTopRef.current);
+    (document.activeElement as HTMLElement | null)?.blur();
+    if (panelHeight > 0) setClosingSpacerHeight(panelHeight);
+    restorePageScroll(targetScrollY);
+
+    requestAnimationFrame(() => {
+      setOpen(false);
+
+      let attempts = 0;
+      const restoreScroll = () => {
+        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? openCardTopRef.current;
+        const adjustedTarget = Math.max(0, window.scrollY + cardTopAfter - openCardTopRef.current);
+        restorePageScroll(adjustedTarget);
+        attempts += 1;
+        if (attempts < 8) requestAnimationFrame(restoreScroll);
+      };
+
+      requestAnimationFrame(restoreScroll);
+    });
+
+    [80, 180, 360].forEach((delay) => {
+      window.setTimeout(() => {
+        const cardTopAfter = articleRef.current?.getBoundingClientRect().top ?? openCardTopRef.current;
+        const adjustedTarget = Math.max(0, window.scrollY + cardTopAfter - openCardTopRef.current);
+        restorePageScroll(adjustedTarget);
+      }, delay);
+    });
+    window.setTimeout(() => {
+      setClosingSpacerHeight(0);
+      requestAnimationFrame(() => restorePageScroll(targetScrollY));
+    }, 520);
   }
 
   function handleClick() {
@@ -532,6 +570,7 @@ export function ProductCard({ product }: { product: Product }) {
       if (!open) {
         openScrollYRef.current = window.scrollY;
         openCardTopRef.current = articleRef.current?.getBoundingClientRect().top ?? 0;
+        setClosingSpacerHeight(0);
       }
       setOpen((v) => !v);
     } else {
@@ -622,21 +661,26 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         {customizable && open && (
-          isBolo(product) ? (
-            <BoloCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
-          ) : isBemCasado(product) ? (
-            <BemCasadoCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
-          ) : isCupcake(product) ? (
-            <CupcakeCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
-          ) : isKit(product) ? (
-            <KitFestaCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
-          ) : isCaixaDegustacao(product) ? (
-            <CaixaDegustacaoPanel product={product} onAdded={closePanel} />
-          ) : isMiniDecor(product) ? (
-            <MiniDecorPanel product={product} onAdded={closePanel} />
-          ) : (
-            <CustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
-          )
+          <div ref={panelRef}>
+            {isBolo(product) ? (
+              <BoloCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
+            ) : isBemCasado(product) ? (
+              <BemCasadoCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
+            ) : isCupcake(product) ? (
+              <CupcakeCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
+            ) : isKit(product) ? (
+              <KitFestaCustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
+            ) : isCaixaDegustacao(product) ? (
+              <CaixaDegustacaoPanel product={product} onAdded={closePanel} />
+            ) : isMiniDecor(product) ? (
+              <MiniDecorPanel product={product} onAdded={closePanel} />
+            ) : (
+              <CustomizationPanel product={product} onClose={closePanel} onAdded={closePanel} />
+            )}
+          </div>
+        )}
+        {!open && closingSpacerHeight > 0 && (
+          <div aria-hidden="true" style={{ height: closingSpacerHeight }} />
         )}
       </div>
     </article>
